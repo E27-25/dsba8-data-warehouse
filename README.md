@@ -87,13 +87,14 @@ dsba8-data-warehouse/
 ├── 📄 README.md                              ← You are here
 │
 └── 📂 week01-data-warehouse-setup/           ← Week 1 ✅
-    ├── 📂 slides/                            ← Lecture slides (PDF)
-    ├── 📂 docs/                              ← Lab instructions & worksheets
-    │   └── Lab1 Data Warehouse Setup.docx
-    ├── 🐳 docker-compose.yaml                ← Full stack definition
-    ├── 🐳 dockerfile.airflow                 ← Custom Airflow image
-    ├── ⚙️  postgresql.conf                   ← PostgreSQL config
-    ├── 📦 DWH_Lab.zip                        ← Lab archive
+    ├── 📂 docs/                              ← Lab instructions & documents
+    │   ├── Lab1 Data Warehouse Setup.docx
+    │   └── Lab1 Data Warehouse Setup.pdf
+    ├── 📂 lab-week01/                        ← Lab environment files
+    │   ├── 🐳 docker-compose.yaml
+    │   ├── 🐳 dockerfile.airflow
+    │   ├── ⚙️  postgresql.conf
+    │   └── 📦 DWH_Lab.zip
     └── 📄 README.md                          ← Setup guide + lab notes
 ```
 
