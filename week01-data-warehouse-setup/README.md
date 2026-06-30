@@ -193,7 +193,7 @@ CREATE TABLE orders (
 ---
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
-Submit the following via the designated Google Form:
+Submit the following via the **[Google Form Assignment Link](https://docs.google.com/forms/d/e/1FAIpQLSd_yRfZwilZvGL-50gqBB0MZdWVC7WyzmToprNWWP0bAJfu4Q/viewform?usp=sharing&ouid=112034381246792911028)**:
 1. **Screenshot** of your `orders` table visualization/exploration inside Metabase.
 2. **Answers** to the 3 analytical questions in Part 4.
 
