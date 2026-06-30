@@ -1,9 +1,7 @@
 <div align="center">
 
-<!-- Animated Banner -->
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,19,24&height=200&section=header&text=Data%20Warehouse&fontSize=48&fontColor=fff&animation=twinkling&fontAlignY=38&desc=DSBA8%20%7C%20King%20Mongkut%27s%20University%20of%20Technology%20Thonburi&descAlignY=58&descSize=16" width="100%"/>
 
-<!-- Badges -->
 <p>
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
   <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white"/>
@@ -33,8 +31,8 @@
 
 | Week | Topic | Materials |
 |:---:|---|:---:|
-| **1** | 🐳 Data Warehouse Setup (Docker Environment) | [📂 Week 1](./week01-data-warehouse-setup/) |
-| **2–15** | 🔜 Coming soon — syllabus in progress | — |
+| 1 | Data Warehouse Setup (Docker Environment) | [Week 1](./week01-data-warehouse-setup/) |
+| 2–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -55,7 +53,7 @@ cd dsba8-data-warehouse
 ### 2. Go to Week 1
 
 ```bash
-cd week01-data-warehouse-setup
+cd week01-data-warehouse-setup/lab-week01
 ```
 
 ### 3. Start the full stack
@@ -71,11 +69,11 @@ docker compose up -d
 
 | Service | Role | Port |
 |---|---|---|
-| 🐘 **PostgreSQL 16** | Data Warehouse storage | `localhost:25432` |
-| 🔧 **pgAdmin 4** | DB management UI | `http://localhost:28880` |
-| 🌊 **Apache Airflow** | Pipeline orchestration | `http://localhost:28080` |
-| 🌿 **dbt** | Data transformation | — |
-| 📊 **Metabase** | BI & visualization | `http://localhost:23000` |
+| PostgreSQL 16 | Data Warehouse storage | `localhost:25432` |
+| pgAdmin 4 | DB management UI | `http://localhost:28880` |
+| Apache Airflow | Pipeline orchestration | `http://localhost:28080` |
+| dbt | Data transformation | — |
+| Metabase | BI & visualization | `http://localhost:23000` |
 
 ---
 
@@ -84,18 +82,18 @@ docker compose up -d
 ```
 dsba8-data-warehouse/
 │
-├── 📄 README.md                              ← You are here
+├── README.md
 │
-└── 📂 week01-data-warehouse-setup/           ← Week 1 ✅
-    ├── 📂 docs/                              ← Lab instructions & documents
+└── week01-data-warehouse-setup/           ← Week 1 ✅
+    ├── docs/                              ← Lab instructions & documents
     │   ├── Lab1 Data Warehouse Setup.docx
     │   └── Lab1 Data Warehouse Setup.pdf
-    ├── 📂 lab-week01/                        ← Lab environment files
-    │   ├── 🐳 docker-compose.yaml
-    │   ├── 🐳 dockerfile.airflow
-    │   ├── ⚙️  postgresql.conf
-    │   └── 📦 DWH_Lab.zip
-    └── 📄 README.md                          ← Setup guide + lab notes
+    ├── lab-week01/                        ← Lab environment files
+    │   ├── docker-compose.yaml
+    │   ├── dockerfile.airflow
+    │   ├── postgresql.conf
+    │   └── DWH_Lab.zip
+    └── README.md
 ```
 
 ---
@@ -104,7 +102,7 @@ dsba8-data-warehouse/
 
 <div align="center">
 
-| 🐳 Infrastructure | 🗄️ Data Layer | 📊 Visualization |
+| Infrastructure | Data Layer | Visualization |
 |---|---|---|
 | Docker Compose | PostgreSQL 16 | Metabase |
 | Apache Airflow 3.x | dbt Core | pgAdmin 4 |
@@ -117,11 +115,10 @@ dsba8-data-warehouse/
 ## 📌 Key Ports Reference
 
 ```
-localhost:25432  →  PostgreSQL  (from host machine)
+localhost:25432  →  PostgreSQL
 localhost:28080  →  Airflow API Server
 localhost:28880  →  pgAdmin 4
 localhost:23000  →  Metabase
-localhost:28088  →  dbt (container internal)
 ```
 
 ---
