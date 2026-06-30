@@ -88,6 +88,11 @@ dsba8-data-warehouse/
     ├── docs/                              ← Lab instructions & documents
     │   ├── Lab1 Data Warehouse Setup.docx
     │   └── Lab1 Data Warehouse Setup.pdf
+    ├── slides/                            ← Lecture slides (PDF)
+    │   ├── 1 - Introduction to Data Warehouse.pdf
+    │   └── Overview.pdf
+    ├── data/                              ← Dataset files
+    │   └── Sample - Superstore.csv
     ├── lab-week01/                        ← Lab environment files
     │   ├── docker-compose.yaml
     │   ├── dockerfile.airflow
