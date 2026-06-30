@@ -1,55 +1,32 @@
-# 📦 Week 1 — Data Warehouse Setup
-> **Topic:** Data Warehouse Architecture + Environment Setup (Docker)
+# 📦 Week 1: Data Warehouse Setup & Exploration
+
+> **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
+> **Topic:** Environment Setup with Docker & Basic Data Exploration  
+> **Duration:** 2 Hours
 
 ---
 
-## 🎯 Learning Objectives
-
-- Understand the **Data Warehouse** concept and architecture
-- Set up a complete DWH stack using **Docker Compose**
-- Get familiar with: **PostgreSQL**, **pgAdmin**, **Apache Airflow**, **dbt**, and **Metabase**
-- Connect tools to form an end-to-end data pipeline environment
-
----
-
-## 🏗️ Stack Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Docker Network: dw_net                │
-│                                                         │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │
-│  │  PostgreSQL  │    │   pgAdmin   │    │  Metabase   │  │
-│  │  port 25432  │◄───│  port 28880 │    │  port 23000 │  │
-│  └──────┬──────┘    └─────────────┘    └──────┬──────┘  │
-│         │                                      │        │
-│         │           ┌─────────────┐            │        │
-│         └───────────│     dbt     │────────────┘        │
-│                     │  port 28088 │                     │
-│                     └─────────────┘                     │
-│                                                         │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │              Apache Airflow                       │   │
-│  │  API Server (28080) · Scheduler · DAG Processor  │   │
-│  └──────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────┘
-```
+## 🎯 Learning Objectives / วัตถุประสงค์
+1. Set up the development environment stack using **Docker Compose**.
+2. Create a database, table, and import data via **pgAdmin**.
+3. Connect the PostgreSQL database to **Metabase** and perform basic data exploration/visualization.
+4. Build a foundation for future Data Warehouse labs (dbt, Airflow, etc.).
 
 ---
 
-## 📋 Services & Ports
+## 🧰 Tools & Stack Overview / เครื่องมือที่ใช้
 
-| Service | Container Name | Port | Credentials |
-|---|---|---|---|
-| **PostgreSQL 16** | `dw_postgres` | `localhost:25432` | user: `dw_user` / pass: `dw_pass` |
-| **pgAdmin 4** | `dw_pgadmin` | `http://localhost:28880` | email: `dw_user@mail.com` / pass: `dw_pass` |
-| **Metabase** | `dw_metabase` | `http://localhost:23000` | — (setup on first run) |
-| **dbt** | `dw_dbt` | — | — |
-| **Airflow API** | — | `http://localhost:28080` | user: `airflow` / pass: `airflow` |
+| Tool | What is it? | What is it used for in this lab? |
+|---|---|---|
+| **Docker** | Containerization Platform | Runs PostgreSQL, pgAdmin, Airflow, dbt, and Metabase in isolated environments without local installation. |
+| **PostgreSQL 16** | Relational Database (RDBMS) | Stores our structured transactional and analytical data. |
+| **pgAdmin 4** | Database GUI Management Tool | Used to interact with PostgreSQL, run SQL queries, and import CSV datasets. |
+| **Metabase** | Open-source BI & Visualization Tool | Connects to PostgreSQL to create charts and dashboards. |
+| **dbt** / **Airflow** | Transformation / Ingestion | (Setup for future weeks - running in background). |
 
 ---
 
-## 📁 Files in This Week
+## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
 
 | File / Folder | Description |
 |---|---|
@@ -64,148 +41,170 @@
 
 ---
 
-## 🚀 Getting Started
+## 🔧 Part 1: Environment Setup / การติดตั้งระบบจำลอง
 
-### Prerequisites
+### 1. Check System Specifications
+Ensure your machine meets the recommended specs for running the stack:
+* **RAM:** $\ge$ 16 GB (Recommended)
+* **Disk Space:** $\ge$ 30 GB free
+* **Docker Desktop:** Installed and running. Download from [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
-- At least **4 GB RAM** and **10 GB disk** free for Docker
-
-### Step 1: Navigate to the lab folder
-
+### 2. Verify Docker Installation
+Open your terminal (macOS/Linux) or PowerShell (Windows) and run:
 ```bash
-cd week01-data-warehouse-setup/lab-week01
+docker --version
+docker compose version
 ```
 
-### Step 2: Set Airflow user ID (Linux/Mac)
-
-```bash
-echo -e "AIRFLOW_UID=$(id -u)" > .env
-```
-
-### Set Airflow user ID (Windows)
-```bash
-Set-Content -Path .env -Value "AIRFLOW_UID=50000"
-```
-
-### Step 3: Start all services
-
-```bash
-docker compose up -d
-```
-
-> ⏳ First run takes a few minutes — Airflow init must complete before the scheduler starts.
-
-### Step 4: Verify everything is running
-
-```bash
-docker compose ps
-```
-
-You should see all containers with status `healthy` or `running`.
-
-### Step 5: Access the tools
-
-| Tool | URL |
-|---|---|
-| Airflow | http://localhost:28080 |
-| pgAdmin | http://localhost:28880 |
-| Metabase | http://localhost:23000 |
+### 3. Start the Lab Environment
+1. Extract the `DWH_Lab.zip` file (Ensure there are no Thai characters in the folder path).
+2. Open your terminal/PowerShell, navigate to the `lab-week01` folder:
+   ```bash
+   cd week01-data-warehouse-setup/lab-week01
+   ```
+3. Set the Airflow User ID:
+   * **macOS / Linux:**
+     ```bash
+     echo -e "AIRFLOW_UID=$(id -u)" > .env
+     ```
+   * **Windows (PowerShell):**
+     ```powershell
+     Set-Content -Path .env -Value "AIRFLOW_UID=50000"
+     ```
+4. Start the containers in the background:
+   ```bash
+   docker compose up -d
+   ```
+5. Verify that all services are running:
+   ```bash
+   docker compose ps
+   ```
 
 ---
 
-## 🔧 Common Commands
+## 📥 Part 2: Database & Table Creation / การสร้างตารางและนำเข้าข้อมูล
+
+### 1. Connect pgAdmin to PostgreSQL
+1. Open your browser and go to: **[http://localhost:28880](http://localhost:28880)**
+2. Log in with the default credentials:
+   - **Email:** `dw_user@mail.com`
+   - **Password:** `dw_pass`
+3. Register the PostgreSQL Server:
+   - Right-click **Servers** ➡️ **Register** ➡️ **Server...**
+   - Under the **General** tab:
+     - **Name:** `DW Postgres`
+   - Under the **Connection** tab:
+     - **Host name/address:** `dw_postgres` *(This is the internal Docker container name)*
+     - **Port:** `5432`
+     - **Maintenance database:** `airflow`
+     - **Username:** `dw_user`
+     - **Password:** `dw_pass`
+   - Click **Save**.
+
+### 2. Create the `sampledb` Database
+1. In pgAdmin, right-click on your connected **DW Postgres** server ➡️ **Create** ➡️ **Database...**
+2. **Database name:** `sampledb`
+3. Click **Save**.
+
+### 3. Create the `orders` Table
+1. Select the newly created `sampledb` database in the left sidebar.
+2. Open the **Query Tool** (Tools ➡️ Query Tool, or click the SQL icon).
+3. Copy and paste the following SQL script, then click the **Execute/Play (F5)** button:
+
+```sql
+CREATE TABLE orders (
+    row_id SERIAL PRIMARY KEY,
+    order_id VARCHAR(20),
+    order_date DATE,
+    ship_date DATE,
+    ship_mode VARCHAR(50),
+    customer_id VARCHAR(20),
+    customer_name VARCHAR(100),
+    segment VARCHAR(50),
+    country VARCHAR(50),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    postal_code VARCHAR(20),
+    region VARCHAR(50),
+    product_id VARCHAR(20),
+    category VARCHAR(50),
+    sub_category VARCHAR(50),
+    product_name TEXT,
+    sales NUMERIC,
+    quantity INT,
+    discount NUMERIC,
+    profit NUMERIC
+);
+```
+
+### 4. Import the CSV Dataset
+1. Download or locate `Sample - Superstore.csv`.
+2. In pgAdmin, expand **sampledb** ➡️ **Schemas** ➡️ **public** ➡️ **Tables**.
+3. Right-click on the `orders` table ➡️ **Import/Export Data...**
+4. Set the toggle to **Import**.
+5. **Filename:** Click the folder icon and select your local `Sample - Superstore.csv` file.
+6. **Format:** Select `csv`.
+7. Go to the **Options** tab:
+   - **Header:** Set to `Yes` (to skip the first row of headers).
+   - **Delimiter:** `,`
+   - **Quote:** `"`
+   - **Escape:** `"`
+8. Click **OK**. Once completed, verify by running:
+   ```sql
+   SELECT * FROM orders LIMIT 10;
+   ```
+
+---
+
+## 🌐 Part 3: Metabase Visualization / การเชื่อมต่อ Metabase
+
+1. Open your browser and go to: **[http://localhost:23000](http://localhost:23000)**
+2. Complete the initial setup/registration.
+3. Add your database with the following details:
+   - **Database type:** `PostgreSQL`
+   - **Display name:** `sampledb`
+   - **Host:** `dw_postgres` *(container name)*
+   - **Port:** `5432`
+   - **Database name:** `sampledb`
+   - **Database username:** `dw_user`
+   - **Database password:** `dw_pass`
+4. Create your first Bar Chart:
+   - Click **Explore** or **New** ➡️ **Question** ➡️ Select **sampledb** ➡️ **orders**.
+   - Click **Visualization** and select **Bar**.
+   - Set the axes:
+     - **X-axis:** `Region`
+     - **Y-axis:** `Sum of Sales` (or `Sales` grouped by `Region`).
+   - Save the visualization.
+
+---
+
+## ✍️ Part 4: Analytical Questions / คำถามท้ายบทเรียน
+*Answer these questions individually for your submission:*
+
+1. Is the `orders` table an **OLTP** or **OLAP** schema? Why? / *ตาราง orders เป็น OLTP หรือ OLAP? เพราะเหตุใด*
+2. If we were to integrate this `orders` table into a real Data Warehouse star schema, should it be designed as a **Fact Table** or a **Dimension Table**? / *หากนำตาราง orders นี้เข้าสู่ Data Warehouse จริง ควรออกแบบให้อยู่ในรูปแบบ Fact หรือ Dimension Table?*
+3. Give 2 examples of Business Intelligence Dashboards/charts that can be built from this dataset to help managers make decisions. / *ยกตัวอย่าง Dashboard หรือชาร์ตวิเคราะห์ข้อมูล 2 แบบที่สามารถสร้างจากข้อมูลนี้เพื่อช่วยในการตัดสินใจของผู้บริหาร*
+
+---
+
+## 📤 Submission / สิ่งที่ต้องส่ง
+Submit the following via the designated Google Form:
+1. **Screenshot** of your `orders` table visualization/exploration inside Metabase.
+2. **Answers** to the 3 analytical questions in Part 4.
+
+---
+
+## 🛠️ Docker Cheat Sheet for this Lab
 
 > ⚠️ **Note:** Always run these commands from inside the `week01-data-warehouse-setup/lab-week01` directory.
 
-```bash
-# Start all services in background
-docker compose up -d
-
-# Stop all services
-docker compose down
-
-# Stop and remove volumes (FULL RESET — loses all data)
-docker compose down -v
-
-# View logs of a specific service
-docker compose logs -f postgres
-docker compose logs -f airflow-scheduler
-
-# Restart a single service
-docker compose restart airflow-scheduler
-
-# Enter a running container
-docker compose exec postgres bash
-docker compose exec dbt bash
-```
-
----
-
-## 🗄️ Connect pgAdmin to PostgreSQL
-
-1. Open **pgAdmin** → `http://localhost:28880`
-2. Login: `dw_user@mail.com` / `dw_pass`
-3. Right-click **Servers** → **Register** → **Server**
-4. Fill in:
-   - **Name:** `DW Postgres`
-   - **Host:** `dw_postgres` *(container name, not localhost)*
-   - **Port:** `5432` *(internal Docker port)*
-   - **Username:** `dw_user`
-   - **Password:** `dw_pass`
-5. Click **Save**
-
-> ⚠️ Inside Docker, use `dw_postgres:5432`. From your host machine, use `localhost:25432`.
-
----
-
-## 🌿 Using dbt
-
-> ⚠️ **Note:** Run these commands from inside the `week01-data-warehouse-setup/lab-week01` directory.
-
-```bash
-# Enter the dbt container
-docker compose exec dbt bash
-
-# Inside the container — initialize a new dbt project
-dbt init my_project
-
-# Run dbt models
-dbt run
-
-# Test dbt models
-dbt test
-
-# Generate and serve docs
-dbt docs generate
-dbt docs serve --port 8080
-```
-
----
-
-## 📌 Tips & Troubleshooting
-
-> ⚠️ **Airflow not starting?** Make sure the `airflow-init` container finishes successfully first.  
-> Check with: `docker compose logs airflow-init`
-
-> 💡 **Port already in use?** Another service on your machine may be using the same port. Stop it or change the port mapping in `docker-compose.yaml`.
-
-> 🔁 **Changes to `dockerfile.airflow`?** Rebuild the image with:  
-> `docker compose build && docker compose up -d`
-
-> 🗂️ **Airflow DAGs folder** is mounted at `./dags` — create your `.py` DAG files there and Airflow will pick them up automatically.
-
----
-
-## 🏛️ Data Warehouse Concept (Quick Review)
-
-| Layer | Purpose | Example Tools |
-|---|---|---|
-| **Source** | Raw operational data | Databases, APIs, Files |
-| **Staging** | Load & clean raw data | Airflow + PostgreSQL |
-| **Warehouse** | Structured, query-ready data | PostgreSQL (fact/dim tables) |
-| **Mart** | Business-specific views | dbt models |
-| **BI / Reporting** | Visualize insights | Metabase |
+| Command | Description |
+|---|---|
+| `docker compose up -d` | Starts all services in the background. |
+| `docker compose down` | Stops all services. |
+| `docker compose down -v` | Stops services and **wipes all database data** (Full Reset). |
+| `docker compose ps` | Checks the status of all containers. |
+| `docker compose logs -f postgres` | Shows live logs for the PostgreSQL container. |
 
 ---
 
