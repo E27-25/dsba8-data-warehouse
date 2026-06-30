@@ -11,7 +11,7 @@
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/Semester-2%2F2568-blueviolet?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Semester-1%2F2569-blueviolet?style=flat-square"/>
   <img src="https://img.shields.io/badge/Stack-Docker%20Compose-2496ED?style=flat-square"/>
   <img src="https://img.shields.io/badge/DB-PostgreSQL%2016-4169E1?style=flat-square"/>
   <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square"/>
