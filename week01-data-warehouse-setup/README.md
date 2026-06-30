@@ -33,6 +33,11 @@
 | 📂 [docs/](./docs/) | Contains lab instructions and assignments. |
 | ├── 📄 [Lab1 Data Warehouse Setup.docx](./docs/Lab1%20Data%20Warehouse%20Setup.docx) | Lab instruction document (Word). |
 | └── 📄 [Lab1 Data Warehouse Setup.pdf](./docs/Lab1%20Data%20Warehouse%20Setup.pdf) | Lab instruction document (PDF). |
+| 📂 [slides/](./slides/) | Contains weekly lecture slides. |
+| ├── 📄 [1 - Introduction to Data Warehouse.pdf](./slides/1%20-%20Introduction%20to%20Data%20Warehouse.pdf) | Lecture slides: Introduction to Data Warehousing. |
+| └── 📄 [Overview.pdf](./slides/Overview.pdf) | Lecture slides: Course Overview. |
+| 📂 [data/](./data/) | Contains dataset files for the lab. |
+| └── 📊 [Sample - Superstore.csv](./data/Sample%20-%20Superstore.csv) | Superstore transaction dataset. |
 | 📂 [lab-week01/](./lab-week01/) | Contains environment setup files. |
 | ├── 🐳 [docker-compose.yaml](./lab-week01/docker-compose.yaml) | Full stack definition (PostgreSQL, Airflow, dbt, Metabase, pgAdmin). |
 | ├── 🐳 [dockerfile.airflow](./lab-week01/dockerfile.airflow) | Custom Airflow image with `git`, `dbt-core`, and `dbt-postgres` installed. |
@@ -138,11 +143,11 @@ CREATE TABLE orders (
 ```
 
 ### 4. Import the CSV Dataset
-1. Download or locate `Sample - Superstore.csv`.
+1. The dataset file `Sample - Superstore.csv` is located in the `week01-data-warehouse-setup/data/` folder.
 2. In pgAdmin, expand **sampledb** ➡️ **Schemas** ➡️ **public** ➡️ **Tables**.
 3. Right-click on the `orders` table ➡️ **Import/Export Data...**
 4. Set the toggle to **Import**.
-5. **Filename:** Click the folder icon and select your local `Sample - Superstore.csv` file.
+5. **Filename:** Click the folder icon and select the `Sample - Superstore.csv` file from the `data/` folder.
 6. **Format:** Select `csv`.
 7. Go to the **Options** tab:
    - **Header:** Set to `Yes` (to skip the first row of headers).
