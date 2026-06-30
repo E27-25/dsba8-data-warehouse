@@ -83,6 +83,11 @@ cd week01-data-warehouse-setup/lab-week01
 echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
 
+### Set Airflow user ID (Windows)
+```bash
+Set-Content -Path .env -Value "AIRFLOW_UID=50000"
+```
+
 ### Step 3: Start all services
 
 ```bash
