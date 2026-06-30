@@ -51,13 +51,16 @@
 
 ## 📁 Files in This Week
 
-| File | Description |
+| File / Folder | Description |
 |---|---|
-| `docker-compose.yaml` | Full stack definition (PostgreSQL, Airflow, dbt, Metabase, pgAdmin) |
-| `dockerfile.airflow` | Custom Airflow image with `git`, `dbt-core`, `dbt-postgres` installed |
-| `postgresql.conf` | Custom PostgreSQL configuration |
-| `DWH_Lab.zip` | Complete lab archive |
-| `Lab1 Data Warehouse Setup.docx` | Lab instruction document |
+| 📂 [docs/](./docs/) | Contains lab instructions and assignments. |
+| ├── 📄 [Lab1 Data Warehouse Setup.docx](./docs/Lab1%20Data%20Warehouse%20Setup.docx) | Lab instruction document (Word). |
+| └── 📄 [Lab1 Data Warehouse Setup.pdf](./docs/Lab1%20Data%20Warehouse%20Setup.pdf) | Lab instruction document (PDF). |
+| 📂 [lab-week01/](./lab-week01/) | Contains environment setup files. |
+| ├── 🐳 [docker-compose.yaml](./lab-week01/docker-compose.yaml) | Full stack definition (PostgreSQL, Airflow, dbt, Metabase, pgAdmin). |
+| ├── 🐳 [dockerfile.airflow](./lab-week01/dockerfile.airflow) | Custom Airflow image with `git`, `dbt-core`, and `dbt-postgres` installed. |
+| ├── ⚙️ [postgresql.conf](./lab-week01/postgresql.conf) | Custom PostgreSQL configuration. |
+| └── 📦 [DWH_Lab.zip](./lab-week01/DWH_Lab.zip) | Complete lab archive. |
 
 ---
 
@@ -68,10 +71,10 @@
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
 - At least **4 GB RAM** and **10 GB disk** free for Docker
 
-### Step 1: Navigate to the week folder
+### Step 1: Navigate to the lab folder
 
 ```bash
-cd week01-data-warehouse-setup
+cd week01-data-warehouse-setup/lab-week01
 ```
 
 ### Step 2: Set Airflow user ID (Linux/Mac)
@@ -107,6 +110,8 @@ You should see all containers with status `healthy` or `running`.
 ---
 
 ## 🔧 Common Commands
+
+> ⚠️ **Note:** Always run these commands from inside the `week01-data-warehouse-setup/lab-week01` directory.
 
 ```bash
 # Start all services in background
@@ -150,6 +155,8 @@ docker compose exec dbt bash
 ---
 
 ## 🌿 Using dbt
+
+> ⚠️ **Note:** Run these commands from inside the `week01-data-warehouse-setup/lab-week01` directory.
 
 ```bash
 # Enter the dbt container
