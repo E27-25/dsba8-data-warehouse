@@ -54,6 +54,8 @@ Ensure your machine meets the recommended specs for running the stack:
 * **Disk Space:** $\ge$ 30 GB free
 * **Docker Desktop:** Installed and running. Download from [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
+> 🍎 **Mac (Apple Silicon / M1–M4) users:** The `docker-compose.yaml` already includes `platform: linux/amd64` for all services. Docker will run the x86 images via Rosetta 2 emulation automatically — no extra steps needed.
+
 ### 2. Verify Docker Installation
 Open your terminal (macOS/Linux) or PowerShell (Windows) and run:
 ```bash
