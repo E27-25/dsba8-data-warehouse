@@ -104,7 +104,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 
 ---
 
-### Option B — pgAdmin GUI *(Skip if you already did Option A)*
+### Option B — pgAdmin GUI *(If you already did Option A, skip to Step 5)*
 
 1. Open **[http://localhost:28880](http://localhost:28880)** → log in with:
    - **Email:** `dw_user@mail.com`
