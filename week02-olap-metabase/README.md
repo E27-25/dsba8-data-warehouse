@@ -52,9 +52,9 @@ docker compose ps
 
 ### Option A — CLI (Recommended)
 
-1. Copy the dump file into the PostgreSQL container (use the **absolute path**):
+1. Copy the dump file into the PostgreSQL container (from the `lab-week01` folder):
 ```bash
-docker cp "/Users/e27/Desktop/TA DSBA/dsba8-data-warehouse/week02-olap-metabase/lab-week02/dvdrental.tar" dw_postgres:/tmp/dvdrental.tar
+docker cp "../../week02-olap-metabase/lab-week02/dvdrental.tar" dw_postgres:/tmp/dvdrental.tar
 ```
 
 2. Create the `dvdrental` database:
