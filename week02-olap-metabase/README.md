@@ -67,6 +67,8 @@ docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdre
 > named the same as the user (`dw_user`), which does not exist — our default DB is `airflow`.
 
 3. Restore from the `.tar` dump:
+
+**Mac / Linux:**
 ```bash
 docker exec -it dw_postgres pg_restore \
   --no-owner \
@@ -75,6 +77,18 @@ docker exec -it dw_postgres pg_restore \
   -d dvdrental \
   /tmp/dvdrental.tar
 ```
+
+**Windows (PowerShell):**
+```powershell
+docker exec -it dw_postgres pg_restore `
+  --no-owner `
+  --role=dw_user `
+  -U dw_user `
+  -d dvdrental `
+  /tmp/dvdrental.tar
+```
+
+> 💡 *Tip: You can also copy and paste the command as a single line if the line breaks cause errors.*
 
 > **Command explanation:**
 > - `pg_restore` — restores a database from a backup file
