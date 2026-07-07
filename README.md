@@ -32,7 +32,8 @@
 | Week | Topic | Materials |
 |:---:|---|:---:|
 | 1 | Data Warehouse Setup (Docker Environment) | [Week 1](./week01-data-warehouse-setup/) |
-| 2–15 | Coming soon — syllabus in progress | — |
+| 2 | OLAP Operations with Metabase & PostgreSQL | [Week 2](./week02-olap-metabase/) |
+| 3–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -84,19 +85,27 @@ dsba8-data-warehouse/
 │
 ├── README.md
 │
-└── week01-data-warehouse-setup/           ← Week 1 ✅
-    ├── docs/                              ← Lab instructions & documents
-    │   ├── Lab1 Data Warehouse Setup.docx
-    │   └── Lab1 Data Warehouse Setup.pdf
-    ├── slides/                            ← Lecture slides (PDF)
-    │   ├── 1 - Introduction to Data Warehouse.pdf
-    │   └── Overview.pdf
-    ├── data/                              ← Dataset files
-    │   └── Sample - Superstore.csv
-    ├── lab-week01/                        ← Lab environment files
-    │   ├── docker-compose.yaml
-    │   ├── dockerfile.airflow
-    │   ├── postgresql.conf
+├── week01-data-warehouse-setup/           ← Week 1 ✅
+│   ├── docs/                              ← Lab instructions & documents
+│   │   ├── Lab1 Data Warehouse Setup.docx
+│   │   └── Lab1 Data Warehouse Setup.pdf
+│   ├── slides/                            ← Lecture slides (PDF)
+│   │   ├── 1 - Introduction to Data Warehouse.pdf
+│   │   └── Overview.pdf
+│   ├── data/                              ← Dataset files
+│   │   └── Sample - Superstore.csv
+│   ├── lab-week01/                        ← Lab environment files
+│   │   ├── docker-compose.yaml
+│   │   ├── dockerfile.airflow
+│   │   ├── postgresql.conf
+│   │   └── DWH_Lab.zip
+│   └── README.md
+│
+└── week02-olap-metabase/                  ← Week 2 ✅
+    ├── docs/                              ← Lab documentation & screenshots
+    │   ├── Lab2 Olap Metabase.pdf
+    │   └── screenshots/
+    ├── data/                              ← Sample database
     │   └── DWH_Lab.zip
     └── README.md
 ```
