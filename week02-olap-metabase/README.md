@@ -90,7 +90,11 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 
 ### Option B — pgAdmin GUI
 
-1. Open **[http://localhost:28880](http://localhost:28880)** → log in (`dw_user@mail.com` / `dw_pass`)
+1. Open **[http://localhost:28880](http://localhost:28880)** → log in with:
+   - **Email:** `dw_user@mail.com`
+   - **Password:** `dw_pass`
+
+   > ⚠️ **Common mistake:** pgAdmin login requires a **full email address**, not just the username. Using `dw_user` will give you *"Email/Username is not valid"* — use `dw_user@mail.com` instead.
 2. Create database **`dvdrental`**: Right-click server ➡️ **Create** ➡️ **Database...**
 3. Right-click `dvdrental` ➡️ **Restore...**
    - **Format:** TAR
