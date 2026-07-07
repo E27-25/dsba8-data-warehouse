@@ -86,6 +86,8 @@ docker exec -it dw_postgres pg_restore \
 docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 ```
 
+![CLI: dvdrental tables verified (15 rows)](./docs/screenshots/terminal-dt-verify.png)
+
 ---
 
 ### Option B — pgAdmin GUI
@@ -104,25 +106,56 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 4. Click **Restore**
 5. Verify: expand **Schemas** ➡️ **public** ➡️ **Tables**
 
+![pgAdmin: dvdrental database in server tree](./docs/screenshots/pgadmin-databases.png)
+
+![pgAdmin: Tables (15) after restore](./docs/screenshots/pgadmin-tables.png)
+
 ---
 
 ## 🗄️ Part 2: Connect Metabase to dvdrental
 
 1. Open **[http://localhost:23000](http://localhost:23000)**
-2. **Add your data** ➡️ **PostgreSQL**
-3. Fill in:
+2. Click **Add your data** in the left sidebar:
+
+   ![Metabase: Add your data sidebar](./docs/screenshots/metabase-add-data.png)
+
+3. Select **PostgreSQL** from the database picker:
+
+   ![Metabase: Select PostgreSQL](./docs/screenshots/metabase-select-db.png)
+
+4. Fill in the connection form:
    - **Display name:** `dvdrental`
-   - **Hostname:** `dw_postgres` *(Docker container name — NOT localhost)*
+   - **Host:** `dw_postgres` *(Docker container name — NOT localhost)*
+   - **Port:** `5432`
    - **Database name:** `dvdrental`
    - **Username:** `dw_user`
    - **Password:** `dw_pass`
-4. Click **Save** and wait for sync.
+
+   ![Metabase: Add database form filled](./docs/screenshots/metabase-add-database.png)
+
+5. Click **Save** and wait for sync.
+
+   After saving, Metabase will show the connection status:
+
+   ![Metabase: dvdrental connected](./docs/screenshots/metabase-connected.png)
+
+   You can also verify under **Data** ➡️ **Databases**:
+
+   ![Metabase: Databases overview showing dvdrental](./docs/screenshots/metabase-databases.png)
 
 ---
 
 ## 🔍 Part 3: Explore Tables — Fact vs Dimension
 
 The `dvdrental` database simulates a DVD rental store. Understanding Fact vs Dimension helps build efficient DW schemas.
+
+Browse all tables in Metabase under **Data** ➡️ **Databases** ➡️ **DVDRENTAL**:
+
+![Metabase: dvdrental tables browser](./docs/screenshots/metabase-dvdrental-tables.png)
+
+**ER Diagram — dvdrental schema:**
+
+![dvdrental ER Diagram](./docs/screenshots/dvdrental-er-diagram.png)
 
 | Table | Type | Reason |
 |---|---|---|
@@ -145,6 +178,12 @@ The `dvdrental` database simulates a DVD rental store. Understanding Fact vs Dim
 Open **SQL Editor** in Metabase:  
 Home ➡️ Databases ➡️ dvdrental ➡️ **+ New** ➡️ **SQL query**
 
+![Metabase: + New → SQL query menu](./docs/screenshots/metabase-new-sql-query.png)
+
+Select **dvdrental** from the database picker on the left:
+
+![Metabase: SQL Editor with dvdrental selected](./docs/screenshots/metabase-sql-editor.png)
+
 ---
 
 ### 🔹 Roll-up: City → Country
@@ -161,6 +200,8 @@ JOIN country co ON ci.country_id = co.country_id
 GROUP BY ROLLUP (co.country, ci.city)
 ORDER BY co.country, ci.city;
 ```
+
+![Roll-up result: revenue by city rolled up to country](./docs/screenshots/metabase-rollup-result.png)
 
 ---
 
@@ -180,6 +221,8 @@ JOIN country co ON ci.country_id = co.country_id
 GROUP BY co.country, a.district, s.first_name;
 ```
 
+![Drill-down result: country → district → staff with revenue](./docs/screenshots/metabase-drilldown-result.png)
+
 ---
 
 ### 🔹 Slice: Filter by Country = Thailand
@@ -196,6 +239,8 @@ JOIN country co ON ci.country_id = co.country_id
 WHERE co.country = 'Thailand'
 GROUP BY ci.city;
 ```
+
+![Slice result: Thailand cities — Songkhla, Nakhon Sawan, Pak Kret](./docs/screenshots/metabase-slice-result.png)
 
 ---
 
@@ -217,6 +262,8 @@ WHERE co.country IN ('Thailand', 'Japan')
 GROUP BY co.country, ci.city, s.first_name;
 ```
 
+![Dice result: Japan/Thailand cities filtered by staff_id=1](./docs/screenshots/metabase-dice-result.png)
+
 ---
 
 ### 🔹 CUBE Operation: All Aggregation Combinations
@@ -236,6 +283,8 @@ GROUP BY CUBE (co.country, s.first_name)
 ORDER BY co.country, s.first_name;
 ```
 
+![CUBE result: all country/staff aggregation combinations](./docs/screenshots/metabase-cube-result.png)
+
 > PostgreSQL supports `GROUP BY CUBE` — it generates all aggregation combinations:
 > `(country, first_name)`, `(country)`, `(first_name)`, and `()` (grand total).
 
@@ -252,6 +301,10 @@ ORDER BY co.country, s.first_name;
 - Select chart type (Bar, Line, Map, etc.)
 - Adjust axes and display settings
 
+  *Example: Roll-up query visualized as a Line chart (X-axis: country, Y-axis: total_revenue)*
+
+  ![Part 5 example: Roll-up query as line chart visualization](./docs/screenshots/metabase-visualization-example.png)
+
 ### Step 3 — Save the Chart
 - Click **Save** → name the chart (e.g., `drill-down`)
 - Choose **Save to new dashboard**
@@ -267,7 +320,7 @@ ORDER BY co.country, s.first_name;
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
 
-ตอบคำถามใน **Google Classroom** หัวข้อ **Lab 2: การดำเนินการ OLAP ด้วย Metabase และ PostgreSQL**
+ส่งคำตอบผ่าน **[Google Form — Lab 2: OLAP ด้วย Metabase และ PostgreSQL](https://docs.google.com/forms/d/16l8AJrzKDnaW7ZZnAhO_swQr4-Js2Ik3CArtRUFNcw8/viewform)**
 
 > ⚠️ หากมีปัญหาในการนำเข้า dvdrental ให้แจ้งอาจารย์ หรือ TA ทันที
 
