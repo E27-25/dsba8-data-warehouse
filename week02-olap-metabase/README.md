@@ -101,7 +101,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 ```
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 CLI: dvdrental tables verified (15 rows)</b></summary>
 
 ![CLI: dvdrental tables verified (15 rows)](./docs/screenshots/terminal-dt-verify.png)
 
@@ -126,14 +126,14 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 5. Verify: expand **Schemas** ➡️ **public** ➡️ **Tables**
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 pgAdmin: dvdrental database in server tree</b></summary>
 
 ![pgAdmin: dvdrental database in server tree](./docs/screenshots/pgadmin-databases.png)
 
 </details>
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 pgAdmin: Tables (15) after restore</b></summary>
 
 ![pgAdmin: Tables (15) after restore](./docs/screenshots/pgadmin-tables.png)
 
@@ -147,7 +147,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 2. Click **Add your data** in the left sidebar:
 
    <details>
-   <summary><b>View Screenshot</b></summary>
+   <summary><b>📷 Metabase: Add your data sidebar</b></summary>
 
    ![Metabase: Add your data sidebar](./docs/screenshots/metabase-add-data.png)
 
@@ -156,7 +156,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 3. Select **PostgreSQL** from the database picker:
 
    <details>
-   <summary><b>View Screenshot</b></summary>
+   <summary><b>📷 Metabase: Select PostgreSQL</b></summary>
 
    ![Metabase: Select PostgreSQL](./docs/screenshots/metabase-select-db.png)
 
@@ -171,7 +171,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
    - **Password:** `dw_pass`
 
    <details>
-   <summary><b>View Screenshot</b></summary>
+   <summary><b>📷 Metabase: Add database form filled</b></summary>
 
    ![Metabase: Add database form filled](./docs/screenshots/metabase-add-database.png)
 
@@ -182,7 +182,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
    After saving, Metabase will show the connection status:
 
    <details>
-   <summary><b>View Screenshot</b></summary>
+   <summary><b>📷 Metabase: dvdrental connected</b></summary>
 
    ![Metabase: dvdrental connected](./docs/screenshots/metabase-connected.png)
 
@@ -191,7 +191,7 @@ docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
    You can also verify under **Data** ➡️ **Databases**:
 
    <details>
-   <summary><b>View Screenshot</b></summary>
+   <summary><b>📷 Metabase: Databases overview showing dvdrental</b></summary>
 
    ![Metabase: Databases overview showing dvdrental](./docs/screenshots/metabase-databases.png)
 
@@ -206,7 +206,7 @@ The `dvdrental` database simulates a DVD rental store. Understanding Fact vs Dim
 Browse all tables in Metabase under **Data** ➡️ **Databases** ➡️ **DVDRENTAL**:
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Metabase: dvdrental tables browser</b></summary>
 
 ![Metabase: dvdrental tables browser](./docs/screenshots/metabase-dvdrental-tables.png)
 
@@ -215,7 +215,7 @@ Browse all tables in Metabase under **Data** ➡️ **Databases** ➡️ **DVDRE
 **ER Diagram — dvdrental schema:**
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 dvdrental ER Diagram</b></summary>
 
 ![dvdrental ER Diagram](./docs/screenshots/dvdrental-er-diagram.png)
 
@@ -243,7 +243,7 @@ Open **SQL Editor** in Metabase:
 Home ➡️ Databases ➡️ dvdrental ➡️ **+ New** ➡️ **SQL query**
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Metabase: + New → SQL query menu</b></summary>
 
 ![Metabase: + New → SQL query menu](./docs/screenshots/metabase-new-sql-query.png)
 
@@ -252,7 +252,7 @@ Home ➡️ Databases ➡️ dvdrental ➡️ **+ New** ➡️ **SQL query**
 Select **dvdrental** from the database picker on the left:
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Metabase: SQL Editor with dvdrental selected</b></summary>
 
 ![Metabase: SQL Editor with dvdrental selected](./docs/screenshots/metabase-sql-editor.png)
 
@@ -276,7 +276,7 @@ ORDER BY co.country, ci.city;
 ```
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Roll-up result: revenue by city rolled up to country</b></summary>
 
 ![Roll-up result: revenue by city rolled up to country](./docs/screenshots/metabase-rollup-result.png)
 
@@ -301,7 +301,7 @@ GROUP BY co.country, a.district, s.first_name;
 ```
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Drill-down result: country → district → staff with revenue</b></summary>
 
 ![Drill-down result: country → district → staff with revenue](./docs/screenshots/metabase-drilldown-result.png)
 
@@ -325,7 +325,7 @@ GROUP BY ci.city;
 ```
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Slice result: Thailand cities — Songkhla, Nakhon Sawan, Pak Kret</b></summary>
 
 ![Slice result: Thailand cities — Songkhla, Nakhon Sawan, Pak Kret](./docs/screenshots/metabase-slice-result.png)
 
@@ -352,7 +352,7 @@ GROUP BY co.country, ci.city, s.first_name;
 ```
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 Dice result: Japan/Thailand cities filtered by staff_id=1</b></summary>
 
 ![Dice result: Japan/Thailand cities filtered by staff_id=1](./docs/screenshots/metabase-dice-result.png)
 
@@ -378,7 +378,7 @@ ORDER BY co.country, s.first_name;
 ```
 
 <details>
-<summary><b>View Screenshot</b></summary>
+<summary><b>📷 CUBE result: all country/staff aggregation combinations</b></summary>
 
 ![CUBE result: all country/staff aggregation combinations](./docs/screenshots/metabase-cube-result.png)
 
@@ -403,7 +403,7 @@ ORDER BY co.country, s.first_name;
   *Example: Roll-up query visualized as a Line chart (X-axis: country, Y-axis: total_revenue)*
 
   <details>
-  <summary><b>View Screenshot</b></summary>
+  <summary><b>📷 Part 5 example: Roll-up query as line chart visualization</b></summary>
 
   ![Part 5 example: Roll-up query as line chart visualization](./docs/screenshots/metabase-visualization-example.png)
 
