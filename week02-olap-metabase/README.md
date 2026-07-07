@@ -52,15 +52,19 @@ docker compose ps
 
 ### Option A — CLI (Recommended)
 
-1. Copy the dump file into the PostgreSQL container:
+1. Copy the dump file into the PostgreSQL container (use the **absolute path**):
 ```bash
-docker cp "/path/to/lab-week02/dvdrental.tar" dw_postgres:/tmp/dvdrental.tar
+docker cp "/Users/e27/Desktop/TA DSBA/dsba8-data-warehouse/week02-olap-metabase/lab-week02/dvdrental.tar" dw_postgres:/tmp/dvdrental.tar
 ```
 
 2. Create the `dvdrental` database:
 ```bash
-docker exec -it dw_postgres psql -U dw_user -c "CREATE DATABASE dvdrental;"
+docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdrental;"
 ```
+
+> ⚠️ **Important:** Always add `-d airflow` when connecting without a target database.
+> `psql -U dw_user` alone will fail because psql defaults to connecting to a database
+> named the same as the user (`dw_user`), which does not exist — our default DB is `airflow`.
 
 3. Restore from the `.tar` dump:
 ```bash
@@ -275,7 +279,8 @@ ORDER BY co.country, s.first_name;
 | `docker compose down` | Stop all services |
 | `docker compose ps` | Check container status |
 | `docker cp <file> dw_postgres:/tmp/` | Copy a file into the PostgreSQL container |
-| `docker exec -it dw_postgres psql -U dw_user -d dvdrental` | Open psql shell in the container |
+| `docker exec -it dw_postgres psql -U dw_user -d airflow` | Open psql shell (use `airflow` as default db) |
+| `docker exec -it dw_postgres psql -U dw_user -d dvdrental` | Open psql shell in dvdrental db (after restore) |
 | `docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar` | Restore `.tar` dump |
 
 ---
