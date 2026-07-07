@@ -10,8 +10,9 @@
 
 1. Understand **Data Warehouse Architecture** and the DW Lifecycle.
 2. Restore a real-world PostgreSQL database (`dvdrental`) using `pg_restore`.
-3. Connect the database to **Metabase** and perform **OLAP-style** analysis.
-4. Build interactive dashboards and answer business questions using visualizations.
+3. Classify tables as **Fact** or **Dimension** in a DW context.
+4. Perform **OLAP operations** — Roll-up, Drill-down, Slice, Dice, CUBE — using SQL in Metabase.
+5. Build an interactive **OLAP Dashboard** in Metabase.
 
 ---
 
@@ -42,168 +43,225 @@
 
 ## 🔧 Part 1: Restore the dvdrental Database
 
-### 1. Start the Stack
-Make sure your Docker containers from Week 1 are running:
+Make sure your Docker stack from Week 1 is running:
 ```bash
 cd week01-data-warehouse-setup/lab-week01
 docker compose up -d
 docker compose ps
 ```
 
-### 2. Create the `dvdrental` Database in pgAdmin
+### Option A — CLI (Recommended)
 
-1. Open **[http://localhost:28880](http://localhost:28880)** and log in:
-   - **Email:** `dw_user@mail.com`
-   - **Password:** `dw_pass`
-2. Connect to **DW Postgres** server (if not already connected).
-3. Right-click **DW Postgres** ➡️ **Create** ➡️ **Database...**
-   - **Database name:** `dvdrental`
-   - Click **Save**
-
-### 3. Copy the Dump File into the PostgreSQL Container
-
-Open a terminal and run:
+1. Copy the dump file into the PostgreSQL container:
 ```bash
 docker cp "/path/to/lab-week02/dvdrental.tar" dw_postgres:/tmp/dvdrental.tar
 ```
 
-> Replace `/path/to/` with the actual path to your `lab-week02` folder.
+2. Create the `dvdrental` database:
+```bash
+docker exec -it dw_postgres psql -U dw_user -c "CREATE DATABASE dvdrental;"
+```
 
-### 4. Restore the Database
-
+3. Restore from the `.tar` dump:
 ```bash
 docker exec -it dw_postgres pg_restore \
+  --no-owner \
+  --role=dw_user \
   -U dw_user \
   -d dvdrental \
   /tmp/dvdrental.tar
 ```
 
-### 5. Verify the Restore
+> **Command explanation:**
+> - `pg_restore` — restores a database from a backup file
+> - `--no-owner` — do not restore original ownership from another system
+> - `--role=dw_user` — set new owner to `dw_user`
 
-In pgAdmin, open the **Query Tool** on the `dvdrental` database and run:
-```sql
--- List all tables
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY table_name;
-
--- Quick row count check
-SELECT COUNT(*) FROM rental;
-SELECT COUNT(*) FROM film;
-SELECT COUNT(*) FROM customer;
+4. Verify the tables:
+```bash
+docker exec -it dw_postgres psql -U dw_user -d dvdrental -c "\dt"
 ```
 
 ---
 
-## 🗄️ Part 2: Explore the dvdrental Schema
+### Option B — pgAdmin GUI
 
-The `dvdrental` database simulates a DVD rental store. Key tables:
-
-| Table | Description |
-|---|---|
-| `film` | Movie catalog (title, rating, rental_rate, length) |
-| `customer` | Customer information |
-| `rental` | Rental transactions (rental_date, return_date) |
-| `payment` | Payment records per rental |
-| `inventory` | Physical copies of each film |
-| `category` | Film genre/category |
-| `actor` | Actor information |
-| `store` | Store locations |
-
-**Useful exploratory queries:**
-```sql
--- Total revenue
-SELECT SUM(amount) AS total_revenue FROM payment;
-
--- Top 10 most rented films
-SELECT f.title, COUNT(r.rental_id) AS rental_count
-FROM film f
-JOIN inventory i ON f.film_id = i.film_id
-JOIN rental r ON i.inventory_id = r.inventory_id
-GROUP BY f.title
-ORDER BY rental_count DESC
-LIMIT 10;
-
--- Revenue by film category
-SELECT c.name AS category, SUM(p.amount) AS revenue
-FROM category c
-JOIN film_category fc ON c.category_id = fc.category_id
-JOIN film f ON fc.film_id = f.film_id
-JOIN inventory i ON f.film_id = i.film_id
-JOIN rental r ON i.inventory_id = r.inventory_id
-JOIN payment p ON r.rental_id = p.rental_id
-GROUP BY c.name
-ORDER BY revenue DESC;
-
--- Monthly rental trend
-SELECT DATE_TRUNC('month', rental_date) AS month,
-       COUNT(*) AS rentals
-FROM rental
-GROUP BY month
-ORDER BY month;
-```
+1. Open **[http://localhost:28880](http://localhost:28880)** → log in (`dw_user@mail.com` / `dw_pass`)
+2. Create database **`dvdrental`**: Right-click server ➡️ **Create** ➡️ **Database...**
+3. Right-click `dvdrental` ➡️ **Restore...**
+   - **Format:** TAR
+   - **Filename:** select `dvdrental.tar`
+   - **Role name:** `dw_user`
+   - **Data Options:** Do not save → **Owner**
+4. Click **Restore**
+5. Verify: expand **Schemas** ➡️ **public** ➡️ **Tables**
 
 ---
 
-## 🌐 Part 3: Connect dvdrental to Metabase
+## 🗄️ Part 2: Connect Metabase to dvdrental
 
 1. Open **[http://localhost:23000](http://localhost:23000)**
-2. Go to **Settings** (⚙️ top right) ➡️ **Admin settings** ➡️ **Databases** ➡️ **Add database**
-3. Fill in the connection details:
-   - **Database type:** `PostgreSQL`
+2. **Add your data** ➡️ **PostgreSQL**
+3. Fill in:
    - **Display name:** `dvdrental`
-   - **Host:** `dw_postgres` *(Docker container name — NOT localhost)*
-   - **Port:** `5432`
+   - **Hostname:** `dw_postgres` *(Docker container name — NOT localhost)*
    - **Database name:** `dvdrental`
    - **Username:** `dw_user`
    - **Password:** `dw_pass`
-4. Click **Save** and wait for the sync to complete.
+4. Click **Save** and wait for sync.
 
 ---
 
-## 📊 Part 4: OLAP Analysis in Metabase
+## 🔍 Part 3: Explore Tables — Fact vs Dimension
 
-Build the following visualizations using **New ➡️ Question** or **SQL Query**:
+The `dvdrental` database simulates a DVD rental store. Understanding Fact vs Dimension helps build efficient DW schemas.
 
-### Chart 1 — Revenue by Film Category (Bar Chart)
-- **X-axis:** Category name
-- **Y-axis:** Sum of payment amount
-- **Type:** Bar Chart
+| Table | Type | Reason |
+|---|---|---|
+| `payment` | **Fact** | Stores payment transactions with timestamp and amount |
+| `rental` | **Fact** | Stores rental event records |
+| `customer` | **Dimension** | Identifies who made the payment |
+| `staff` | **Dimension** | Identifies who processed the payment |
+| `film` | **Dimension** | Movie details and attributes |
+| `category` | **Dimension** | Film genre/category |
+| `inventory` | **Bridge** | Links film to rental (many-to-many bridge) |
+| `store` | **Dimension** | Store location context |
+| `city` / `address` | **Dimension** | Geographic context of customers |
 
-### Chart 2 — Monthly Rental Trend (Line Chart)
-- **X-axis:** Rental date (grouped by Month)
-- **Y-axis:** Count of rentals
-- **Type:** Line Chart
-
-### Chart 3 — Top 10 Most Rented Films (Table or Bar)
-- Show film title + rental count
-- Sort descending
-
-### Chart 4 — Customer Revenue Distribution (Pie or Bar)
-- Group by customer, show total amount paid
-
-> 💡 Use **Metabase SQL Editor** (New ➡️ SQL Query) for complex joins that the GUI builder can't handle.
+> 💡 In OLAP, organizing data into Fact and Dimension tables enables efficient **Roll-up / Drill-down** operations.
 
 ---
 
-## ✍️ Part 5: Analytical Questions / คำถามท้ายบทเรียน
+## 📊 Part 4: OLAP SQL Operations in Metabase
 
-*Answer these questions individually for your submission:*
+Open **SQL Editor** in Metabase:  
+Home ➡️ Databases ➡️ dvdrental ➡️ **+ New** ➡️ **SQL query**
 
-1. What is the difference between **OLTP** and **OLAP**? Which type does the `dvdrental` database represent after importing into a DW context? / *OLTP และ OLAP ต่างกันอย่างไร และ dvdrental จัดอยู่ในประเภทใด?*
+---
 
-2. Which **film category** generates the most revenue? What business decision could be made from this insight? / *ประเภทหนังที่สร้างรายได้สูงสุดคืออะไร? ควรตัดสินใจทางธุรกิจอย่างไร?*
+### 🔹 Roll-up: City → Country
 
-3. Is there a seasonal pattern in rental activity? (Hint: look at the monthly trend chart.) / *มีรูปแบบตามฤดูกาลของการเช่าหรือไม่?*
+Aggregate from city level up to country level.
+
+```sql
+SELECT co.country, ci.city, SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN country co ON ci.country_id = co.country_id
+GROUP BY ROLLUP (co.country, ci.city)
+ORDER BY co.country, ci.city;
+```
+
+---
+
+### 🔹 Drill-down: Country → District → Staff
+
+Go deeper into district and staff dimensions.
+
+```sql
+SELECT co.country, a.district, s.first_name AS staff_name,
+       SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN staff s ON p.staff_id = s.staff_id
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN country co ON ci.country_id = co.country_id
+GROUP BY co.country, a.district, s.first_name;
+```
+
+---
+
+### 🔹 Slice: Filter by Country = Thailand
+
+Show only one "slice" of data — customers from Thailand.
+
+```sql
+SELECT ci.city, SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN country co ON ci.country_id = co.country_id
+WHERE co.country = 'Thailand'
+GROUP BY ci.city;
+```
+
+---
+
+### 🔹 Dice: Multiple Dimension Filters (Country + Staff)
+
+Filter on multiple dimensions simultaneously.
+
+```sql
+SELECT co.country, ci.city, s.first_name AS staff_name,
+       SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN staff s ON p.staff_id = s.staff_id
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN country co ON ci.country_id = co.country_id
+WHERE co.country IN ('Thailand', 'Japan')
+  AND s.staff_id = 1
+GROUP BY co.country, ci.city, s.first_name;
+```
+
+---
+
+### 🔹 CUBE Operation: All Aggregation Combinations
+
+Generate every possible combination of (country, staff) subtotals automatically.
+
+```sql
+SELECT co.country, s.first_name AS staff_name,
+       SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN staff s ON p.staff_id = s.staff_id
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN country co ON ci.country_id = co.country_id
+GROUP BY CUBE (co.country, s.first_name)
+ORDER BY co.country, s.first_name;
+```
+
+> PostgreSQL supports `GROUP BY CUBE` — it generates all aggregation combinations:
+> `(country, first_name)`, `(country)`, `(first_name)`, and `()` (grand total).
+
+---
+
+## 📈 Part 5: Build a Dashboard in Metabase
+
+### Step 1 — Open SQL Editor
+- Home ➡️ Databases ➡️ dvdrental ➡️ **+ New** ➡️ **SQL query**
+- Paste any OLAP query from Part 4 and click **Run**
+
+### Step 2 — Change to Chart View
+- Click **Visualization** (bottom left)
+- Select chart type (Bar, Line, Map, etc.)
+- Adjust axes and display settings
+
+### Step 3 — Save the Chart
+- Click **Save** → name the chart (e.g., `drill-down`)
+- Choose **Save to new dashboard**
+- Name the dashboard: **`OLAP Analysis - [your name]`**
+
+### Step 4 — Arrange Layout
+- Go to **Dashboards** ➡️ open your dashboard
+- Drag and resize charts to arrange neatly
+
+> 📝 You can also build queries without SQL using Metabase's GUI builder — select tables and fields directly.
 
 ---
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
 
-Submit the following via the **[Google Form Assignment Link](https://docs.google.com/forms/d/e/1FAIpQLSd_yRfZwilZvGL-50gqBB0MZdWVC7WyzmToprNWWP0bAJfu4Q/viewform?usp=sharing&ouid=112034381246792911028)**:
-1. **Screenshots** of at least 2 Metabase charts you built.
-2. **Answers** to the 3 analytical questions in Part 5.
+ตอบคำถามใน **Google Classroom** หัวข้อ **Lab 2: การดำเนินการ OLAP ด้วย Metabase และ PostgreSQL**
+
+> ⚠️ หากมีปัญหาในการนำเข้า dvdrental ให้แจ้งอาจารย์ หรือ TA ทันที
 
 ---
 
@@ -218,7 +276,7 @@ Submit the following via the **[Google Form Assignment Link](https://docs.google
 | `docker compose ps` | Check container status |
 | `docker cp <file> dw_postgres:/tmp/` | Copy a file into the PostgreSQL container |
 | `docker exec -it dw_postgres psql -U dw_user -d dvdrental` | Open psql shell in the container |
-| `docker exec -it dw_postgres pg_restore -U dw_user -d dvdrental /tmp/dvdrental.tar` | Restore a `.tar` dump |
+| `docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar` | Restore `.tar` dump |
 
 ---
 
