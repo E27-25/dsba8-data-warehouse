@@ -80,7 +80,10 @@ docker compose up -d
 
 ## 📁 Repository Structure
 
-```
+<details>
+<summary><b>Expand to view full repository tree</b></summary>
+
+```text
 dsba8-data-warehouse/
 │
 ├── README.md
@@ -109,6 +112,8 @@ dsba8-data-warehouse/
     │   └── DWH_Lab.zip
     └── README.md
 ```
+
+</details>
 
 ---
 
