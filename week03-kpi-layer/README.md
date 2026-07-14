@@ -44,7 +44,7 @@ This week provides all files needed for a **Fresh Start** (including Week 1 & 2 
 | 📂 [lab-week03/](./lab-week03/) | **Lab files (Main working directory)** |
 | ├── 📄 docker-compose.yaml | File to start all services |
 | ├── 🗄️ dvdrental.tar | Sample database dump (from Week 2) |
-| └── 📂 dbt/ & dbt_root/ | dbt project structure (Includes solution code for reference) |
+| └── 📂 dbt/ & dbt_root/ | Empty folders for your dbt project structure |
 
 ---
 
