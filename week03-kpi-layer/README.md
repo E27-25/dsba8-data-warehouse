@@ -96,7 +96,21 @@ Once completed, your `dvdrental` database is ready for the dbt Lab!
 
 If you already have your Docker containers and PostgreSQL running from `week01-data-warehouse-setup/lab-week01/`, you **do not** need to use the `lab-week03` folder. 
 
-Instead, you will create the `dbt` and `dbt_root` folders **inside your existing Week 1 lab folder**. 
+Instead, you will create the `dbt` and `dbt_root` folders **inside your existing Week 1 lab folder**. Your final structure will look like this:
+
+```text
+week01-data-warehouse-setup/
+└── lab-week01/
+    ├── docker-compose.yaml     (Existing from Week 1)
+    ├── postgresql.conf         (Existing from Week 1)
+    ├── dbt/                    ← (Create this new folder here)
+    │   └── dvd_kpi/
+    │       ├── models/
+    │       ├── seeds/
+    │       └── tests/
+    └── dbt_root/               ← (Create this new folder here)
+```
+
 Whenever a command in this lab says `cd week03-kpi-layer/lab-week03/`, you should use your existing folder path instead:
 ```bash
 cd week01-data-warehouse-setup/lab-week01/
