@@ -58,9 +58,16 @@ We will use **dbt** to define the Business Logic in one central place:
 2. **Metric Catalog:** Create definitions for the 5 KPIs.
 3. **Metric Models:** Calculate the KPIs at the Company Level (`metric_company_monthly`) and Store Level (`metric_store_monthly`).
 
-Run the following to build the dbt project:
+Run the following command to build the dbt project. Since we are using Docker, you need to execute this inside the `dw_dbt` container:
+
+**Mac / Linux:**
 ```bash
-dbt build
+docker exec -it dw_dbt dbt build
+```
+
+**Windows (PowerShell):**
+```powershell
+docker exec -it dw_dbt dbt build
 ```
 *(This automatically runs seeds, staging, intermediate, fact models, metric models, and tests!)*
 
