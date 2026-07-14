@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: dvdrental
+    database: dvdrental
+    schema: public
+    tables:
+      - name: rental
+      - name: payment
+      - name: inventory
+      - name: film

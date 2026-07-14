@@ -1,0 +1,12 @@
+dvd_kpi:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      port: 5432
+      user: dw_user
+      password: dw_pass
+      dbname: dvdrental
+      schema: dbt
+      threads: 4
