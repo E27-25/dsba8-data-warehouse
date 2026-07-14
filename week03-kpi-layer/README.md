@@ -78,6 +78,8 @@ docker cp dvdrental.tar dw_postgres:/tmp/dvdrental.tar
 docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdrental;"
 docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar
 ```
+![CLI: database restore output](./docs/screenshots/dvdrental-restore.png)
+
 Once completed, your `dvdrental` database is ready for the dbt Lab!
 
 ---
