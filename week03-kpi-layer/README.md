@@ -1076,13 +1076,29 @@ docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
 ```sql
 -- Verify Metric Catalog
 SELECT * FROM dbt_metadata.metric_definition ORDER BY metric_key;
+```
 
+```sql
 -- Verify Company-Level KPIs
 SELECT * FROM dbt_metrics.metric_company_monthly LIMIT 20;
+```
+<details>
+<summary>👉 <b>Show Output</b></summary>
 
+![Metabase: Company-Level KPIs](./docs/screenshots/metabase-company.png)
+
+</details>
+
+```sql
 -- Verify Store-Level KPIs
 SELECT * FROM dbt_metrics.metric_store_monthly LIMIT 30;
 ```
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![Metabase: Store-Level KPIs](./docs/screenshots/metabase-store.png)
+
+</details>
 
 ---
 
