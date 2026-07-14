@@ -51,13 +51,11 @@ In this lab, we build upon the `dvdrental` database. We will translate business 
 
 ---
 
-## 🏗️ Part 2: Building with dbt
+## 🏗️ Part 2: Building with dbt & Running Tests
 
-We will use **dbt** to define the Business Logic in one central place:
-1. **Fact Models:** Aggregate data to the correct grain (e.g., `rental_id`).
-2. **Metric Catalog:** Create definitions for the 5 KPIs.
-3. **Metric Models:** Calculate the KPIs at the Company Level (`metric_company_monthly`) and Store Level (`metric_store_monthly`).
+We will use **dbt** to define the Business Logic in one central place. 
 
+### Step 1 — Build all Models and run Tests
 Run the following command to build the dbt project. Since we are using Docker, you need to execute this inside the `dw_dbt` container:
 
 **Mac / Linux:**
@@ -71,24 +69,93 @@ docker exec -it dw_dbt dbt build
 ```
 *(This automatically runs seeds, staging, intermediate, fact models, metric models, and tests!)*
 
+### Step 2 — Verify Metric Catalog
+Run this SQL in Metabase (SQL Editor) or pgAdmin to check if the Metric Catalog is built correctly:
+```sql
+SELECT *
+FROM dbt_metadata.metric_definition
+ORDER BY metric_key;
+```
+
+### Step 3 — Verify Company-Level KPIs
+```sql
+SELECT
+    metric_month,
+    metric_key,
+    metric_label,
+    metric_value,
+    unit
+FROM dbt_metrics.metric_company_monthly
+ORDER BY metric_month, metric_key
+LIMIT 20;
+```
+
+### Step 4 — Verify Store-Level KPIs
+```sql
+SELECT
+    metric_month,
+    store_id,
+    metric_key,
+    metric_label,
+    metric_value
+FROM dbt_metrics.metric_store_monthly
+ORDER BY metric_month, store_id, metric_key
+LIMIT 30;
+```
+> 💡 **Checkpoint:** In one month, `metric_company_monthly` should have no more than 5 rows (M001-M005) and `metric_store_monthly` should have no more than 5 rows per store. If you see more, check your `GROUP BY` and `JOIN` logic!
+
 ---
 
 ## 📊 Part 3: Visualizing in Metabase
 
+### Step 1 — Connect Database & Sync Schema
 1. Open Metabase at `http://localhost:23000`
-2. Sync the database schema to ensure Metabase sees `dbt_metrics` and `dbt_metadata`.
-3. Create Questions utilizing the Metric Models:
-   - **KPI Trend by Metric Key** (Line Chart)
-   - **KPI by Store** (Bar Chart)
-   - **Late Return Rate by Store**
-   - **Metric Catalog** (Table)
-4. Assemble them into the **DVD Rental KPI Dashboard** with Metric Key and Date Filters.
+2. Go to **Admin settings** → **Databases** → **dvdrental** and click **Sync database schema now**.
+3. Verify Metabase can see `dbt_metrics` and `dbt_metadata` schemas (If not, wait a moment and refresh).
 
-> 💡 **Core Concept:** By using dbt as the central source of truth for business logic, you don't need to write complex `SUM`, `COUNT DISTINCT`, or division formulas in Metabase. If a KPI definition changes, you only update it once in dbt, and all Metabase dashboards update automatically!
+### Step 2 — Create Question: KPI Trend by Metric Key
+1. Select **New → Question** → dvdrental → dbt_metrics → `metric_company_monthly`
+2. Add a Filter: `metric_key = 'M001'`
+3. Select Visualization: **Line Chart**
+4. X-axis = `metric_month`, Y-axis = `metric_value`
+5. Save as **KPI Trend by Metric Key**
+
+### Step 3 — Create Question: KPI by Store
+1. Select table `dbt_metrics.metric_store_monthly`
+2. Add a Filter: `metric_key = 'M001'`
+3. Select Visualization: **Bar Chart**
+4. X-axis = `store_id`, Y-axis = `metric_value`
+5. Save as **KPI by Store**
+
+### Step 4 — Create Question: Late Return Rate by Store
+1. Duplicate the "KPI by Store" question
+2. Change Filter to: `metric_key = 'M005'`
+3. In Formatting, set `metric_value` as **Percent**
+4. Save as **Late Return Rate by Store**
+
+### Step 5 — Create Question: Metric Catalog
+1. Select table `dbt_metadata.metric_definition`
+2. Show columns: `metric_key`, `metric_label`, `description`, `formula`, `unit`
+3. Select Visualization: **Table**
+4. Save as **Metric Catalog**
+
+### Step 6 — Assemble the Dashboard
+1. Create a Dashboard named **DVD Rental KPI Dashboard - [Student ID]**
+2. Add all 4 Questions to the Dashboard
+3. Add a **Dropdown Filter** named `Metric Key` and connect it to `metric_key` of "KPI Trend" and "KPI by Store"
+4. Add a **Date Filter** and connect it to `metric_month`
+5. Arrange the layout so it is clear and easy to read!
+
+> ⚠️ **Caution:** Different Metric Keys have different units (currency, count, ratio). Changing `metric_key` in the same chart might not change the Y-axis format automatically. 
 
 ---
 
-## 📝 Assignment
+## 📝 Assignment / สิ่งที่ต้องส่ง
 
-1. Submit a **Screenshot of your Metabase Dashboard** (PNG / JPG).
-2. Answer the 4 analysis questions in the provided Google Form.
+**1. Screenshot Dashboard:** Submit a screenshot of your Metabase Dashboard (PNG / JPG).
+
+**2. Analysis Questions:** Answer these 4 questions in the Google Form:
+1. เพราะเหตุใดจึงต้อง Aggregate payment ให้เหลือหนึ่งแถวต่อ rental_id ก่อน Join กับ rental?
+2. เพราะเหตุใด Active Customer Count รายปีจึงไม่ควรคำนวณด้วยการบวก Active Customer Count ของแต่ละเดือน?
+3. ถ้าเปลี่ยนนิยาม Late Return เป็น “คืนเกินกำหนดอย่างน้อย 2 วัน” ต้องแก้ไขไฟล์ใด และต้องรันคำสั่งใดอีกครั้ง?
+4. หากให้ผู้ใช้เขียนสูตร M004 และ M005 เองทุก Dashboard จะเกิดความเสี่ยงอย่างไร?
