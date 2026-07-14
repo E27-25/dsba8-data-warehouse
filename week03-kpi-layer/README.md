@@ -1158,13 +1158,6 @@ In this final step, we will use Metabase to visualize the KPI data we built in d
 2. **Visualize**: Keep it as a **Table**.
 3. **Save** as "Metric Catalog".
 
-<details>
-<summary>👉 <b>Show Metric Catalog</b></summary>
-
-![Metabase Metric Catalog](./docs/screenshots/metabase-metrics.png)
-
-</details>
-
 ### 12.6 Create Dashboard
 1. Click **+ New** > **Dashboard** and name it **DVD Rental KPI Dashboard - [Your Student ID]**.
 2. Add the 4 questions you just created to the dashboard.
