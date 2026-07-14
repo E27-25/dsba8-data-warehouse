@@ -135,6 +135,7 @@ services:
     image: metabase/metabase
     platform: linux/amd64  # Required for Mac (Apple Silicon / ARM64) users
     container_name: dw_metabase
+    restart: always
     depends_on:
       - postgres
     ports:
@@ -146,6 +147,7 @@ services:
     image: ghcr.io/dbt-labs/dbt-postgres
     platform: linux/amd64  # Required for Mac (Apple Silicon / ARM64) users
     container_name: dw_dbt
+    restart: always
     depends_on:
       - postgres
     working_dir: /usr/app

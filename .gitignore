@@ -1,0 +1,7 @@
+.DS_Store
+**/.env
+**/config/
+**/logs/
+**/pg_data/
+**/pgadmin-data/
+__pycache__/
