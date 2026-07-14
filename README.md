@@ -33,7 +33,8 @@
 |:---:|---|:---:|
 | 1 | Data Warehouse Setup (Docker Environment) | [Week 1](./week01-data-warehouse-setup/) |
 | 2 | OLAP Operations with Metabase & PostgreSQL | [Week 2](./week02-olap-metabase/) |
-| 3–15 | Coming soon — syllabus in progress | — |
+| 3 | Requirement Gathering & KPI Layer (dbt) | [Week 3](./week03-kpi-layer/) |
+| 4–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -110,6 +111,18 @@ dsba8-data-warehouse/
     │   └── screenshots/
     ├── data/                              ← Sample database
     │   └── DWH_Lab.zip
+    └── README.md
+│
+└── week03-kpi-layer/                      ← Week 3 ✅
+    ├── docs/                              ← Lab documentation & screenshots
+    │   ├── Lab3 KPI Layer.pdf
+    │   └── screenshots/
+    ├── slides/                            ← Lecture slides (PDF)
+    │   └── 3 - Requirement Gathering for DW.pdf
+    ├── lab-week03/                        ← Lab environment files
+    │   ├── docker-compose.yaml
+    │   ├── dvdrental.tar
+    │   └── dbt/
     └── README.md
 ```
 
