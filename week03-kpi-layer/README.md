@@ -248,7 +248,14 @@ Run the following commands to enter the container and test the connection:
 cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt debug"
 ```
-*(It should display `All checks passed`)*
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![CLI: dbt debug output](./docs/screenshots/dbt-debug.png)
+
+</details>
+
+If it shows "All checks passed!", it means dbt has successfully connected to PostgreSQL!
 
 ---
 
@@ -297,6 +304,12 @@ sources:
 cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt parse"
 ```
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![CLI: dbt parse output](./docs/screenshots/dbt-parse.png)
+
+</details>
 
 ---
 
