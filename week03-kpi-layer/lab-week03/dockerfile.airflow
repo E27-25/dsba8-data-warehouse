@@ -1,0 +1,13 @@
+FROM apache/airflow:3.2.2
+
+# Switch to root to install any required system binaries
+USER root
+RUN apt-get update && apt-get install -y git && apt-get clean
+
+# Switch back to the airflow user to install python libraries safely
+USER airflow
+
+# Install dbt core and your required adapter (change postgres to your warehouse)
+RUN pip install --no-cache-dir \
+    dbt-core \
+    dbt-postgres

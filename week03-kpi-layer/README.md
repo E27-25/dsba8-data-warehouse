@@ -32,6 +32,8 @@
 
 ## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
 
+สัปดาห์นี้เตรียมไฟล์ทั้งหมดให้พร้อมสำหรับการ **เริ่มใหม่ทั้งหมดได้ทันที** (รวมไฟล์จาก Week 1-2 ไว้ให้แล้ว)
+
 | File / Folder | Description |
 |---|---|
 | 📂 [slides/](./slides/) | Lecture slides |
@@ -39,16 +41,52 @@
 | 📂 [docs/](./docs/) | Lab instructions |
 | ├── 📄 [Lab3 KPI Layer.pdf](./docs/Lab3%20KPI%20Layer.pdf) | Lab instruction (PDF) |
 | └── 📝 [Lab3 KPI Layer.docx](./docs/Lab3%20KPI%20Layer.docx) | Lab instruction (Word) |
+| 📂 [lab-week03/](./lab-week03/) | **Lab files (ใช้โฟลเดอร์นี้เป็นหลัก)** |
+| ├── 📄 docker-compose.yaml | ไฟล์สำหรับ Start services ทั้งหมด |
+| ├── 🗄️ dvdrental.tar | ฐานข้อมูลจำลอง (จาก Week 2) |
+| └── 📂 dbt/ และ dbt_root/ | โครงสร้างโปรเจค dbt (รวม Code เฉลยสำหรับศึกษา) |
+
+---
+
+## 🚀 Part 0: Fresh Start Setup (สำหรับคนที่ไม่ได้ทำ Week 1 และ 2)
+
+> 💡 **หมายเหตุ:** หากคุณเรียนต่อเนื่องและมี Docker Container + Database `dvdrental` รันอยู่แล้ว สามารถข้าม Part 0 นี้ไปทำ Part 1 ได้เลย! แต่ถ้าเริ่มใหม่ ให้ทำตามขั้นตอนต่อไปนี้ในโฟลเดอร์ `lab-week03/`
+
+### 0.1 Start Docker Services
+เปิด Terminal หรือ PowerShell เข้าไปที่โฟลเดอร์ `week03-kpi-layer/lab-week03/` แล้วรัน:
+```bash
+docker compose up -d
+```
+*(รอจนกระทั่ง services ทั้งหมดขึ้นสถานะ Running)*
+
+### 0.2 สร้าง Database และ Restore ข้อมูล `dvdrental`
+รันคำสั่งเหล่านี้ทีละบรรทัด เพื่อคัดลอกไฟล์ `.tar` เข้าไปใน container สร้างฐานข้อมูล และทำการ Restore:
+
+**Mac / Linux:**
+```bash
+docker cp dvdrental.tar dw_postgres:/tmp/dvdrental.tar
+docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdrental;"
+docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar
+```
+
+**Windows (PowerShell):**
+```powershell
+docker cp dvdrental.tar dw_postgres:/tmp/dvdrental.tar
+docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdrental;"
+docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar
+```
+เมื่อเสร็จสิ้น คุณจะมี Database `dvdrental` พร้อมสำหรับการทำ dbt Lab ต่อไป!
 
 ---
 
 ## 🔧 ส่วนที่ 1: สร้างโครงสร้าง dbt Project
 
-ในโฟลเดอร์ `week01-data-warehouse-setup/lab-week01` ให้สร้างโฟลเดอร์และไฟล์ตามโครงสร้างต่อไปนี้โดยใช้ File Explorer หรือ VS Code (โฟลเดอร์ dbt และ dbt_root จะถูก mount เข้าไปใน container ทันที):
+(⚠️ ข้ามขั้นตอนนี้ได้หากใช้ไฟล์ `dbt/` และ `dbt_root/` ที่เตรียมไว้ให้ในโฟลเดอร์ `lab-week03/`)
+
+หากต้องการสร้างเองตั้งแต่ต้น ให้สร้างโฟลเดอร์และไฟล์ตามโครงสร้างต่อไปนี้โดยใช้ File Explorer หรือ VS Code:
 
 ```text
-lab-week01/
-├── docker-compose.yaml
+lab-week03/
 ├── dbt/
 │   └── dvd_kpi
 │       ├── dbt_project.yml
@@ -56,22 +94,10 @@ lab-week01/
 │       │   ├── sources.yml
 │       │   ├── schema.yml
 │       │   ├── staging/
-│       │   │   ├── stg_rental.sql
-│       │   │   ├── stg_payment.sql
-│       │   │   ├── stg_inventory.sql
-│       │   │   └── stg_film.sql
 │       │   ├── intermediate/
-│       │   │   └── int_payment_by_rental.sql
 │       │   └── marts/
-│       │       ├── fct_rental_activity.sql
-│       │       ├── metric_company_monthly.sql
-│       │       └── metric_store_monthly.sql
 │       ├── seeds/
-│       │   └── metric_definition.csv
 │       └── tests/
-│           ├── assert_metric_company_grain.sql
-│           ├── assert_metric_store_grain.sql
-│           └── assert_late_return_rate_range.sql
 └── dbt_root/
     └── profiles.yml
 ```
@@ -404,7 +430,14 @@ join {{ ref('metric_definition') }} d
 ## 🚀 ส่วนที่ 11: Build และตรวจสอบผลลัพธ์
 
 ### 11.1 สร้างทุก Model และรัน Test
+
+**Mac / Linux:**
 ```bash
+docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
+```
+
+**Windows (PowerShell):**
+```powershell
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
 ```
 
