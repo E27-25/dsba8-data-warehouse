@@ -413,6 +413,12 @@ from {{ source('dvdrental', 'film') }}
 cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt run --select stg_rental stg_payment stg_inventory stg_film"
 ```
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![CLI: dbt run output](./docs/screenshots/dbt-run-stg.png)
+
+</details>
 
 ---
 
@@ -607,6 +613,12 @@ M005,late_return_rate,Late Return Rate,"สัดส่วนรายการ�
 cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt seed --full-refresh"
 ```
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![CLI: dbt seed output](./docs/screenshots/dbt-seed.png)
+
+</details>
 
 ---
 
@@ -1053,6 +1065,12 @@ Create `models/schema.yml` to configure tests like `not_null`, `unique`, and `re
 cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
 ```
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![CLI: dbt build output](./docs/screenshots/dbt-build.png)
+
+</details>
 
 ### 11.2 - 11.5 Verify data in pgAdmin or Metabase (SQL Editor)
 ```sql
@@ -1071,10 +1089,22 @@ SELECT * FROM dbt_metrics.metric_store_monthly LIMIT 30;
 ## 📊 Part 12: Use Metric Key in Metabase
 
 1. Open Metabase at `http://localhost:23000` and **Sync Schema** to see `dbt_metrics`.
+<details>
+<summary>👉 <b>Show Metabase Schemas</b></summary>
+
+![Metabase Schemas](./docs/screenshots/metabase-schemas.png)
+
+</details>
 2. Create Question: **KPI Trend by Metric Key** (Line Chart, Filter `M001`)
 3. Create Question: **KPI by Store** (Bar Chart, Filter `M001`)
 4. Create Question: **Late Return Rate by Store** (Bar Chart, Filter `M005`, Format as Percent)
 5. Create Question: **Metric Catalog** (Table)
+<details>
+<summary>👉 <b>Show Metric Catalog</b></summary>
+
+![Metabase Metric Catalog](./docs/screenshots/metabase-metrics.png)
+
+</details>
 6. Assemble them in a **DVD Rental KPI Dashboard - [Student ID]** and add `Metric Key` and `Date` filters.
 
 ---
