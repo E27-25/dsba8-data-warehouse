@@ -1104,24 +1104,70 @@ SELECT * FROM dbt_metrics.metric_store_monthly LIMIT 30;
 
 ## 📊 Part 12: Use Metric Key in Metabase
 
-1. Open Metabase at `http://localhost:23000` and **Sync Schema** to see `dbt_metrics`.
+In this final step, we will use Metabase to visualize the KPI data we built in dbt.
+
+### 12.1 Sync Schema in Metabase
+1. Open your browser and go to `http://localhost:23000`.
+2. Go to **Admin Settings** (Gear icon top right) > **Databases** > `dvdrental`.
+3. Click **Sync database schema now** so Metabase can see the newly created `dbt_metrics` and `dbt_metadata` schemas.
+4. Exit Admin settings and go to **Browse Data** > `dvdrental`. You should now see the schemas.
+
 <details>
 <summary>👉 <b>Show Metabase Schemas</b></summary>
 
 ![Metabase Schemas](./docs/screenshots/metabase-schemas.png)
 
 </details>
-2. Create Question: **KPI Trend by Metric Key** (Line Chart, Filter `M001`)
-3. Create Question: **KPI by Store** (Bar Chart, Filter `M001`)
-4. Create Question: **Late Return Rate by Store** (Bar Chart, Filter `M005`, Format as Percent)
-5. Create Question: **Metric Catalog** (Table)
+
+### 12.2 Create Question: KPI Trend by Metric Key
+1. Click **+ New** > **Question** > `dvdrental` > `dbt_metrics` > `Metric Company Monthly`.
+2. **Filter**: Click `Metric Key` and filter it to only show `M001` (Total Revenue).
+3. **Summarize**: 
+   - Metric: Sum of `Metric Value`
+   - Group by: `Metric Month`
+4. **Visualize**: Change the visualization type to **Line Chart**.
+5. **Save** the question as "KPI Trend by Metric Key".
+
+### 12.3 Create Question: KPI by Store
+1. Click **+ New** > **Question** > `dvdrental` > `dbt_metrics` > `Metric Store Monthly`.
+2. **Filter**: Set `Metric Key` = `M001`.
+3. **Summarize**:
+   - Metric: Sum of `Metric Value`
+   - Group by: `Store Id`
+4. **Visualize**: Change to **Bar Chart**.
+5. **Save** as "KPI by Store".
+
+### 12.4 Create Question: Late Return Rate by Store
+1. Create a new Question from `Metric Store Monthly`.
+2. **Filter**: Set `Metric Key` = `M005` (Late Return Rate).
+3. **Summarize**:
+   - Metric: Average of `Metric Value`
+   - Group by: `Store Id`
+4. **Visualize**: Bar Chart.
+5. *Formatting*: Click the gear icon on the chart, go to Data, click `Metric Value`, and change the Style to **Percent**.
+6. **Save** as "Late Return Rate by Store".
+
+### 12.5 Create Question: Metric Catalog
+1. Click **+ New** > **Question** > `dvdrental` > `dbt_metadata` > `Metric Definition`.
+2. **Visualize**: Keep it as a **Table**.
+3. **Save** as "Metric Catalog".
+
 <details>
 <summary>👉 <b>Show Metric Catalog</b></summary>
 
 ![Metabase Metric Catalog](./docs/screenshots/metabase-metrics.png)
 
 </details>
-6. Assemble them in a **DVD Rental KPI Dashboard - [Student ID]** and add `Metric Key` and `Date` filters.
+
+### 12.6 Create Dashboard
+1. Click **+ New** > **Dashboard** and name it **DVD Rental KPI Dashboard - [Your Student ID]**.
+2. Add the 4 questions you just created to the dashboard.
+3. Click the **Add a filter** icon (funnel) at the top.
+   - Choose **Text or Category** > **Dropdown**.
+   - Link it to the `Metric Key` column in your charts.
+   - Name the filter "Select Metric".
+4. Add another filter for **Time** > **Month and Year** and link it to the `Metric Month` column.
+5. Click **Save**. You now have a fully functional KPI dashboard!
 
 ---
 
