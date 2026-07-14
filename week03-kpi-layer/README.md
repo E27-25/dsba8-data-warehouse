@@ -91,6 +91,19 @@ Once completed, your `dvdrental` database is ready for the dbt Lab!
 
 ## Part 1: Create dbt Project Structure
 
+<details>
+<summary><b>👉 Continuing from Week 1/2? Read this first!</b></summary>
+
+If you already have your Docker containers and PostgreSQL running from `week01-data-warehouse-setup/lab-week01/`, you **do not** need to use the `lab-week03` folder. 
+
+Instead, you will create the `dbt` and `dbt_root` folders **inside your existing Week 1 lab folder**. 
+Whenever a command in this lab says `cd week03-kpi-layer/lab-week03/`, you should use your existing folder path instead:
+```bash
+cd week01-data-warehouse-setup/lab-week01/
+```
+
+</details>
+
 (⚠️ You can skip this step if you are using the provided `dbt/` and `dbt_root/` folders in `lab-week03/`)
 
 To build from scratch, create the following folder and file structure using File Explorer or VS Code:
