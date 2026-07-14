@@ -443,6 +443,23 @@ EOF
 
 </details>
 
+### 5.1 Check for Double Counting Risk
+
+Before joining `payment` with `rental`, you must check whether a single `rental_id` can have multiple payment rows. If so, joining directly would cause the Fact Model to have duplicate rows and inflate Rental Count.
+
+Run the following query in **pgAdmin** (or Metabase SQL Editor):
+```sql
+SELECT rental_id, COUNT(*) AS payment_rows
+FROM payment
+WHERE rental_id IS NOT NULL
+GROUP BY rental_id
+HAVING COUNT(*) > 1
+ORDER BY payment_rows DESC
+LIMIT 10;
+```
+
+If this query returns results, it means some `rental_id` values have more than one payment row — so we **must** aggregate before joining. Even if the current dataset doesn't have duplicates, this design is safe for future data.
+
 ### 5.2 Create `models/intermediate/int_payment_by_rental.sql`
 ```sql
 select
@@ -575,6 +592,13 @@ join film f
 left join payment_by_rental p
   on r.rental_id = p.rental_id
 ```
+
+**Key Logic Explained:**
+- **LEFT JOIN** `payment_by_rental` — ensures rentals without any payment are not dropped from the Fact Model.
+- **COALESCE(..., 0)** — converts NULL to 0 for rentals that have no payment record.
+- **`rental_count = 1`** — each row represents exactly one rental, so `SUM(rental_count)` gives the total number of rentals.
+- **`returned_rental_count`** — equals 1 only when `return_date IS NOT NULL` (i.e., the item has been returned).
+- **`late_rental_count`** — equals 1 only when the item was returned **and** `return_date` exceeds `expected_return_datetime`. Unreturned items are **not** counted as late because the requirement measures Late Return Rate from returned items only.
 
 ---
 
@@ -1048,11 +1072,130 @@ EOF
 
 </details>
 
-Create `models/schema.yml` to configure tests like `not_null`, `unique`, and `relationships`. Also create the following Data Tests in the `tests/` folder:
+Create `models/schema.yml` to configure tests like `not_null`, `unique`, and `relationships`. Also create custom Data Tests in the `tests/` folder.
 
-- `tests/assert_metric_company_grain.sql`
-- `tests/assert_metric_store_grain.sql`
-- `tests/assert_late_return_rate_range.sql`
+### 10.1 Create `models/schema.yml`
+```yaml
+version: 2
+
+models:
+  - name: fct_rental_activity
+    description: >
+      Fact model ที่มีหนึ่งแถวต่อหนึ่ง rental_id
+    columns:
+      - name: rental_id
+        tests:
+          - not_null
+          - unique
+      - name: rental_month
+        tests:
+          - not_null
+      - name: store_id
+        tests:
+          - not_null
+      - name: revenue_amount
+        tests:
+          - not_null
+      - name: rental_count
+        tests:
+          - not_null
+  - name: metric_company_monthly
+    description: >
+      KPI รายเดือนระดับบริษัทในรูป Long Format
+    columns:
+      - name: metric_month
+        tests:
+          - not_null
+      - name: metric_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('metric_definition')
+              field: metric_key
+      - name: metric_value
+        tests:
+          - not_null:
+              config:
+                where: "metric_key NOT IN ('M004', 'M005')"
+  - name: metric_store_monthly
+    description: >
+      KPI รายเดือนแยกตามสาขาในรูป Long Format
+    columns:
+      - name: metric_month
+        tests:
+          - not_null
+      - name: store_id
+        tests:
+          - not_null
+      - name: metric_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('metric_definition')
+              field: metric_key
+      - name: metric_value
+        tests:
+          - not_null:
+              config:
+                where: "metric_key NOT IN ('M004', 'M005')"
+
+seeds:
+  - name: metric_definition
+    description: >
+      Catalog กลางสำหรับรหัสและนิยาม KPI
+    columns:
+      - name: metric_key
+        tests:
+          - not_null
+          - unique
+      - name: metric_name
+        tests:
+          - not_null
+```
+
+### 10.2 Create `tests/assert_metric_company_grain.sql`
+```sql
+select
+ metric_month,
+ metric_key,
+ count(*) as row_count
+from {{ ref('metric_company_monthly') }}
+group by metric_month, metric_key
+having count(*) > 1
+```
+
+### 10.3 Create `tests/assert_metric_store_grain.sql`
+```sql
+select
+ metric_month,
+ store_id,
+ metric_key,
+ count(*) as row_count
+from {{ ref('metric_store_monthly') }}
+group by metric_month, store_id, metric_key
+having count(*) > 1
+```
+
+### 10.4 Create `tests/assert_late_return_rate_range.sql`
+```sql
+select
+ 'company'::varchar as source_model,
+ metric_month,
+ null::integer as store_id,
+ metric_value
+from {{ ref('metric_company_monthly') }}
+where metric_key = 'M005'
+ and (metric_value < 0 or metric_value > 1)
+union all
+select
+ 'store'::varchar as source_model,
+ metric_month,
+ store_id,
+ metric_value
+from {{ ref('metric_store_monthly') }}
+where metric_key = 'M005'
+ and (metric_value < 0 or metric_value > 1)
+```
 
 ---
 
@@ -1112,11 +1255,30 @@ SELECT * FROM dbt_metrics.metric_store_monthly LIMIT 30;
 
 In this final step, we will use Metabase to visualize the KPI data we built in dbt.
 
-### 12.1 Sync Schema in Metabase
-1. Open your browser and go to `http://localhost:23000`.
-2. Go to **Admin Settings** (Gear icon top right) > **Databases** > `dvdrental`.
-3. Click **Sync database schema now** so Metabase can see the newly created `dbt_metrics` and `dbt_metadata` schemas.
-4. Exit Admin settings and go to **Browse Data** > `dvdrental`. You should now see the schemas.
+### 12.1 Open Metabase and Connect to Database
+
+Open your browser and go to `http://localhost:23000`.
+
+If you haven't connected the `dvdrental` database yet, go to **Admin Settings** > **Databases** > **Add database** with the following settings:
+
+| Setting | Value |
+|---|---|
+| Database type | PostgreSQL |
+| Display name | dvdrental |
+| Host | postgres |
+| Port | 5432 |
+| Database name | dvdrental |
+| Username | dw_user |
+| Password | dw_pass |
+
+> **Note:** When connecting from a tool running inside Docker (like Metabase), use Host = `postgres`. If connecting from a tool installed directly on your machine (e.g., a local pgAdmin), use Host = `localhost` and Port = `25432`.
+
+### 12.2 Sync Schema
+
+1. Go to **Admin Settings** > **Databases** > `dvdrental`.
+2. Click **Sync database schema now**.
+3. Verify that Metabase can see the `dbt_metrics` and `dbt_metadata` schemas.
+4. If schemas are not visible, wait a moment and refresh your browser.
 
 <details>
 <summary><b>Show Metabase Schemas</b></summary>
@@ -1125,48 +1287,44 @@ In this final step, we will use Metabase to visualize the KPI data we built in d
 
 </details>
 
-### 12.2 Create Question: KPI Trend by Metric Key
+### 12.3 Create Question: KPI Trend by Metric Key
 1. Click **+ New** > **Question** > `dvdrental` > `dbt_metrics` > `Metric Company Monthly`.
 2. **Filter**: Click `Metric Key` and filter it to only show `M001` (Total Revenue).
-3. **Summarize**: 
-   - Metric: Sum of `Metric Value`
-   - Group by: `Metric Month`
-4. **Visualize**: Change the visualization type to **Line Chart**.
+3. **Visualize**: Change the visualization type to **Line Chart**.
+4. Set **X-axis** = `Metric Month` and **Y-axis** = `Metric Value`.
 5. **Save** the question as "KPI Trend by Metric Key".
 
-### 12.3 Create Question: KPI by Store
+> This question uses `metric_key` to select which KPI formula to display. Metabase doesn't need to rewrite SUM, COUNT DISTINCT, or division formulas — dbt has already calculated everything.
+
+### 12.4 Create Question: KPI by Store
 1. Click **+ New** > **Question** > `dvdrental` > `dbt_metrics` > `Metric Store Monthly`.
 2. **Filter**: Set `Metric Key` = `M001`.
-3. **Summarize**:
-   - Metric: Sum of `Metric Value`
-   - Group by: `Store Id`
-4. **Visualize**: Change to **Bar Chart**.
+3. **Visualize**: Change to **Bar Chart**.
+4. Set **X-axis** = `Store Id` and **Y-axis** = `Metric Value`.
 5. **Save** as "KPI by Store".
 
-### 12.4 Create Question: Late Return Rate by Store
-1. Create a new Question from `Metric Store Monthly`.
-2. **Filter**: Set `Metric Key` = `M005` (Late Return Rate).
-3. **Summarize**:
-   - Metric: Average of `Metric Value`
-   - Group by: `Store Id`
-4. **Visualize**: Bar Chart.
-5. *Formatting*: Click the gear icon on the chart, go to Data, click `Metric Value`, and change the Style to **Percent**.
-6. **Save** as "Late Return Rate by Store".
+### 12.5 Create Question: Late Return Rate by Store
+1. Duplicate the "KPI by Store" question.
+2. Rename to "Late Return Rate by Store".
+3. Change **Filter** `Metric Key` to `M005`.
+4. In **Formatting**, set `Metric Value` display to **Percent**.
+5. **Save** as "Late Return Rate by Store".
 
-### 12.5 Create Question: Metric Catalog
+### 12.6 Create Question: Metric Catalog
 1. Click **+ New** > **Question** > `dvdrental` > `dbt_metadata` > `Metric Definition`.
-2. **Visualize**: Keep it as a **Table**.
-3. **Save** as "Metric Catalog".
+2. Show columns: `metric_key`, `metric_label`, `description`, `formula`, and `unit`.
+3. **Visualize**: Keep it as a **Table**.
+4. **Save** as "Metric Catalog".
 
-### 12.6 Create Dashboard
+### 12.7 Create Dashboard
 1. Click **+ New** > **Dashboard** and name it **DVD Rental KPI Dashboard - [Your Student ID]**.
 2. Add the 4 questions you just created to the dashboard.
-3. Click the **Add a filter** icon (funnel) at the top.
-   - Choose **Text or Category** > **Dropdown**.
-   - Link it to the `Metric Key` column in your charts.
-   - Name the filter "Select Metric".
-4. Add another filter for **Time** > **Month and Year** and link it to the `Metric Month` column.
-5. Click **Save**. You now have a fully functional KPI dashboard!
+3. Add a **Dashboard Filter** (Dropdown) named "Metric Key" and link it to the `metric_key` column of KPI Trend and KPI by Store.
+4. Add a **Date Filter** and link it to `metric_month`.
+5. Arrange the charts so that KPI labels, units, and time ranges are clearly visible.
+6. Click **Save**.
+
+> **Caution:** Each Metric Key has a different unit (e.g., `currency`, `count`, `ratio`). Switching the metric_key filter on the same chart may cause the Y-axis format to be incorrect (e.g., showing a ratio as currency). Consider showing the `unit` column in the Metric Catalog table, or creating separate charts for KPIs that require percentage formatting.
 
 ---
 
@@ -1178,9 +1336,13 @@ In this final step, we will use Metabase to visualize the KPI data we built in d
 **ส่งงานที่ Form:** https://docs.google.com/forms/d/13TZkEsKmIF_g967mD0TutT9fgrVxaL71DSwsP5hK4Y8
 1. เพราะเหตุใดจึงต้อง Aggregate payment ให้เหลือหนึ่งแถวต่อ `rental_id` ก่อน Join กับ `rental`?
 2. เพราะเหตุใด Active Customer Count รายปีจึงไม่ควรคำนวณด้วยการบวก Active Customer Count ของแต่ละเดือน?
-3. ถ้าเปลี่ยนนิยาม Late Return เป็น “คืนเกินกำหนดอย่างน้อย 2 วัน” ต้องแก้ไขไฟล์ใด และต้องรันคำสั่งใดอีกครั้ง?
+3. ถ้าเปลี่ยนนิยาม Late Return เป็น "คืนเกินกำหนดอย่างน้อย 2 วัน" ต้องแก้ไขไฟล์ใด และต้องรันคำสั่งใดอีกครั้ง?
 4. หากให้ผู้ใช้เขียนสูตร M004 และ M005 เองทุก Dashboard จะเกิดความเสี่ยงอย่างไร?
+
+**Lab Workflow Summary:**
+The workflow of this lab follows the order: Requirement > Business Process > KPI > Grain > Fact Model > Metric Key Catalog > Metric Models > dbt Tests > Metabase Dashboard. **dbt** serves as the central point for all Business Logic. Metabase is only used for presentation. Students should **not** recreate KPI formulas in Metabase — editing a formula in dbt once will automatically update every Dashboard that uses the same View.
 
 ---
 
 *Data Warehouse — DSBA8 | Week 3*
+
