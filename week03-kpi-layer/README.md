@@ -1077,6 +1077,12 @@ docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
 -- Verify Metric Catalog
 SELECT * FROM dbt_metadata.metric_definition ORDER BY metric_key;
 ```
+<details>
+<summary>👉 <b>Show Output</b></summary>
+
+![Metabase: Metric Catalog](./docs/screenshots/metabase-catalog.png)
+
+</details>
 
 ```sql
 -- Verify Company-Level KPIs
