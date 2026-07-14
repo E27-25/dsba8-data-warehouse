@@ -55,6 +55,7 @@ This week provides all files needed for a **Fresh Start** (including Week 1 & 2 
 ### 0.1 Start Docker Services
 Open your Terminal or PowerShell, navigate to the `week03-kpi-layer/lab-week03/` folder, and run:
 ```bash
+cd week03-kpi-layer/lab-week03/
 docker compose up -d
 ```
 *(Wait until all services are in the "Running" state)*
@@ -64,6 +65,7 @@ Run these commands line-by-line to copy the `.tar` file into the container, crea
 
 **Mac / Linux:**
 ```bash
+cd week03-kpi-layer/lab-week03/
 docker cp dvdrental.tar dw_postgres:/tmp/dvdrental.tar
 docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdrental;"
 docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar
@@ -71,6 +73,7 @@ docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d d
 
 **Windows (PowerShell):**
 ```powershell
+cd week03-kpi-layer/lab-week03/
 docker cp dvdrental.tar dw_postgres:/tmp/dvdrental.tar
 docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdrental;"
 docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar
