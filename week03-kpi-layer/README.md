@@ -1,4 +1,4 @@
-# 📦 Week 3: Requirement Gathering & KPI Layer
+# Week 3: Requirement Gathering & KPI Layer
 
 > **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
 > **Topic:** Requirement Gathering, Business Process, KPI Layer with dbt & Metabase  
@@ -6,7 +6,7 @@
 
 ---
 
-## 🎯 Learning Objectives / วัตถุประสงค์
+## Learning Objectives / วัตถุประสงค์
 
 1. Analyze Subject Area, Business Process, and business questions from the `dvdrental` case study.
 2. Define KPIs, calculation formulas, units, and Granularity clearly.
@@ -17,7 +17,7 @@
 
 ---
 
-## 🧰 Tools & Stack Overview / เครื่องมือที่ใช้
+## Tools & Stack Overview / เครื่องมือที่ใช้
 
 | Tool | What is it used for in this lab? |
 |---|---|
@@ -30,7 +30,7 @@
 
 ---
 
-## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
+## Files in This Week / ไฟล์ในสัปดาห์นี้
 
 This week provides all files needed for a **Fresh Start** (including Week 1 & 2 files).
 
@@ -40,7 +40,7 @@ This week provides all files needed for a **Fresh Start** (including Week 1 & 2 
 | └── 📄 [3 - Requirement Gathering for DW.pdf](./slides/3%20-%20Requirement%20Gathering%20for%20DW.pdf) | Lecture: Requirement Gathering for DW |
 | 📂 [docs/](./docs/) | Lab instructions |
 | ├── 📄 [Lab3 KPI Layer.pdf](./docs/Lab3%20KPI%20Layer.pdf) | Lab instruction (PDF) |
-| └── 📝 [Lab3 KPI Layer.docx](./docs/Lab3%20KPI%20Layer.docx) | Lab instruction (Word) |
+| └── [Lab3 KPI Layer.docx](./docs/Lab3%20KPI%20Layer.docx) | Lab instruction (Word) |
 | 📂 [lab-week03/](./lab-week03/) | **Lab files (Main working directory)** |
 | ├── 📄 docker-compose.yaml | File to start all services |
 | ├── 🗄️ dvdrental.tar | Sample database dump (from Week 2) |
@@ -48,7 +48,7 @@ This week provides all files needed for a **Fresh Start** (including Week 1 & 2 
 
 ---
 
-## 🚀 Part 0: Fresh Start Setup (For those who missed Week 1-2)
+## Part 0: Fresh Start Setup (For those who missed Week 1-2)
 
 > 💡 **Note:** If you are continuing from the previous weeks and already have your Docker Containers + Database `dvdrental` running, you can **skip Part 0** and go straight to Part 1! If you are starting fresh, follow these steps in the `lab-week03/` folder.
 
@@ -79,7 +79,7 @@ docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE dvdre
 docker exec -it dw_postgres pg_restore --no-owner --role=dw_user -U dw_user -d dvdrental /tmp/dvdrental.tar
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![CLI: database restore output](./docs/screenshots/dvdrental-restore.png)
 
@@ -89,7 +89,7 @@ Once completed, your `dvdrental` database is ready for the dbt Lab!
 
 ---
 
-## 🔧 Part 1: Create dbt Project Structure
+## Part 1: Create dbt Project Structure
 
 (⚠️ You can skip this step if you are using the provided `dbt/` and `dbt_root/` folders in `lab-week03/`)
 
@@ -129,7 +129,7 @@ lab-week03/
 
 ---
 
-## ⚙️ Part 2: Configure dbt Project & Connection
+## Part 2: Configure dbt Project & Connection
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -249,7 +249,7 @@ cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt debug"
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![CLI: dbt debug output](./docs/screenshots/dbt-debug.png)
 
@@ -259,7 +259,7 @@ If it shows "All checks passed!", it means dbt has successfully connected to Pos
 
 ---
 
-## 📥 Part 3: Declare Source Tables
+## Part 3: Declare Source Tables
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -305,7 +305,7 @@ cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt parse"
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![CLI: dbt parse output](./docs/screenshots/dbt-parse.png)
 
@@ -313,7 +313,7 @@ docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt parse"
 
 ---
 
-## 🏗️ Part 4: Create Staging Models
+## Part 4: Create Staging Models
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -414,7 +414,7 @@ cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt run --select stg_rental stg_payment stg_inventory stg_film"
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![CLI: dbt run output](./docs/screenshots/dbt-run-stg.png)
 
@@ -422,7 +422,7 @@ docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt run --select stg_rental stg_pa
 
 ---
 
-## 🔄 Part 5: Aggregate Payment to Match Grain
+## Part 5: Aggregate Payment to Match Grain
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -456,7 +456,7 @@ group by rental_id
 
 ---
 
-## 🏭 Part 6: Create Fact Model
+## Part 6: Create Fact Model
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -578,7 +578,7 @@ left join payment_by_rental p
 
 ---
 
-## 📖 Part 7: Create Metric Key Catalog using dbt Seed
+## Part 7: Create Metric Key Catalog using dbt Seed
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -614,7 +614,7 @@ cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt seed --full-refresh"
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![CLI: dbt seed output](./docs/screenshots/dbt-seed.png)
 
@@ -622,7 +622,7 @@ docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt seed --full-refresh"
 
 ---
 
-## 🏢 Part 8: Create Company-Level Metric Model
+## Part 8: Create Company-Level Metric Model
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -762,7 +762,7 @@ join {{ ref('metric_definition') }} d
 
 ---
 
-## 🏪 Part 9: Create Store-Level Metric Model
+## Part 9: Create Store-Level Metric Model
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -918,7 +918,7 @@ join {{ ref('metric_definition') }} d
 
 ---
 
-## 🧪 Part 10: Define Documentation & Data Tests
+## Part 10: Define Documentation & Data Tests
 
 <details>
 <summary><b>⚡ Fast Track: Click to generate files via Terminal</b></summary>
@@ -1056,7 +1056,7 @@ Create `models/schema.yml` to configure tests like `not_null`, `unique`, and `re
 
 ---
 
-## 🚀 Part 11: Build & Verify Results
+## Part 11: Build & Verify Results
 
 ### 11.1 Build all Models and run Tests
 
@@ -1066,7 +1066,7 @@ cd week03-kpi-layer/lab-week03/
 docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![CLI: dbt build output](./docs/screenshots/dbt-build.png)
 
@@ -1078,7 +1078,7 @@ docker exec -it dw_dbt bash -c "cd dvd_kpi && dbt build"
 SELECT * FROM dbt_metadata.metric_definition ORDER BY metric_key;
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![Metabase: Metric Catalog](./docs/screenshots/metabase-catalog.png)
 
@@ -1089,7 +1089,7 @@ SELECT * FROM dbt_metadata.metric_definition ORDER BY metric_key;
 SELECT * FROM dbt_metrics.metric_company_monthly LIMIT 20;
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![Metabase: Company-Level KPIs](./docs/screenshots/metabase-company.png)
 
@@ -1100,7 +1100,7 @@ SELECT * FROM dbt_metrics.metric_company_monthly LIMIT 20;
 SELECT * FROM dbt_metrics.metric_store_monthly LIMIT 30;
 ```
 <details>
-<summary>👉 <b>Show Output</b></summary>
+<summary><b>Show Output</b></summary>
 
 ![Metabase: Store-Level KPIs](./docs/screenshots/metabase-store.png)
 
@@ -1108,7 +1108,7 @@ SELECT * FROM dbt_metrics.metric_store_monthly LIMIT 30;
 
 ---
 
-## 📊 Part 12: Use Metric Key in Metabase
+## Part 12: Use Metric Key in Metabase
 
 In this final step, we will use Metabase to visualize the KPI data we built in dbt.
 
@@ -1119,7 +1119,7 @@ In this final step, we will use Metabase to visualize the KPI data we built in d
 4. Exit Admin settings and go to **Browse Data** > `dvdrental`. You should now see the schemas.
 
 <details>
-<summary>👉 <b>Show Metabase Schemas</b></summary>
+<summary><b>Show Metabase Schemas</b></summary>
 
 ![Metabase Schemas](./docs/screenshots/metabase-schemas.png)
 
@@ -1170,11 +1170,12 @@ In this final step, we will use Metabase to visualize the KPI data we built in d
 
 ---
 
-## 📝 Part 13: Analysis Questions / Submission (สิ่งที่ต้องส่ง)
+## Part 13: Analysis Questions / Submission (สิ่งที่ต้องส่ง)
 
 **1. Submission:** Submit a **Screenshot of your Metabase Dashboard** (PNG / JPG).
 
 **2. Analysis Questions:** Answer the following 4 questions in the Google Form:
+**ส่งงานที่ Form:** https://docs.google.com/forms/d/13TZkEsKmIF_g967mD0TutT9fgrVxaL71DSwsP5hK4Y8
 1. เพราะเหตุใดจึงต้อง Aggregate payment ให้เหลือหนึ่งแถวต่อ `rental_id` ก่อน Join กับ `rental`?
 2. เพราะเหตุใด Active Customer Count รายปีจึงไม่ควรคำนวณด้วยการบวก Active Customer Count ของแต่ละเดือน?
 3. ถ้าเปลี่ยนนิยาม Late Return เป็น “คืนเกินกำหนดอย่างน้อย 2 วัน” ต้องแก้ไขไฟล์ใด และต้องรันคำสั่งใดอีกครั้ง?
