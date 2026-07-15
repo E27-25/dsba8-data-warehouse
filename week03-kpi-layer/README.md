@@ -1296,12 +1296,30 @@ If you haven't connected the `dvdrental` database yet, go to **Admin Settings** 
 
 > This question uses `metric_key` to select which KPI formula to display. Metabase doesn't need to rewrite SUM, COUNT DISTINCT, or division formulas — dbt has already calculated everything.
 
+<details>
+<summary><b>Show KPI Trend Question Setup & Visualization</b></summary>
+
+![KPI Trend Question Setup](./docs/screenshots/metabase-kpi-trend-setup.png)
+
+![KPI Trend Visualization](./docs/screenshots/metabase-kpi-trend-viz.png)
+
+</details>
+
 ### 12.4 Create Question: KPI by Store
 1. Click **+ New** > **Question** > `dvdrental` > `dbt_metrics` > `Metric Store Monthly`.
 2. **Filter**: Set `Metric Key` = `M001`.
 3. **Visualize**: Change to **Bar Chart**.
 4. Set **X-axis** = `Store Id` and **Y-axis** = `Metric Value`.
 5. **Save** as "KPI by Store".
+
+<details>
+<summary><b>Show KPI by Store Question Setup & Visualization</b></summary>
+
+![KPI by Store Question Setup](./docs/screenshots/metabase-kpi-store-setup.png)
+
+![KPI by Store Visualization](./docs/screenshots/metabase-kpi-store-viz.png)
+
+</details>
 
 ### 12.5 Create Question: Late Return Rate by Store
 1. Duplicate the "KPI by Store" question.
@@ -1310,11 +1328,40 @@ If you haven't connected the `dvdrental` database yet, go to **Admin Settings** 
 4. In **Formatting**, set `Metric Value` display to **Percent**.
 5. **Save** as "Late Return Rate by Store".
 
+<details>
+<summary><b>Show Late Return Rate by Store Steps</b></summary>
+
+1. **Duplicate** the question:
+   ![Duplicate Question](./docs/screenshots/metabase-duplicate-question.png)
+
+2. **Rename** the duplicate:
+   ![Rename Question](./docs/screenshots/metabase-rename-question.png)
+
+3. **Verify** new question is saved in "Our analytics":
+   ![Question Saved](./docs/screenshots/metabase-question-saved.png)
+
+4. Click **Editor** to adjust:
+   ![Click Editor](./docs/screenshots/metabase-click-editor.png)
+
+5. Change formatting to **Percent**:
+   ![Format as Percent](./docs/screenshots/metabase-format-percent.png)
+
+</details>
+
 ### 12.6 Create Question: Metric Catalog
 1. Click **+ New** > **Question** > `dvdrental` > `dbt_metadata` > `Metric Definition`.
 2. Show columns: `metric_key`, `metric_label`, `description`, `formula`, and `unit`.
 3. **Visualize**: Keep it as a **Table**.
 4. **Save** as "Metric Catalog".
+
+<details>
+<summary><b>Show Metric Catalog Question Setup & Table</b></summary>
+
+![Metric Catalog Question Setup](./docs/screenshots/metabase-catalog-setup.png)
+
+![Metric Catalog Table](./docs/screenshots/metabase-catalog-table.png)
+
+</details>
 
 ### 12.7 Create Dashboard
 1. Click **+ New** > **Dashboard** and name it **DVD Rental KPI Dashboard - [Your Student ID]**.
@@ -1323,6 +1370,29 @@ If you haven't connected the `dvdrental` database yet, go to **Admin Settings** 
 4. Add a **Date Filter** and link it to `metric_month`.
 5. Arrange the charts so that KPI labels, units, and time ranges are clearly visible.
 6. Click **Save**.
+
+<details>
+<summary><b>Show Dashboard Creation & Filter Setup Steps</b></summary>
+
+1. **Arrange** the 4 questions on the dashboard layout:
+   ![Dashboard Edit Mode](./docs/screenshots/metabase-dashboard-edit.png)
+
+2. Add a new **Metric Key Filter** (Text or Category):
+   ![Add Metric Key Filter](./docs/screenshots/metabase-dashboard-filter-metric-type.png)
+
+3. **Link** the Metric Key filter to the corresponding columns:
+   ![Link Metric Key Filter](./docs/screenshots/metabase-dashboard-filter-metric-link.png)
+
+4. Add a new **Date Filter** (Date picker):
+   ![Add Date Filter](./docs/screenshots/metabase-dashboard-filter-date-type.png)
+
+5. **Link** the Date filter to the corresponding columns:
+   ![Link Date Filter](./docs/screenshots/metabase-dashboard-filter-date-link.png)
+
+6. **Save** and view the completed dashboard:
+   ![Saved Dashboard](./docs/screenshots/metabase-dashboard-saved.png)
+
+</details>
 
 > **Caution:** Each Metric Key has a different unit (e.g., `currency`, `count`, `ratio`). Switching the metric_key filter on the same chart may cause the Y-axis format to be incorrect (e.g., showing a ratio as currency). Consider showing the `unit` column in the Metric Catalog table, or creating separate charts for KPIs that require percentage formatting.
 
