@@ -4,4 +4,5 @@
 **/logs/
 **/pg_data/
 **/pgadmin-data/
+**/Lab4.svg
 __pycache__/

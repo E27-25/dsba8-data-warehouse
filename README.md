@@ -34,7 +34,7 @@
 | 1 | Data Warehouse Setup (Docker Environment) | [Week 1](./week01-data-warehouse-setup/) |
 | 2 | OLAP Operations with Metabase & PostgreSQL | [Week 2](./week02-olap-metabase/) |
 | 3 | Requirement Gathering & KPI Layer (dbt) | [Week 3](./week03-kpi-layer/) |
-| 4 | Star Schema & Metric Layer with dbt (Coffee Club) | [Week 4](./week04-Star-Schema/) |
+| 4 | Star Schema & Metric Layer with dbt (Coffee Club) | [Week 4](./week04-star-schema/) |
 | 5–15 | Coming soon — syllabus in progress | — |
 
 ---
@@ -126,7 +126,7 @@ dsba8-data-warehouse/
     │   └── dbt/
     └── README.md
 │
-└── week04-Star-Schema/                   ← Week 4 ✅
+└── week04-star-schema/                   ← Week 4 ✅
     ├── slides/                            ← Lecture slides (PDF)
     │   └── 4 - Star Schema Design.pdf
     ├── docs/                              ← Lab documentation & Star Schema diagram

@@ -243,7 +243,7 @@ CREATE TABLE public.coffee_staging (
 
 ### 2.3 Import the CSV and verify
 1. Right-click `public.coffee_staging` ➡️ **Import/Export Data...** ➡️ **Import**.
-2. **Filename:** select `coffee_sales.csv` (in `week04-Star-Schema/data/`). **Format:** `csv`. **Header:** `Yes`. **Delimiter:** `,`.
+2. **Filename:** select `coffee_sales.csv` (in `week04-star-schema/data/`). **Format:** `csv`. **Header:** `Yes`. **Delimiter:** `,`.
 3. Click **OK**, then verify the row count:
 ```sql
 SELECT COUNT(*) AS row_count FROM public.coffee_staging;
@@ -303,7 +303,7 @@ If it shows **"All checks passed!"**, dbt is connected to PostgreSQL.
 <summary><b>⚡ Fast Track: create the folder skeleton via Terminal (Mac/Linux)</b></summary>
 
 ```bash
-cd week04-Star-Schema/lab-week04/
+cd week04-star-schema/lab-week04/
 mkdir -p dbt/coffee_dw/models/staging
 mkdir -p dbt/coffee_dw/models/dimensions
 mkdir -p dbt/coffee_dw/models/marts
@@ -832,7 +832,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs serve --host 0.0.0.0 --
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
 
-ส่งคำตอบใน **Google Classroom** หัวข้อ **Lab 4: การวิเคราะห์ ออกแบบ และสร้าง Star Schema**
+ส่งคำตอบผ่าน **[Google Form — Lab 4: การวิเคราะห์ ออกแบบ และสร้าง Star Schema](https://docs.google.com/forms/d/1kk_YHIwPoRR0W3LxNorf2l-Dmfq-grHcS3e58DsMSJY/viewform)**
 
 Include:
 1. Your **Star Schema ER diagram** from Part 1 (PK / FK / relationships).
