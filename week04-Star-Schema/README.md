@@ -41,10 +41,9 @@
 |---|---|
 | 📂 [slides/](./slides/) | Lecture slides |
 | └── 📄 [4 - Star Schema Design.pdf](./slides/4%20-%20Star%20Schema%20Design.pdf) | Lecture: Star Schema Design |
-| 📂 [docs/](./docs/) | Lab instructions & Star Schema diagram |
+| 📂 [docs/](./docs/) | Lab instructions |
 | ├── 📄 [Lab4 Star Schema.pdf](./docs/Lab4%20Star%20Schema.pdf) | Lab instruction (PDF) |
-| ├── 📝 [Lab4 Star Schema.docx](./docs/Lab4%20Star%20Schema.docx) | Lab instruction (Word) |
-| └── 🖼️ [Lab4.svg](./docs/Lab4.svg) | Star Schema ER diagram (reference answer) |
+| └── 📝 [Lab4 Star Schema.docx](./docs/Lab4%20Star%20Schema.docx) | Lab instruction (Word) |
 | 📂 [data/](./data/) | Dataset for the lab |
 | └── 📊 [coffee_sales.csv](./data/coffee_sales.csv) | Coffee Club sales dataset (imported into `coffee_staging`) |
 | 📂 [lab-week04/](./lab-week04/) | **Lab working directory** (dbt project) |
@@ -195,13 +194,8 @@ tables** needed for the KPIs.
 2. Draw an **ER diagram** of the Star Schema with every Primary Key, Foreign Key, and relationship.
 3. Map each KPI to the fact/dimension it reads from, and note its result grain.
 
-**Reference Star Schema (ER Diagram):**
-
-![Coffee Club Star Schema ER Diagram](./docs/Lab4.svg)
-
-> If the diagram doesn't render inline, open it directly: [docs/Lab4.svg](./docs/Lab4.svg).
-> The fact `fct_sales` sits at the center, joined to `dim_date`, `dim_customer`, `dim_product`,
-> `dim_store`, `dim_staff`, and `dim_promotion`.
+> 📝 Your schema should center on `fct_sales` (grain: one row per `sale_id`), joined to
+> `dim_date`, `dim_customer`, `dim_product`, `dim_store`, `dim_staff`, and `dim_promotion`.
 
 ---
 
