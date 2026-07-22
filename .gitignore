@@ -4,5 +4,6 @@
 **/logs/
 **/pg_data/
 **/pgadmin-data/
-**/Lab4.svg
+**/week04-star-schema/Lab4
+**/Lab4.zip
 __pycache__/

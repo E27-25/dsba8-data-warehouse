@@ -1,7 +1,7 @@
 # 📦 Week 4: Star Schema & Metric Layer with dbt
 
-> **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
-> **Topic:** Building a Star Schema & Metric Layer with dbt — Coffee Club Case Study  
+> **Course:** Data Warehousing (การสร้างคลังข้อมูล)
+> **Topic:** Building a Star Schema & Metric Layer with dbt — Coffee Club Case Study
 > **Duration:** 2 Hours
 
 > 💡 **Lab concept / แนวคิดของ Lab:** move away from building tables step-by-step in raw SQL, and
@@ -24,30 +24,30 @@
 
 ## 🧰 Tools & Stack Overview / เครื่องมือที่ใช้
 
-| Tool | What is it? | What is it used for in this lab? |
-|---|---|---|
-| **Docker Compose** | Containerization | Run PostgreSQL, dbt, pgAdmin, and Metabase together. |
-| **PostgreSQL 16** | Relational Database (RDBMS) | Store the `coffee_dw` raw table and all dbt output tables/views. |
-| **pgAdmin 4** | Database GUI Management Tool | Create `coffee_dw`, import `coffee_sales.csv`, inspect results. |
-| **dbt Core** | Transformation Framework | Build staging, dimensions, fact, metric layer, tests, and docs. |
-| **VS Code / Text Editor** | Editor | Create and edit `.sql` and `.yml` files in the dbt project. |
-| **Metabase** *(optional)* | BI & Visualization | Reuse the Metric Layer to build KPI charts (carried from prior weeks). |
+| Tool                              | What is it?                  | What is it used for in this lab?                                       |
+| --------------------------------- | ---------------------------- | ---------------------------------------------------------------------- |
+| **Docker Compose**          | Containerization             | Run PostgreSQL, dbt, pgAdmin, and Metabase together.                   |
+| **PostgreSQL 16**           | Relational Database (RDBMS)  | Store the`coffee_dw` raw table and all dbt output tables/views.      |
+| **pgAdmin 4**               | Database GUI Management Tool | Create`coffee_dw`, import `coffee_sales.csv`, inspect results.     |
+| **dbt Core**                | Transformation Framework     | Build staging, dimensions, fact, metric layer, tests, and docs.        |
+| **VS Code / Text Editor**   | Editor                       | Create and edit`.sql` and `.yml` files in the dbt project.         |
+| **Metabase** *(optional)* | BI & Visualization           | Reuse the Metric Layer to build KPI charts (carried from prior weeks). |
 
 ---
 
 ## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
 
-| File / Folder | Description |
-|---|---|
-| 📂 [slides/](./slides/) | Lecture slides |
-| └── 📄 [4 - Star Schema Design.pdf](./slides/4%20-%20Star%20Schema%20Design.pdf) | Lecture: Star Schema Design |
-| 📂 [docs/](./docs/) | Lab instructions |
-| ├── 📄 [Lab4 Star Schema.pdf](./docs/Lab4%20Star%20Schema.pdf) | Lab instruction (PDF) |
-| └── 📝 [Lab4 Star Schema.docx](./docs/Lab4%20Star%20Schema.docx) | Lab instruction (Word) |
-| 📂 [data/](./data/) | Dataset for the lab |
-| └── 📊 [coffee_sales.csv](./data/coffee_sales.csv) | Coffee Club sales dataset (imported into `coffee_staging`) |
-| 📂 [lab-week04/](./lab-week04/) | **Lab working directory** (dbt project) |
-| └── 📂 dbt/ & dbt_root/ | dbt project (`coffee_dw`) and profile — created during the lab |
+| File / Folder                                                                       | Description                                                       |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| 📂[slides/](./slides/)                                                               | Lecture slides                                                    |
+| └── 📄[4 - Star Schema Design.pdf](<./slides/4%20-%20Star%20Schema%20Design.pdf>) | Lecture: Star Schema Design                                       |
+| 📂[docs/](./docs/)                                                                   | Lab instructions                                                  |
+| ├── 📄[Lab4 Star Schema.pdf](<./docs/Lab4%20Star%20Schema.pdf>)                   | Lab instruction (PDF)                                             |
+| └── 📝[Lab4 Star Schema.docx](<./docs/Lab4%20Star%20Schema.docx>)                 | Lab instruction (Word)                                            |
+| 📂[data/](./data/)                                                                   | Dataset for the lab                                               |
+| └── 📊[coffee_sales.csv](./data/coffee_sales.csv)                                 | Coffee Club sales dataset (imported into`coffee_staging`)       |
+| 📂[lab-week04/](./lab-week04/)                                                       | **Lab working directory** (dbt project)                     |
+| └── 📂 dbt/ & dbt_root/                                                          | dbt project (`coffee_dw`) and profile — created during the lab |
 
 ---
 
@@ -62,67 +62,67 @@ into a Data Warehouse to analyze sales, promotion performance, and customer beha
 <details>
 <summary><b>📇 Data Dictionary — coffee_sales.csv (23 columns)</b></summary>
 
-| column_name | Description |
-|---|---|
-| `sale_id` | รหัสประจำธุรกรรมการขายแต่ละรายการ (Primary Key) |
-| `invoice_number` | หมายเลขใบเสร็จที่ใช้ในธุรกรรม |
-| `sale_date` | วันที่ที่มีการขายสินค้าเกิดขึ้น |
-| `customer_code` | รหัสลูกค้าที่ได้จากระบบต้นทาง |
-| `customer_name` | ชื่อลูกค้า |
-| `gender` | เพศของลูกค้า (M = ชาย, F = หญิง) |
-| `birth_year` | ปีเกิดของลูกค้า |
-| `product_code` | รหัสประจำสินค้าที่ขาย |
-| `product_name` | ชื่อสินค้าที่ขาย |
-| `category` | ประเภทของสินค้า เช่น กาแฟ ชา หรือเบเกอรี่ |
-| `size` | ขนาดของสินค้า (S, M, L หรือ '-') |
-| `unit_price` | ราคาต่อหน่วยของสินค้า |
-| `quantity` | จำนวนสินค้าที่ขายในรายการนี้ |
-| `revenue` | จำนวนเงินที่ลูกค้าชำระจริงหลังหักส่วนลดแล้ว |
-| `store_code` | รหัสร้านค้าที่ขายสินค้า |
-| `store_name` | ชื่อของร้านค้า |
-| `province` | จังหวัดที่ตั้งของร้านค้า |
-| `staff_code` | รหัสพนักงานที่ดูแลการขาย |
-| `staff_name` | ชื่อของพนักงาน |
-| `position` | ตำแหน่งของพนักงาน เช่น Barista หรือ Cashier |
-| `promo_code` | รหัสโปรโมชันที่ใช้ (ถ้ามี) |
-| `promo_desc` | คำอธิบายของโปรโมชันที่ใช้ |
-| `points_redeemed` | จำนวนแต้มสะสมที่ลูกค้าใช้แลกในรายการนี้ |
+| column_name         | Description                                                                            |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| `sale_id`         | รหัสประจำธุรกรรมการขายแต่ละรายการ (Primary Key)       |
+| `invoice_number`  | หมายเลขใบเสร็จที่ใช้ในธุรกรรม                             |
+| `sale_date`       | วันที่ที่มีการขายสินค้าเกิดขึ้น                         |
+| `customer_code`   | รหัสลูกค้าที่ได้จากระบบต้นทาง                             |
+| `customer_name`   | ชื่อลูกค้า                                                                   |
+| `gender`          | เพศของลูกค้า (M = ชาย, F = หญิง)                                    |
+| `birth_year`      | ปีเกิดของลูกค้า                                                         |
+| `product_code`    | รหัสประจำสินค้าที่ขาย                                             |
+| `product_name`    | ชื่อสินค้าที่ขาย                                                       |
+| `category`        | ประเภทของสินค้า เช่น กาแฟ ชา หรือเบเกอรี่         |
+| `size`            | ขนาดของสินค้า (S, M, L หรือ '-')                                      |
+| `unit_price`      | ราคาต่อหน่วยของสินค้า                                             |
+| `quantity`        | จำนวนสินค้าที่ขายในรายการนี้                               |
+| `revenue`         | จำนวนเงินที่ลูกค้าชำระจริงหลังหักส่วนลดแล้ว |
+| `store_code`      | รหัสร้านค้าที่ขายสินค้า                                         |
+| `store_name`      | ชื่อของร้านค้า                                                           |
+| `province`        | จังหวัดที่ตั้งของร้านค้า                                       |
+| `staff_code`      | รหัสพนักงานที่ดูแลการขาย                                       |
+| `staff_name`      | ชื่อของพนักงาน                                                           |
+| `position`        | ตำแหน่งของพนักงาน เช่น Barista หรือ Cashier                   |
+| `promo_code`      | รหัสโปรโมชันที่ใช้ (ถ้ามี)                                      |
+| `promo_desc`      | คำอธิบายของโปรโมชันที่ใช้                                     |
+| `points_redeemed` | จำนวนแต้มสะสมที่ลูกค้าใช้แลกในรายการนี้         |
 
 </details>
 
 **Business Processes / Business Processes ที่เกี่ยวข้อง**
 
-| Business Process | Description |
-|---|---|
-| **Make a Sale** | ลูกค้าซื้อสินค้าในร้าน สะสมแต้ม หรือแลกแต้ม |
-| **Apply Promotion** | ใช้โปรโมชันลดราคา ณ จุดขาย |
-| **Serve by Staff** | พนักงานบริการลูกค้าแต่ละคนในแต่ละบิล |
+| Business Process          | Description                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------ |
+| **Make a Sale**     | ลูกค้าซื้อสินค้าในร้าน สะสมแต้ม หรือแลกแต้ม |
+| **Apply Promotion** | ใช้โปรโมชันลดราคา ณ จุดขาย                                   |
+| **Serve by Staff**  | พนักงานบริการลูกค้าแต่ละคนในแต่ละบิล             |
 
 ---
 
 ## 🎯 Target KPIs (M001–M008) / KPI ที่ต้องการ
 
-| metric_key | Business Process | KPI | Result Grain |
-|:---:|---|---|---|
-| **M001** | Make a Sale | Total revenue / ยอดขายรวม | month |
-| **M002** | Make a Sale | Revenue per bill / ยอดขายต่อบิล | month + `invoice_number` |
-| **M003** | Make a Sale | Revenue per product / ยอดขายต่อสินค้า | month + `product_code` |
-| **M004** | Apply Promotion | Discount value from promotions / มูลค่าส่วนลด | month + `promo_code` |
-| **M005** | Apply Promotion | Bills that used a promotion / จำนวนบิลที่ใช้โปรโมชัน | month + `promo_code` |
-| **M006** | Apply Promotion | Points redeemed per customer / แต้มที่แลกใช้ | month + `customer_code` |
-| **M007** | Serve by Staff | Revenue per staff / ยอดขายต่อพนักงาน | month + `staff_code` |
-| **M008** | Serve by Staff | Top-selling category per staff / ประเภทที่ขายมากสุด | month + `staff_code` |
+|   metric_key   | Business Process | KPI                                                                        | Result Grain              |
+| :------------: | ---------------- | -------------------------------------------------------------------------- | ------------------------- |
+| **M001** | Make a Sale      | Total revenue / ยอดขายรวม                                         | month                     |
+| **M002** | Make a Sale      | Revenue per bill / ยอดขายต่อบิล                                | month +`invoice_number` |
+| **M003** | Make a Sale      | Revenue per product / ยอดขายต่อสินค้า                       | month +`product_code`   |
+| **M004** | Apply Promotion  | Discount value from promotions / มูลค่าส่วนลด                  | month +`promo_code`     |
+| **M005** | Apply Promotion  | Bills that used a promotion / จำนวนบิลที่ใช้โปรโมชัน | month +`promo_code`     |
+| **M006** | Apply Promotion  | Points redeemed per customer / แต้มที่แลกใช้                  | month +`customer_code`  |
+| **M007** | Serve by Staff   | Revenue per staff / ยอดขายต่อพนักงาน                       | month +`staff_code`     |
+| **M008** | Serve by Staff   | Top-selling category per staff / ประเภทที่ขายมากสุด      | month +`staff_code`     |
 
 ---
 
 ## 🏛️ Data Architecture / สถาปัตยกรรมข้อมูล
 
-| # | Layer | Responsibility |
-|:---:|---|---|
-| 1 | **CSV / PostgreSQL raw table** | Source data → `coffee_staging` |
-| 2 | **Staging Layer** | Rename columns, cast types, handle nulls & promotion data |
-| 3 | **Core Data Warehouse** | Dimension tables + `fct_sales` following the Star Schema |
-| 4 | **Metric Layer** | Compute M001–M008 from one shared definition |
+| # | Layer                                | Responsibility                                            |
+| :-: | ------------------------------------ | --------------------------------------------------------- |
+| 1 | **CSV / PostgreSQL raw table** | Source data →`coffee_staging`                          |
+| 2 | **Staging Layer**              | Rename columns, cast types, handle nulls & promotion data |
+| 3 | **Core Data Warehouse**        | Dimension tables +`fct_sales` following the Star Schema |
+| 4 | **Metric Layer**               | Compute M001–M008 from one shared definition             |
 
 ---
 
@@ -165,6 +165,7 @@ Reuse the Docker stack from Week 1 (it already contains `dw_postgres`, `dw_dbt`,
 `Metabase`). From your existing lab folder:
 
 **Mac / Linux:**
+
 ```bash
 cd week01-data-warehouse-setup/lab-week01
 echo -e "AIRFLOW_UID=$(id -u)" > .env
@@ -173,6 +174,7 @@ docker compose ps
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 cd week01-data-warehouse-setup/lab-week01
 Set-Content -Path .env -Value "AIRFLOW_UID=50000"
@@ -205,14 +207,18 @@ dbt **transforms** data — it does **not** load the CSV. So we load `coffee_sal
 table first.
 
 ### 2.1 Create the database
+
 Open **pgAdmin** ([http://localhost:28880](http://localhost:28880), login `dw_user@mail.com` / `dw_pass`),
 open the **Query Tool**, and run:
+
 ```sql
 CREATE DATABASE coffee_dw;
 ```
 
 ### 2.2 Create the raw table
+
 Select the `coffee_dw` database, open a new **Query Tool**, and run:
+
 ```sql
 CREATE TABLE public.coffee_staging (
     sale_id INT,
@@ -242,9 +248,11 @@ CREATE TABLE public.coffee_staging (
 ```
 
 ### 2.3 Import the CSV and verify
+
 1. Right-click `public.coffee_staging` ➡️ **Import/Export Data...** ➡️ **Import**.
 2. **Filename:** select `coffee_sales.csv` (in `week04-star-schema/data/`). **Format:** `csv`. **Header:** `Yes`. **Delimiter:** `,`.
 3. Click **OK**, then verify the row count:
+
 ```sql
 SELECT COUNT(*) AS row_count FROM public.coffee_staging;
 ```
@@ -264,6 +272,7 @@ Create a dbt profile named **`coffee_dw`** pointing at the `coffee_dw` database,
 `dbt debug`. This mirrors the `dbt_root/profiles.yml` setup from Week 3.
 
 ### 3.1 Create `dbt_root/profiles.yml`
+
 ```yaml
 coffee_dw:
   target: dev
@@ -282,6 +291,7 @@ coffee_dw:
 > 📝 dbt selects this profile via the `profile: 'coffee_dw'` key in `dbt_project.yml` (Part 4).
 
 ### 3.2 Run `dbt debug`
+
 ```bash
 docker exec -it dw_dbt bash -c "cd coffee_dw && dbt debug"
 ```
@@ -300,7 +310,9 @@ If it shows **"All checks passed!"**, dbt is connected to PostgreSQL.
 ## ⚙️ Part 4: Configure the dbt Project & Source / ตั้งค่า dbt project และ Source
 
 <details>
-<summary><b>⚡ Fast Track: create the folder skeleton via Terminal (Mac/Linux)</b></summary>
+<summary><b>⚡ Fast Track: create the folder skeleton via Terminal</b></summary>
+
+**Mac / Linux:**
 
 ```bash
 cd week04-star-schema/lab-week04/
@@ -312,12 +324,22 @@ mkdir -p dbt/coffee_dw/tests
 mkdir -p dbt_root
 ```
 
-> 🪟 **Windows:** create the same folders in VS Code / File Explorer, or run the commands in
-> Git Bash. PowerShell users can replace each line with `New-Item -ItemType Directory -Force <path>`.
+**Windows (PowerShell):**
+
+```powershell
+cd week04-star-schema/lab-week04/
+New-Item -ItemType Directory -Force dbt/coffee_dw/models/staging
+New-Item -ItemType Directory -Force dbt/coffee_dw/models/dimensions
+New-Item -ItemType Directory -Force dbt/coffee_dw/models/marts
+New-Item -ItemType Directory -Force dbt/coffee_dw/models/metrics
+New-Item -ItemType Directory -Force dbt/coffee_dw/tests
+New-Item -ItemType Directory -Force dbt_root
+```
 
 </details>
 
 ### 4.1 Create `dbt/coffee_dw/dbt_project.yml`
+
 ```yaml
 name: 'coffee_dw'
 version: '1.0.0'
@@ -339,6 +361,7 @@ models:
 ```
 
 Verify dbt can parse the project:
+
 ```bash
 docker exec -it dw_dbt bash -c "cd coffee_dw && dbt parse"
 ```
@@ -351,6 +374,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw && dbt parse"
 </details>
 
 ### 4.2 Create `dbt/coffee_dw/models/staging/_sources.yml`
+
 ```yaml
 version: 2
 
@@ -415,6 +439,7 @@ Build one Dimension per business entity. Use the source **business key** and add
 **surrogate key** with `md5()`.
 
 **`dim_date.sql`**
+
 ```sql
 select distinct
     to_char(sale_date, 'YYYYMMDD')::integer as date_key,
@@ -428,6 +453,7 @@ from {{ ref('stg_coffee_sales') }}
 ```
 
 **`dim_customer.sql`** *(pattern for every other dimension)*
+
 ```sql
 select distinct
     md5(coalesce(customer_code, '__NULL__')) as customer_key,
@@ -440,14 +466,14 @@ from {{ ref('stg_coffee_sales') }}
 
 Build the remaining dimensions with the same `md5(business_key)` pattern and these attributes:
 
-| Model | Business key | Attributes |
-|---|---|---|
-| `dim_date` | `sale_date` | `date_key, full_date, day, month, month_name, quarter, year` |
-| `dim_customer` | `customer_code` | `customer_name, gender, birth_year` |
-| `dim_product` | `product_code` | `product_name, category, size` |
-| `dim_store` | `store_code` | `store_name, province` |
-| `dim_staff` | `staff_code` | `staff_name, position` |
-| `dim_promotion` | `promo_code` | `promo_desc`; **must include `NO_PROMO`** |
+| Model             | Business key      | Attributes                                                     |
+| ----------------- | ----------------- | -------------------------------------------------------------- |
+| `dim_date`      | `sale_date`     | `date_key, full_date, day, month, month_name, quarter, year` |
+| `dim_customer`  | `customer_code` | `customer_name, gender, birth_year`                          |
+| `dim_product`   | `product_code`  | `product_name, category, size`                               |
+| `dim_store`     | `store_code`    | `store_name, province`                                       |
+| `dim_staff`     | `staff_code`    | `staff_name, position`                                       |
+| `dim_promotion` | `promo_code`    | `promo_desc`; **must include `NO_PROMO`**            |
 
 > 📝 Name each surrogate key `<entity>_key` (e.g. `product_key`, `store_key`, `staff_key`,
 > `promotion_key`) — the Fact model and tests in Parts 7 & 9 rely on these names.
@@ -503,6 +529,7 @@ output columns where possible: `metric_key`, `metric_month`, `dimension_key`, `d
 `metric_value`.
 
 ### 8.1 Example — `metric_m001_total_revenue.sql`
+
 ```sql
 select
     'M001'::varchar              as metric_key,
@@ -516,6 +543,7 @@ group by 1, 2, 3, 4
 ```
 
 ### 8.2 Template for M002–M007 *(fill in the `<...>` parts yourself)*
+
 ```sql
 select
     '<metric_key>'::varchar      as metric_key,
@@ -530,18 +558,19 @@ join {{ ref('dim_date') }} d using (date_key)
 
 Calculation reference for every metric:
 
-| Key | Calculation | Dimension / Condition | Model file |
-|:---:|---|---|---|
-| M001 | `SUM(revenue)` | Company-wide | `metric_m001_total_revenue.sql` |
-| M002 | `SUM(revenue)` | `invoice_number` | `metric_m002_revenue_by_invoice.sql` |
-| M003 | `SUM(revenue)` | `product_code` | `metric_m003_revenue_by_product.sql` |
-| M004 | `SUM(discount_amount)` | `promo_code`; exclude `NO_PROMO` | `metric_m004_discount_by_promotion.sql` |
-| M005 | `COUNT(DISTINCT invoice_number)` | `promo_code`; exclude `NO_PROMO` | `metric_m005_promo_bill_count.sql` |
-| M006 | `SUM(points_redeemed)` | `customer_code` | `metric_m006_points_by_customer.sql` |
-| M007 | `SUM(revenue)` | `staff_code` | `metric_m007_revenue_by_staff.sql` |
-| M008 | `SUM(quantity)` then rank | `staff_code` + `category`; pick rank 1 | `metric_m008_top_category_by_staff.sql` |
+| Key | Calculation                        | Dimension / Condition                      | Model file                                |
+| :--: | ---------------------------------- | ------------------------------------------ | ----------------------------------------- |
+| M001 | `SUM(revenue)`                   | Company-wide                               | `metric_m001_total_revenue.sql`         |
+| M002 | `SUM(revenue)`                   | `invoice_number`                         | `metric_m002_revenue_by_invoice.sql`    |
+| M003 | `SUM(revenue)`                   | `product_code`                           | `metric_m003_revenue_by_product.sql`    |
+| M004 | `SUM(discount_amount)`           | `promo_code`; exclude `NO_PROMO`       | `metric_m004_discount_by_promotion.sql` |
+| M005 | `COUNT(DISTINCT invoice_number)` | `promo_code`; exclude `NO_PROMO`       | `metric_m005_promo_bill_count.sql`      |
+| M006 | `SUM(points_redeemed)`           | `customer_code`                          | `metric_m006_points_by_customer.sql`    |
+| M007 | `SUM(revenue)`                   | `staff_code`                             | `metric_m007_revenue_by_staff.sql`      |
+| M008 | `SUM(quantity)` then rank        | `staff_code` + `category`; pick rank 1 | `metric_m008_top_category_by_staff.sql` |
 
 ### 8.3 M008 — Top Category per Staff `metric_m008_top_category_by_staff.sql`
+
 ```sql
 with category_sales as (
 
@@ -764,6 +793,7 @@ models:
 </details>
 
 Create the singular test `dbt/coffee_dw/tests/assert_fct_sales_row_count.sql`:
+
 ```sql
 with staging as (
     select count(*) as row_count
@@ -787,19 +817,32 @@ where staging.row_count <> fact.row_count
 ## 🚀 Part 10: Run dbt & Verify Results / รัน dbt และตรวจผล
 
 ### 10.1 Build and test
+
 ```bash
 docker exec -it dw_dbt bash -c "cd coffee_dw && dbt build --select +fct_sales+"
 docker exec -it dw_dbt bash -c "cd coffee_dw && dbt test"
 ```
 
 <details>
-<summary><b>Show Output</b></summary>
+<summary><b>Show Output (dbt build)</b></summary>
 
-![CLI: dbt build output](./docs/screenshots/dbt-build.png)
+![CLI: dbt build output (Part 1)](./docs/screenshots/dbt-build-1.png)
+
+![CLI: dbt build output (Part 2)](./docs/screenshots/dbt-build-2.png)
+
+</details>
+
+<details>
+<summary><b>Show Output (dbt test)</b></summary>
+
+![CLI: dbt test output (Part 1)](./docs/screenshots/dbt-test-1.png)
+
+![CLI: dbt test output (Part 2)](./docs/screenshots/dbt-test-2.png)
 
 </details>
 
 ### 10.2 Generate & serve the dbt docs
+
 ```bash
 docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs generate"
 docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs serve --host 0.0.0.0 --port 8080"
@@ -812,7 +855,23 @@ docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs serve --host 0.0.0.0 --
 > Check that the lineage flows `coffee_staging → staging → dimensions / fct_sales → metric models`.
 
 <details>
-<summary><b>Show Output</b></summary>
+<summary><b>Show Output (dbt docs generate)</b></summary>
+
+![CLI: dbt docs generate output](./docs/screenshots/dbt-docs-generate.png)
+
+</details>
+
+<details>
+<summary><b>Show Output (dbt docs serve)</b></summary>
+
+![CLI: dbt docs serve output](./docs/screenshots/dbt-docs-serve.png)
+
+</details>
+
+<details>
+<summary><b>Show Lineage Graph & Navigation</b></summary>
+
+![dbt docs: overview navigation](./docs/screenshots/dbt-docs-overview.png)
 
 ![dbt docs: lineage graph](./docs/screenshots/dbt-docs-lineage.png)
 
@@ -820,13 +879,13 @@ docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs serve --host 0.0.0.0 --
 
 ### 10.3 Verification checkpoints / จุดตรวจ
 
-| Checkpoint | Expected result |
-|---|---|
-| **Source tests** | `sale_id` is not null and not duplicated |
-| **Dimension tests** | every business key **and** surrogate key is unique |
-| **Fact row count** | `fct_sales` row count **equals** `stg_coffee_sales` |
-| **Relationship tests** | every foreign key resolves to its Dimension |
-| **Metric values** | KPI values match a manual SQL check (verify **at least 2**) |
+| Checkpoint                   | Expected result                                                  |
+| ---------------------------- | ---------------------------------------------------------------- |
+| **Source tests**       | `sale_id` is not null and not duplicated                       |
+| **Dimension tests**    | every business key**and** surrogate key is unique          |
+| **Fact row count**     | `fct_sales` row count **equals** `stg_coffee_sales`    |
+| **Relationship tests** | every foreign key resolves to its Dimension                      |
+| **Metric values**      | KPI values match a manual SQL check (verify**at least 2**) |
 
 ---
 
@@ -835,6 +894,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs serve --host 0.0.0.0 --
 ส่งคำตอบผ่าน **[Google Form — Lab 4: การวิเคราะห์ ออกแบบ และสร้าง Star Schema](https://docs.google.com/forms/d/1kk_YHIwPoRR0W3LxNorf2l-Dmfq-grHcS3e58DsMSJY/viewform)**
 
 Include:
+
 1. Your **Star Schema ER diagram** from Part 1 (PK / FK / relationships).
 2. Proof that **`dbt build`** and **`dbt test`** pass (screenshot / log).
 3. A screenshot of the **dbt docs lineage graph**.
@@ -846,15 +906,15 @@ Include:
 
 > ⚠️ Run these from your dbt working folder; the container name is `dw_dbt` and the project is `coffee_dw`.
 
-| Command | Description |
-|---|---|
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt debug"` | Test the database connection |
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt parse"` | Validate project config parses |
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt run"` | Build all models |
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt build --select +fct_sales+"` | Build `fct_sales` and everything up/downstream of it |
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt test"` | Run all data tests |
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt seed"` | Load CSV seeds (if any) |
-| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs generate"` | Build the documentation site |
+| Command                                                                             | Description                                           |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt debug"`                      | Test the database connection                          |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt parse"`                      | Validate project config parses                        |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt run"`                        | Build all models                                      |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt build --select +fct_sales+"` | Build`fct_sales` and everything up/downstream of it |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt test"`                       | Run all data tests                                    |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt seed"`                       | Load CSV seeds (if any)                               |
+| `docker exec -it dw_dbt bash -c "cd coffee_dw && dbt docs generate"`              | Build the documentation site                          |
 
 ---
 
