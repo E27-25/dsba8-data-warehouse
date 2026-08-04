@@ -1250,7 +1250,9 @@ Graph** เพื่อดูเส้นทาง `coffee_sales_scd → stg_cof
 > — `ports: ["28088:8080"]`. `dbt docs serve` runs until you press **Ctrl+C**.
 
 <details>
-<summary><b>📷 dbt docs — Lineage Graph</b></summary>
+<summary><b>Show Output & Lineage Graph</b></summary>
+
+![CLI: dbt docs generate](./docs/screenshots/dbt-docs-generate.png)
 
 ![dbt docs: lineage graph](./docs/screenshots/dbt-docs-lineage.png)
 
