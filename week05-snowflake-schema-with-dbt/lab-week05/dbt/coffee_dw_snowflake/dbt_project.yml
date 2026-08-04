@@ -1,0 +1,46 @@
+name: coffee_dw_snowflake
+version: '1.0.0'
+config-version: 2
+
+profile: coffee_dw_snowflake
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  coffee_dw_snowflake:          # project name
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+    metadata:
+      +materialized: table
+      +schema: metadata
+    reporting:
+      +materialized: view
+      +schema: reporting
+
+seeds:
+  coffee_dw_snowflake:
+    +schema: raw
+    coffee_sales:
+      +column_types:
+        sale_id: integer
+        sale_date: date
+        birth_year: integer
+        unit_price: numeric(10,2)
+        quantity: integer
+        revenue: numeric(12,2)
+        points_redeemed: integer
+    province_region_mapping:
+      +column_types:
+        province_name: varchar(100)
+        region_name: varchar(100)

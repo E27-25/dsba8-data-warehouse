@@ -35,7 +35,9 @@
 | 2 | OLAP Operations with Metabase & PostgreSQL | [Week 2](./week02-olap-metabase/) |
 | 3 | Requirement Gathering & KPI Layer (dbt) | [Week 3](./week03-kpi-layer/) |
 | 4 | Star Schema & Metric Layer with dbt (Coffee Club) | [Week 4](./week04-star-schema/) |
-| 5–15 | Coming soon — syllabus in progress | — |
+| 5 | Snowflake Schema with dbt (Hierarchies & Metadata) | [Week 5](./week05-snowflake-schema-with-dbt/) |
+| 6 | Slowly Changing Dimensions (SCD Types 0–3) with dbt | [Week 6](./week06-scd-with-dbt/) |
+| 7–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -135,6 +137,29 @@ dsba8-data-warehouse/
     ├── data/                              ← Dataset
     │   └── coffee_sales.csv
     ├── lab-week04/                        ← Lab working dir (dbt project)
+    └── README.md
+│
+└── week05-snowflake-schema-with-dbt/      ← Week 5 ✅
+    ├── docs/                              ← Lab documentation & ER diagram
+    │   ├── Lab5 Snowflake Schema with dbt.pdf
+    │   └── screenshots/
+    ├── lab-week05/                        ← Lab working dir (dbt project)
+    │   ├── dbt_root/                      ← profiles.yml (created during the lab)
+    │   └── dbt/coffee_dw_snowflake/
+    │       └── seeds/                     ← Datasets loaded via `dbt seed`
+    │           ├── coffee_sales.csv
+    │           └── province_region_mapping.csv
+    └── README.md
+│
+└── week06-scd-with-dbt/                   ← Week 6 ✅
+    ├── docs/                              ← Lab documentation & SCD Type 2 diagram
+    │   ├── Lab6 SCD with dbt.pdf
+    │   └── screenshots/
+    ├── lab-week06/                        ← Lab working dir (dbt project)
+    │   ├── dbt_root/                      ← profiles.yml (created during the lab)
+    │   └── dbt/coffee_dw_scd/
+    │       └── seeds/                     ← Dataset loaded via `dbt seed`
+    │           └── coffee_sales_scd.csv
     └── README.md
 ```
 
