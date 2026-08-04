@@ -1,0 +1,40 @@
+name: coffee_dw_scd
+version: '1.0.0'
+config-version: 2
+
+profile: coffee_dw_scd
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  coffee_dw_scd:                 # ต้องตรงกับ name ของ project
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+    reporting:
+      +materialized: view
+      +schema: reporting
+
+seeds:
+  coffee_dw_scd:
+    +schema: raw
+    coffee_sales_scd:
+      +column_types:
+        sale_id: integer
+        sale_date: date
+        birth_year: integer
+        unit_price: numeric(10,2)
+        quantity: integer
+        revenue: numeric(12,2)
+        points_redeemed: integer
