@@ -1,12 +1,13 @@
 # 📦 Week 1: Data Warehouse Setup & Exploration
 
-> **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
-> **Topic:** Environment Setup with Docker & Basic Data Exploration  
+> **Course:** Data Warehousing (การสร้างคลังข้อมูล)
+> **Topic:** Environment Setup with Docker & Basic Data Exploration
 > **Duration:** 2 Hours
 
 ---
 
 ## 🎯 Learning Objectives / วัตถุประสงค์
+
 1. Set up the development environment stack using **Docker Compose**.
 2. Create a database, table, and import data via **pgAdmin**.
 3. Connect the PostgreSQL database to **Metabase** and perform basic data exploration/visualization.
@@ -16,40 +17,42 @@
 
 ## 🧰 Tools & Stack Overview / เครื่องมือที่ใช้
 
-| Tool | What is it? | What is it used for in this lab? |
-|---|---|---|
-| **Docker** | Containerization Platform | Runs PostgreSQL, pgAdmin, Airflow, dbt, and Metabase in isolated environments without local installation. |
-| **PostgreSQL 16** | Relational Database (RDBMS) | Stores our structured transactional and analytical data. |
-| **pgAdmin 4** | Database GUI Management Tool | Used to interact with PostgreSQL, run SQL queries, and import CSV datasets. |
-| **Metabase** | Open-source BI & Visualization Tool | Connects to PostgreSQL to create charts and dashboards. |
-| **dbt** / **Airflow** | Transformation / Ingestion | (Setup for future weeks - running in background). |
+| Tool                              | What is it?                         | What is it used for in this lab?                                                                          |
+| --------------------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Docker**                  | Containerization Platform           | Runs PostgreSQL, pgAdmin, Airflow, dbt, and Metabase in isolated environments without local installation. |
+| **PostgreSQL 16**           | Relational Database (RDBMS)         | Stores our structured transactional and analytical data.                                                  |
+| **pgAdmin 4**               | Database GUI Management Tool        | Used to interact with PostgreSQL, run SQL queries, and import CSV datasets.                               |
+| **Metabase**                | Open-source BI & Visualization Tool | Connects to PostgreSQL to create charts and dashboards.                                                   |
+| **dbt** / **Airflow** | Transformation / Ingestion          | (Setup for future weeks - running in background).                                                         |
 
 ---
 
 ## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
 
-| File / Folder | Description |
-|---|---|
-| 📂 [docs/](./docs/) | Contains lab instructions and assignments. |
-| ├── 📄 [Lab1 Data Warehouse Setup.docx](./docs/Lab1%20Data%20Warehouse%20Setup.docx) | Lab instruction document (Word). |
-| └── 📄 [Lab1 Data Warehouse Setup.pdf](./docs/Lab1%20Data%20Warehouse%20Setup.pdf) | Lab instruction document (PDF). |
-| 📂 [slides/](./slides/) | Contains weekly lecture slides. |
-| ├── 📄 [1 - Introduction to Data Warehouse.pdf](./slides/1%20-%20Introduction%20to%20Data%20Warehouse.pdf) | Lecture slides: Introduction to Data Warehousing. |
-| └── 📄 [Overview.pdf](./slides/Overview.pdf) | Lecture slides: Course Overview. |
-| 📂 [data/](./data/) | Contains dataset files for the lab. |
-| └── 📊 [Sample - Superstore.csv](./data/Sample%20-%20Superstore.csv) | Superstore transaction dataset. |
-| 📂 [lab-week01/](./lab-week01/) | Contains environment setup files. |
-| ├── 🐳 [docker-compose.yaml](./lab-week01/docker-compose.yaml) | Full stack definition (PostgreSQL, Airflow, dbt, Metabase, pgAdmin). |
-| ├── 🐳 [dockerfile.airflow](./lab-week01/dockerfile.airflow) | Custom Airflow image with `git`, `dbt-core`, and `dbt-postgres` installed. |
-| ├── ⚙️ [postgresql.conf](./lab-week01/postgresql.conf) | Custom PostgreSQL configuration. |
-| └── 📦 [DWH_Lab.zip](./lab-week01/DWH_Lab.zip) | Complete lab archive. |
+| File / Folder                                                                                                 | Description                                                                     |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| 📂[docs/](./docs/)                                                                                             | Contains lab instructions and assignments.                                      |
+| ├── 📄[Lab1 Data Warehouse Setup.docx](<./docs/Lab1%20Data%20Warehouse%20Setup.docx>)                       | Lab instruction document (Word).                                                |
+| └── 📄[Lab1 Data Warehouse Setup.pdf](<./docs/Lab1%20Data%20Warehouse%20Setup.pdf>)                         | Lab instruction document (PDF).                                                 |
+| 📂[slides/](./slides/)                                                                                         | Contains weekly lecture slides.                                                 |
+| ├── 📄[1 - Introduction to Data Warehouse.pdf](<./slides/1%20-%20Introduction%20to%20Data%20Warehouse.pdf>) | Lecture slides: Introduction to Data Warehousing.                               |
+| └── 📄[Overview.pdf](./slides/Overview.pdf)                                                                 | Lecture slides: Course Overview.                                                |
+| 📂[data/](./data/)                                                                                             | Contains dataset files for the lab.                                             |
+| └── 📊[Sample - Superstore.csv](<./data/Sample%20-%20Superstore.csv>)                                       | Superstore transaction dataset.                                                 |
+| 📂[lab-week01/](./lab-week01/)                                                                                 | Contains environment setup files.                                               |
+| ├── 🐳[docker-compose.yaml](./lab-week01/docker-compose.yaml)                                               | Full stack definition (PostgreSQL, Airflow, dbt, Metabase, pgAdmin).            |
+| ├── 🐳[dockerfile.airflow](./lab-week01/dockerfile.airflow)                                                 | Custom Airflow image with`git`, `dbt-core`, and `dbt-postgres` installed. |
+| ├── ⚙️[postgresql.conf](./lab-week01/postgresql.conf)                                                     | Custom PostgreSQL configuration.                                                |
+| └── 📦[DWH_Lab.zip](./lab-week01/DWH_Lab.zip)                                                               | Complete lab archive.                                                           |
 
 ---
 
 ## 🔧 Part 1: Environment Setup / การติดตั้งระบบจำลอง
 
 ### 1. Check System Specifications
+
 Ensure your machine meets the recommended specs for running the stack:
+
 * **RAM:** $\ge$ 16 GB (Recommended)
 * **Disk Space:** $\ge$ 30 GB free
 * **Docker Desktop:** Installed and running. Download from [Docker Desktop](https://www.docker.com/products/docker-desktop).
@@ -57,13 +60,16 @@ Ensure your machine meets the recommended specs for running the stack:
 > 🍎 **Mac (Apple Silicon / M1–M4) users:** The `docker-compose.yaml` already includes `platform: linux/amd64` for all services. Docker will run the x86 images via Rosetta 2 emulation automatically — no extra steps needed.
 
 ### 2. Verify Docker Installation
+
 Open your terminal (macOS/Linux) or PowerShell (Windows) and run:
+
 ```bash
 docker --version
 docker compose version
 ```
 
 ### 3. Start the Lab Environment
+
 1. Extract the `DWH_Lab.zip` file (Ensure there are no Thai characters in the folder path).
 2. Open your terminal/PowerShell, navigate to the `lab-week01` folder:
    ```bash
@@ -92,6 +98,7 @@ docker compose version
 ## 📥 Part 2: Database & Table Creation / การสร้างตารางและนำเข้าข้อมูล
 
 ### 1. Connect pgAdmin to PostgreSQL
+
 1. Open your browser and go to: **[http://localhost:28880](http://localhost:28880)**
 2. Log in with the default credentials:
    - **Email:** `dw_user@mail.com`
@@ -109,11 +116,13 @@ docker compose version
    - Click **Save**.
 
 ### 2. Create the `sampledb` Database
+
 1. In pgAdmin, right-click on your connected **DW Postgres** server ➡️ **Create** ➡️ **Database...**
 2. **Database name:** `sampledb`
 3. Click **Save**.
 
 ### 3. Create the `orders` Table
+
 1. Select the newly created `sampledb` database in the left sidebar.
 2. Open the **Query Tool** (Tools ➡️ Query Tool, or click the SQL icon).
 3. Copy and paste the following SQL script, then click the **Execute/Play (F5)** button:
@@ -145,6 +154,7 @@ CREATE TABLE orders (
 ```
 
 ### 4. Import the CSV Dataset
+
 1. The dataset file `Sample - Superstore.csv` is located in the `week01-data-warehouse-setup/data/` folder.
 2. In pgAdmin, expand **sampledb** ➡️ **Schemas** ➡️ **public** ➡️ **Tables**.
 3. Right-click on the `orders` table ➡️ **Import/Export Data...**
@@ -186,6 +196,7 @@ CREATE TABLE orders (
 ---
 
 ## ✍️ Part 4: Analytical Questions / คำถามท้ายบทเรียน
+
 *Answer these questions individually for your submission:*
 
 1. Is the `orders` table an **OLTP** or **OLAP** schema? Why? / *ตาราง orders เป็น OLTP หรือ OLAP? เพราะเหตุใด*
@@ -195,7 +206,9 @@ CREATE TABLE orders (
 ---
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
+
 Submit the following via the **[Google Form Assignment Link](https://docs.google.com/forms/d/e/1FAIpQLSd_yRfZwilZvGL-50gqBB0MZdWVC7WyzmToprNWWP0bAJfu4Q/viewform?usp=sharing&ouid=112034381246792911028)**:
+
 1. **Screenshot** of your `orders` table visualization/exploration inside Metabase.
 2. **Answers** to the 3 analytical questions in Part 4.
 
@@ -205,13 +218,13 @@ Submit the following via the **[Google Form Assignment Link](https://docs.google
 
 > ⚠️ **Note:** Always run these commands from inside the `week01-data-warehouse-setup/lab-week01` directory.
 
-| Command | Description |
-|---|---|
-| `docker compose up -d` | Starts all services in the background. |
-| `docker compose down` | Stops all services. |
-| `docker compose down -v` | Stops services and **wipes all database data** (Full Reset). |
-| `docker compose ps` | Checks the status of all containers. |
-| `docker compose logs -f postgres` | Shows live logs for the PostgreSQL container. |
+| Command                             | Description                                                       |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| `docker compose up -d`            | Starts all services in the background.                            |
+| `docker compose down`             | Stops all services.                                               |
+| `docker compose down -v`          | Stops services and**wipes all database data** (Full Reset). |
+| `docker compose ps`               | Checks the status of all containers.                              |
+| `docker compose logs -f postgres` | Shows live logs for the PostgreSQL container.                     |
 
 ---
 

@@ -347,7 +347,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt seed"
 Staging layer ทำหน้าที่ cast ชนิดข้อมูล, `trim` ช่องว่าง, ปรับ `category` เป็นตัวพิมพ์เล็ก และเปลี่ยนค่าว่างของ
 promotion ให้เป็น `NULL`
 
-### 4.1 `models/staging/stg_coffee_sales.sql`
+### 4.1 `dbt/models/staging/stg_coffee_sales.sql`
 
 ```sql
 select
@@ -377,7 +377,7 @@ select
 from {{ ref('coffee_sales') }}
 ```
 
-### 4.2 `models/staging/stg_province_region_mapping.sql`
+### 4.2 `dbt/models/staging/stg_province_region_mapping.sql`
 
 ```sql
 select
@@ -414,7 +414,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt show --select stg_
 
 ### 5.1 Flat dimensions / มิติที่ไม่แตกแขนง
 
-**`models/marts/dim_customer.sql`**
+**`dbt/models/marts/dim_customer.sql`**
 
 ```sql
 select distinct
@@ -426,7 +426,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-**`models/marts/dim_promotion.sql`**
+**`dbt/models/marts/dim_promotion.sql`**
 
 ```sql
 select distinct
@@ -437,7 +437,7 @@ from {{ ref('stg_coffee_sales') }}
 where promo_code is not null
 ```
 
-**`models/marts/dim_date.sql`**
+**`dbt/models/marts/dim_date.sql`**
 
 ```sql
 select distinct
@@ -453,7 +453,7 @@ from {{ ref('stg_coffee_sales') }}
 
 ### 5.2 Product hierarchy — `dim_category` → `dim_product`
 
-**`models/marts/dim_category.sql`**
+**`dbt/models/marts/dim_category.sql`**
 
 ```sql
 select distinct
@@ -462,7 +462,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-**`models/marts/dim_product.sql`**
+**`dbt/models/marts/dim_product.sql`**
 
 ```sql
 select distinct
@@ -479,7 +479,7 @@ join {{ ref('dim_category') }} c
 
 ### 5.3 Geography hierarchy — `dim_region` → `dim_province` → `dim_store`
 
-**`models/marts/dim_region.sql`**
+**`dbt/models/marts/dim_region.sql`**
 
 ```sql
 select distinct
@@ -488,7 +488,7 @@ select distinct
 from {{ ref('stg_province_region_mapping') }}
 ```
 
-**`models/marts/dim_province.sql`**
+**`dbt/models/marts/dim_province.sql`**
 
 ```sql
 select distinct
@@ -500,7 +500,7 @@ join {{ ref('dim_region') }} r
   on m.region_name = r.region_name
 ```
 
-**`models/marts/dim_store.sql`**
+**`dbt/models/marts/dim_store.sql`**
 
 ```sql
 select distinct
@@ -515,7 +515,7 @@ join {{ ref('dim_province') }} p
 
 ### 5.4 Staff hierarchy — `dim_position` → `dim_staff`
 
-**`models/marts/dim_position.sql`**
+**`dbt/models/marts/dim_position.sql`**
 
 ```sql
 select distinct
@@ -524,7 +524,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-**`models/marts/dim_staff.sql`**
+**`dbt/models/marts/dim_staff.sql`**
 
 ```sql
 select distinct
@@ -558,7 +558,7 @@ docker exec -it dw_dbt bash -c 'cd coffee_dw_snowflake && dbt run --select "dim_
 
 ## ⭐ Part 6: Create the Fact Table / สร้าง Fact Table
 
-**`models/marts/fct_sales.sql`**
+**`dbt/models/marts/fct_sales.sql`**
 
 ```sql
 select
@@ -609,7 +609,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt show --select fct_
 
 ## 🪜 Part 7: Build `hierarchy_def` and the Reporting View / สร้าง hierarchy_def และ Reporting View
 
-### 7.1 Metadata model — `models/metadata/hierarchy_def.sql`
+### 7.1 Metadata model — `dbt/models/metadata/hierarchy_def.sql`
 
 ```sql
 with hierarchy as (
@@ -634,7 +634,7 @@ select * from hierarchy
 > 📝 `level_num` กำหนดลำดับจากระดับบนลงล่าง คือ `region` (1) → `province` (2) ส่วน `table_name`,
 > `key_field` และ `name_field` บอกตำแหน่งของข้อมูลใน schema
 
-### 7.2 Flattened view for Metabase — `models/reporting/v_sales_geo_flat.sql`
+### 7.2 Flattened view for Metabase — `dbt/models/reporting/v_sales_geo_flat.sql`
 
 ```sql
 select
@@ -678,7 +678,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt show --select hier
 ไฟล์ `schema.yml` ระบุ `unique`, `not_null` และ `relationships` tests สำหรับคีย์หลักและคีย์อ้างอิง ส่วน
 **singular tests** ตรวจเงื่อนไขทางธุรกิจที่ต้องคืนค่า **0 แถว** จึงจะผ่าน
 
-### 8.1 `models/schema.yml`
+### 8.1 `dbt/models/schema.yml`
 
 <details>
 <summary><b>📄 Full <code>models/schema.yml</code> (click to expand)</b></summary>
@@ -885,7 +885,7 @@ models:
 
 ### 8.2 Singular tests
 
-**`tests/assert_all_provinces_mapped.sql`**
+**`dbt/coffee_dw_snowflake/tests/assert_all_provinces_mapped.sql`**
 
 ```sql
 select s.*
