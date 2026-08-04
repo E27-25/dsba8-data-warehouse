@@ -1,7 +1,7 @@
 # 📦 Week 6: Slowly Changing Dimensions (SCD) with dbt
 
-> **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
-> **Topic:** การจัดการ Slowly Changing Dimensions — SCD Types 0, 1, 2 และ 3 ด้วย dbt  
+> **Course:** Data Warehousing (การสร้างคลังข้อมูล)
+> **Topic:** การจัดการ Slowly Changing Dimensions — SCD Types 0, 1, 2 และ 3 ด้วย dbt
 > **Duration:** 2 Hours
 
 > 💡 **Lab concept / แนวคิดหลัก:** ใช้ **dbt model** สำหรับ Types 0, 1 และ 3 และใช้ **dbt snapshot**
@@ -25,35 +25,35 @@
 
 ## 🧰 Tools & Stack Overview / เครื่องมือที่ใช้
 
-| Tool | What is it? | What is it used for in this lab? |
-|---|---|---|
-| **Docker Compose** | Containerization | Run the `postgres`, `dbt`, and `pgadmin` services. |
-| **PostgreSQL 16** | Relational Database (RDBMS) | Store `coffee_dw_scd` — seeds, snapshots, dimensions, fact, reports. |
-| **dbt-postgres** | Transformation Framework | `seed`, transformation, **snapshot**, `test`, and documentation. |
-| **pgAdmin 4** | Database GUI Management Tool | Create the database and inspect Checkpoint query results. |
-| **VS Code / Text Editor** | Editor | Create the `.sql` and `.yml` files of the dbt project. |
+| Tool                            | What is it?                  | What is it used for in this lab?                                           |
+| ------------------------------- | ---------------------------- | -------------------------------------------------------------------------- |
+| **Docker Compose**        | Containerization             | Run the`postgres`, `dbt`, and `pgadmin` services.                    |
+| **PostgreSQL 16**         | Relational Database (RDBMS)  | Store`coffee_dw_scd` — seeds, snapshots, dimensions, fact, reports.     |
+| **dbt-postgres**          | Transformation Framework     | `seed`, transformation, **snapshot**, `test`, and documentation. |
+| **pgAdmin 4**             | Database GUI Management Tool | Create the database and inspect Checkpoint query results.                  |
+| **VS Code / Text Editor** | Editor                       | Create the`.sql` and `.yml` files of the dbt project.                  |
 
 **Dataset / ชุดข้อมูล**
 
-| Dataset | Rows | Date range |
-|---|---:|---|
+| Dataset                  |  Rows | Date range                       |
+| ------------------------ | ----: | -------------------------------- |
 | `coffee_sales_scd.csv` | 7,470 | `2023-01-01` → `2031-03-19` |
 
 ---
 
 ## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
 
-| File / Folder | Description |
-|---|---|
-| 📂 [docs/](./docs/) | Lab instructions |
-| ├── 📄 [Lab6 SCD with dbt.pdf](<./docs/Lab6%20SCD%20with%20dbt.pdf>) | Lab instruction (PDF) |
-| ├── 📝 [Lab6 SCD with dbt.docx](<./docs/Lab6%20SCD%20with%20dbt.docx>) | Lab instruction (Word) |
-| └── 📂 [screenshots/](./docs/screenshots/) | Images referenced by this README |
-| 📂 [lab-week06/](./lab-week06/) | **Lab working directory** |
-| ├── 📂 [dbt_root/](./lab-week06/dbt_root/) | Holds `profiles.yml` — created during the lab |
-| └── 📂 [dbt/coffee_dw_scd/](./lab-week06/dbt/coffee_dw_scd/) | dbt project — models, snapshots & tests created during the lab |
-| &nbsp;&nbsp;&nbsp;&nbsp;└── 📂 [seeds/](./lab-week06/dbt/coffee_dw_scd/seeds/) | Seed CSV, already in place |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📊 [coffee_sales_scd.csv](./lab-week06/dbt/coffee_dw_scd/seeds/coffee_sales_scd.csv) | 7,470 sales rows spanning two load windows |
+| File / Folder                                                                                                                              | Description                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| 📂[docs/](./docs/)                                                                                                                          | Lab instructions                                                |
+| ├── 📄[Lab6 SCD with dbt.pdf](<./docs/Lab6%20SCD%20with%20dbt.pdf>)                                                                      | Lab instruction (PDF)                                           |
+| ├── 📝[Lab6 SCD with dbt.docx](<./docs/Lab6%20SCD%20with%20dbt.docx>)                                                                    | Lab instruction (Word)                                          |
+| └── 📂[screenshots/](./docs/screenshots/)                                                                                                | Images referenced by this README                                |
+| 📂[lab-week06/](./lab-week06/)                                                                                                              | **Lab working directory**                                 |
+| ├── 📂[dbt_root/](./lab-week06/dbt_root/)                                                                                                | Holds`profiles.yml` — created during the lab                 |
+| └── 📂[dbt/coffee_dw_scd/](./lab-week06/dbt/coffee_dw_scd/)                                                                              | dbt project — models, snapshots & tests created during the lab |
+| &nbsp;&nbsp;&nbsp;&nbsp;└── 📂 [seeds/](./lab-week06/dbt/coffee_dw_scd/seeds/)                                                           | Seed CSV, already in place                                      |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📊 [coffee_sales_scd.csv](./lab-week06/dbt/coffee_dw_scd/seeds/coffee_sales_scd.csv) | 7,470 sales rows spanning two load windows                      |
 
 ---
 
@@ -88,12 +88,12 @@ docker compose ps
 
 พิจารณาการเปลี่ยนแปลงต่อไปนี้ แล้วอธิบายผลลัพธ์ที่ได้ใน **Google Classroom**
 
-| Dimension / Field | SCD | ผลลัพธ์ที่ต้องสังเกต |
-|---|:---:|---|
-| `dim_customer.province` | **Type 2** | มีหลายเวอร์ชัน พร้อมช่วงวันที่มีผล |
+| Dimension / Field            |       SCD       | ผลลัพธ์ที่ต้องสังเกต                                 |
+| ---------------------------- | :--------------: | ------------------------------------------------------------------------ |
+| `dim_customer.province`    | **Type 2** | มีหลายเวอร์ชัน พร้อมช่วงวันที่มีผล      |
 | `dim_product.product_name` | **Type 1** | แก้ชื่อเดิมโดยไม่เก็บประวัติชื่อเก่า |
-| `dim_product.category` | **Type 3** | เก็บ `current_category` และ `previous_category` |
-| `dim_staff.position` | **Type 0** | คงค่าแรก ไม่รับการเปลี่ยนแปลงภายหลัง |
+| `dim_product.category`     | **Type 3** | เก็บ`current_category` และ `previous_category`                |
+| `dim_staff.position`       | **Type 0** | คงค่าแรก ไม่รับการเปลี่ยนแปลงภายหลัง  |
 
 > 📝 **ข้อมูลจริงในไฟล์:** `CUST1001` ย้าย **Bangkok → Chiang Mai** วันที่ `2025-01-01` และ `P004`
 > เปลี่ยน **Bakery → Dessert** วันที่ `2027-02-11`
@@ -524,11 +524,11 @@ join category_type3 c using (product_code)
 where p.product_rank = 1
 ```
 
-| Concept | อธิบาย |
-|---|---|
-| **Type 1** | โมเดลเลือก `product_name` จากรายการล่าสุดของแต่ละ `product_code` + `size` ภายในช่วง `load_as_of` — รอบ Initial จึงได้ `Latte Coffe` จากข้อมูลก่อนปี 2025 ส่วนรอบ Update ได้ `Latte Coffee` และ **เขียนทับ** ค่าเดิมโดยไม่เก็บชื่อเก่า |
-| **Type 3** | `category_rank = 1` คือ category ปัจจุบัน ส่วน `rank = 2` คือค่าก่อนหน้า จึงเก็บประวัติได้ **หนึ่งระดับในแถวเดียว** |
-| **Grain ของสินค้า** | หนึ่งแถวต่อ `product_code` + `size` จึงสร้าง `product_key` จากทั้งสองคอลัมน์ — ได้ **15 แถว** ไม่ใช่ 5 แถว |
+| Concept                            | อธิบาย                                                                                                                                                                                                                                                                                                                                                            |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Type 1**                   | โมเดลเลือก`product_name` จากรายการล่าสุดของแต่ละ `product_code` + `size` ภายในช่วง `load_as_of` — รอบ Initial จึงได้ `Latte Coffe` จากข้อมูลก่อนปี 2025 ส่วนรอบ Update ได้ `Latte Coffee` และ **เขียนทับ** ค่าเดิมโดยไม่เก็บชื่อเก่า |
+| **Type 3**                   | `category_rank = 1` คือ category ปัจจุบัน ส่วน `rank = 2` คือค่าก่อนหน้า จึงเก็บประวัติได้ **หนึ่งระดับในแถวเดียว**                                                                                                                                                                         |
+| **Grain ของสินค้า** | หนึ่งแถวต่อ`product_code` + `size` จึงสร้าง `product_key` จากทั้งสองคอลัมน์ — ได้ **15 แถว** ไม่ใช่ 5 แถว                                                                                                                                                                                               |
 
 ### 3.5 SCD Type 0 dimensions / Dimensions แบบ Type 0
 
@@ -969,12 +969,12 @@ where product_code in ('P002', 'P004')
 order by product_code, size;
 ```
 
-| สิ่งที่ตรวจ | ผล Initial Load ที่ต้องได้ |
-|---|---|
-| **SCD Type 1:** `P002` | `product_name = Latte Coffe` — ข้อมูลที่เปิดให้เห็นยังอยู่ก่อนวันที่ `2025-01-01` |
-| **SCD Type 2:** `CUST1001` | `Bangkok` เพียง **1 เวอร์ชัน** และ `is_current = true` |
-| **SCD Type 3:** `P004` | `current_category = Bakery`; `previous_category = NULL` |
-| **`fct_sales`** | **1,812 แถว** เฉพาะรายการถึง `2024-12-31` |
+| สิ่งที่ตรวจ             | ผล Initial Load ที่ต้องได้                                                                                      |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **SCD Type 1:** `P002`     | `product_name = Latte Coffe` — ข้อมูลที่เปิดให้เห็นยังอยู่ก่อนวันที่ `2025-01-01` |
+| **SCD Type 2:** `CUST1001` | `Bangkok` เพียง **1 เวอร์ชัน** และ `is_current = true`                                            |
+| **SCD Type 3:** `P004`     | `current_category = Bakery`; `previous_category = NULL`                                                                 |
+| **`fct_sales`**            | **1,812 แถว** เฉพาะรายการถึง `2024-12-31`                                                          |
 
 > 📌 **Checkpoint 1:** บันทึกผล query ก่อนทำ Part 5 — ภาพนี้เป็นหลักฐาน **before** สำหรับเปรียบเทียบกับ
 > Update Load
@@ -1067,12 +1067,12 @@ where product_code in ('P002', 'P004')
 order by product_code, size;
 ```
 
-| สิ่งที่ตรวจ | ผลหลัง Update ที่ต้องได้ | สิ่งที่เปลี่ยนจากรอบแรก |
-|---|---|---|
-| **SCD Type 1:** `P002` | `product_name = Latte Coffee` | เขียนทับชื่อเดิม ไม่มีคอลัมน์เก็บ `Latte Coffe` |
-| **SCD Type 2:** `CUST1001` | `Bangkok` และ `Chiang Mai` รวม **2 เวอร์ชัน** | ปิดแถวเดิมและเพิ่มแถวใหม่ |
-| **SCD Type 3:** `P004` | `current = Dessert`; `previous = Bakery` | เก็บค่าก่อนหน้าไว้ในแถวเดียว |
-| **`fct_sales`** | **7,470 แถว** | เพิ่มรายการขายหลัง `2024-12-31` |
+| สิ่งที่ตรวจ             | ผลหลัง Update ที่ต้องได้                              | สิ่งที่เปลี่ยนจากรอบแรก                                   |
+| ---------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **SCD Type 1:** `P002`     | `product_name = Latte Coffee`                                       | เขียนทับชื่อเดิม ไม่มีคอลัมน์เก็บ`Latte Coffe` |
+| **SCD Type 2:** `CUST1001` | `Bangkok` และ `Chiang Mai` รวม **2 เวอร์ชัน** | ปิดแถวเดิมและเพิ่มแถวใหม่                               |
+| **SCD Type 3:** `P004`     | `current = Dessert`; `previous = Bakery`                          | เก็บค่าก่อนหน้าไว้ในแถวเดียว                         |
+| **`fct_sales`**            | **7,470 แถว**                                                | เพิ่มรายการขายหลัง`2024-12-31`                               |
 
 > 📌 **Checkpoint 2:** บันทึกผลหลัง Update แล้วเทียบกับ **Checkpoint 1** เพื่ออธิบายว่าจำนวนแถวและค่าของ
 > แต่ละ SCD Type เปลี่ยนต่างกันอย่างไร
@@ -1110,15 +1110,15 @@ from dbt_marts.fct_sales
 order by model;
 ```
 
-| Model | จำนวนแถวที่คาดหวัง |
-|---|---:|
-| `dim_customer` | 6 |
-| `dim_product` | 15 |
-| `dim_store` | 3 |
-| `dim_staff` | 6 |
-| `dim_promotion` | 2 |
-| `dim_date` | 3,000 |
-| `fct_sales` | 7,470 |
+| Model             | จำนวนแถวที่คาดหวัง |
+| ----------------- | -----------------------------------: |
+| `dim_customer`  |                                    6 |
+| `dim_product`   |                                   15 |
+| `dim_store`     |                                    3 |
+| `dim_staff`     |                                    6 |
+| `dim_promotion` |                                    2 |
+| `dim_date`      |                                3,000 |
+| `fct_sales`     |                                7,470 |
 
 <details>
 <summary><b>Show Output</b></summary>
@@ -1239,10 +1239,10 @@ Graph** เพื่อดูเส้นทาง `coffee_sales_scd → stg_cof
 
 ส่งคำตอบผ่าน **Google Form — Lab 6: SCD with dbt** *(ลิงก์จากผู้สอน)*
 
-| รายการ | รูปแบบ |
-|---|---|
-| **Checkpoint 1:** ผล Initial Load ของ `P002`, `CUST1001` และ `P004` | CSV |
-| **Checkpoint 2:** ผลหลัง Update ของ `P002`, `CUST1001` และ `P004` | CSV |
+| รายการ                                                                              | รูปแบบ |
+| ----------------------------------------------------------------------------------------- | ------------ |
+| **Checkpoint 1:** ผล Initial Load ของ `P002`, `CUST1001` และ `P004`   | CSV          |
+| **Checkpoint 2:** ผลหลัง Update ของ `P002`, `CUST1001` และ `P004` | CSV          |
 
 พร้อมคำอธิบายจาก **Part 1** ใน Google Classroom ว่าแต่ละ dimension ควรใช้ SCD Type ใด และเพราะเหตุใด
 
@@ -1253,29 +1253,29 @@ Graph** เพื่อดูเส้นทาง `coffee_sales_scd → stg_cof
 > ⚠️ Open a shell first — `docker exec -it dw_dbt bash` then `cd coffee_dw_scd` — so the `--vars` JSON
 > is not mangled by the host shell.
 
-| Command | Description |
-|---|---|
-| `docker exec -it dw_dbt bash` | Open a shell inside the dbt container |
-| `dbt debug` | Test the database connection |
-| `dbt seed --full-refresh` | Rebuild the seed table from the CSV |
-| `dbt run --select stg_coffee_sales --vars '{"load_as_of": "2024-12-31"}'` | Build staging for one load window |
-| `dbt snapshot --vars '{"load_as_of": "2024-12-31"}'` | Capture the SCD Type 2 history for that window |
-| `dbt run --select path:models/marts --vars '{"load_as_of": "2024-12-31"}'` | Build all dimensions + fact |
-| `dbt run --select path:models/reporting` | Build the two reporting views |
-| `dbt test --vars '{"load_as_of": "2024-12-31"}'` | Run all data tests for that window |
-| `dbt docs generate` | Build the documentation site |
-| `dbt docs serve --host 0.0.0.0 --port 8080 --no-browser` | Serve the docs on port 8080 |
+| Command                                                                      | Description                                    |
+| ---------------------------------------------------------------------------- | ---------------------------------------------- |
+| `docker exec -it dw_dbt bash`                                              | Open a shell inside the dbt container          |
+| `dbt debug`                                                                | Test the database connection                   |
+| `dbt seed --full-refresh`                                                  | Rebuild the seed table from the CSV            |
+| `dbt run --select stg_coffee_sales --vars '{"load_as_of": "2024-12-31"}'`  | Build staging for one load window              |
+| `dbt snapshot --vars '{"load_as_of": "2024-12-31"}'`                       | Capture the SCD Type 2 history for that window |
+| `dbt run --select path:models/marts --vars '{"load_as_of": "2024-12-31"}'` | Build all dimensions + fact                    |
+| `dbt run --select path:models/reporting`                                   | Build the two reporting views                  |
+| `dbt test --vars '{"load_as_of": "2024-12-31"}'`                           | Run all data tests for that window             |
+| `dbt docs generate`                                                        | Build the documentation site                   |
+| `dbt docs serve --host 0.0.0.0 --port 8080 --no-browser`                   | Serve the docs on port 8080                    |
 
 ---
 
 ## 🧠 SCD Type Quick Reference
 
-| Type | Behavior | dbt mechanism | Example in this lab |
-|:---:|---|---|---|
-| **0** | คงค่าแรกไว้เสมอ | model + `row_number()` ordered ascending | `dim_staff.position` |
-| **1** | เขียนทับด้วยค่าล่าสุด ไม่เก็บประวัติ | model + `row_number()` ordered descending | `dim_product.product_name` |
-| **2** | เพิ่มแถวใหม่ พร้อมช่วงวันที่มีผล | **`dbt snapshot`** (`dbt_valid_from` / `dbt_valid_to`) | `dim_customer.province` |
-| **3** | เก็บค่าก่อนหน้าไว้หนึ่งระดับในแถวเดียว | model + `current_*` / `previous_*` columns | `dim_product.category` |
+|    Type    | Behavior                                                                     | dbt mechanism                                                      | Example in this lab          |
+| :---------: | ---------------------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------- |
+| **0** | คงค่าแรกไว้เสมอ                                               | model +`row_number()` ordered ascending                          | `dim_staff.position`       |
+| **1** | เขียนทับด้วยค่าล่าสุด ไม่เก็บประวัติ      | model +`row_number()` ordered descending                         | `dim_product.product_name` |
+| **2** | เพิ่มแถวใหม่ พร้อมช่วงวันที่มีผล              | **`dbt snapshot`** (`dbt_valid_from` / `dbt_valid_to`) | `dim_customer.province`    |
+| **3** | เก็บค่าก่อนหน้าไว้หนึ่งระดับในแถวเดียว | model +`current_*` / `previous_*` columns                      | `dim_product.category`     |
 
 ---
 
