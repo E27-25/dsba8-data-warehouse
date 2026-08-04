@@ -1050,7 +1050,9 @@ dbt test --vars '{"load_as_of": "2031-03-19"}'
 
 ![CLI: dbt run marts (update load)](./docs/screenshots/dbt-run-marts-update.png)
 
-![CLI: dbt test (update load)](./docs/screenshots/dbt-test-update.png)
+![CLI: dbt test (update load) part 1](./docs/screenshots/dbt-test-update-1.png)
+
+![CLI: dbt test (update load) part 2](./docs/screenshots/dbt-test-update-2.png)
 
 </details>
 
