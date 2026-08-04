@@ -1050,7 +1050,11 @@ order by 2 desc
 > จะแสดงรายได้แยกจังหวัด
 
 <details>
-<summary><b>📷 Metabase — Revenue by Hierarchy Level</b></summary>
+<summary><b>📷 Metabase — Variable Settings, Field Filter Mapping & Revenue by Hierarchy Level</b></summary>
+
+![Metabase: field filter mapping](./docs/screenshots/metabase-field-filter-mapping.png)
+
+![Metabase: variable settings](./docs/screenshots/metabase-variable-settings.png)
 
 ![Metabase: revenue by hierarchy level](./docs/screenshots/metabase-revenue-by-hierarchy.png)
 
