@@ -78,12 +78,13 @@
 
 ---
 
-## 🔧 Part 0: Start the Environment / เริ่มระบบ
+## 🔧 Part 0: Start the Environment & Connect Tools / เริ่มระบบและเชื่อมต่อเครื่องมือ
 
-> 💡 **Note:** If your Docker stack from Week 1 is already running, skip to Part 1 and just confirm
-> with `docker compose ps`.
+> 💡 **Note:** If your Docker stack from Week 1 is already running, confirm with `docker compose ps` and proceed to connect pgAdmin.
 
-Reuse the Week 1 stack (it already contains `dw_postgres`, `dw_dbt`, `pgAdmin`, and `Metabase`):
+### 0.1 Start Docker Containers / สตาร์ทระบบด้วย Docker
+
+Reuse the Week 1 stack (it contains `dw_postgres`, `dw_dbt`, `pgAdmin`, and `Metabase`):
 
 **Mac / Linux:**
 
@@ -103,7 +104,25 @@ docker compose up -d
 docker compose ps
 ```
 
-> 💡 Tip: paste as a single line if the line breaks cause errors.
+---
+
+### 0.2 Connect pgAdmin to PostgreSQL / เชื่อมต่อ pgAdmin กับ PostgreSQL
+
+1. Open your browser and go to **pgAdmin**: [http://localhost:28880](http://localhost:28880)
+2. Log in with the default credentials:
+   - **Email:** `dw_user@mail.com`
+   - **Password:** `dw_pass`
+3. Register the PostgreSQL Server (if not already connected):
+   - Right-click **Servers** ➡️ **Register** ➡️ **Server...**
+   - Under the **General** tab:
+     - **Name:** `DW Postgres`
+   - Under the **Connection** tab:
+     - **Host name/address:** `dw_postgres` *(Internal Docker container name)*
+     - **Port:** `5432`
+     - **Maintenance database:** `postgres` (or `airflow`)
+     - **Username:** `dw_user`
+     - **Password:** `dw_pass`
+   - Click **Save**.
 
 ---
 
