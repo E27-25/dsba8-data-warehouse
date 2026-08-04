@@ -690,7 +690,7 @@ models:
   - name: stg_coffee_sales
     description: Cleaned sales rows; grain is one sale_id.
     columns:
-      - name: sale_id
+      - name: sale_id  
         tests: [not_null, unique]
       - name: customer_code
         tests: [not_null]
@@ -1006,7 +1006,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt docs serve --host 
 | รายการ  | ค่า                  |
 | ------------- | ----------------------- |
 | Display name  | `coffee_dw_snowflake` |
-| Host          | `postgres`            |
+| Host          | `dw_postgres`         |
 | Port          | `5432`                |
 | Database name | `coffee_dw_snowflake` |
 | Username      | `dw_user`             |
