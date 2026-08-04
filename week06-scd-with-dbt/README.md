@@ -948,7 +948,9 @@ dbt สร้าง Dimensions **ก่อน** `fct_sales` ตาม dependency
 
 ![CLI: dbt run marts (initial load)](./docs/screenshots/dbt-run-marts-initial.png)
 
-![CLI: dbt test (initial load)](./docs/screenshots/dbt-test-initial.png)
+![CLI: dbt test (initial load) part 1](./docs/screenshots/dbt-test-initial-1.png)
+
+![CLI: dbt test (initial load) part 2](./docs/screenshots/dbt-test-initial-2.png)
 
 </details>
 
