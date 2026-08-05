@@ -1,9 +1,7 @@
- 
-
 # 📦 Week 5: Snowflake Schema with dbt
 
-> **Course:** Data Warehousing (การสร้างคลังข้อมูล)
-> **Topic:** วิเคราะห์ ออกแบบ และสร้าง Snowflake Schema ด้วย dbt — Coffee Club Case Study
+> **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
+> **Topic:** วิเคราะห์ ออกแบบ และสร้าง Snowflake Schema ด้วย dbt — Coffee Club Case Study  
 > **Duration:** 2 Hours
 
 > 💡 **Lab concept / แนวคิดของ Lab:** Week 4 flattened every attribute into one level of Dimensions
@@ -32,11 +30,11 @@
 | Tool                            | What is it?                  | What is it used for in this lab?                                       |
 | ------------------------------- | ---------------------------- | ---------------------------------------------------------------------- |
 | **Docker Compose**        | Containerization             | Run PostgreSQL, dbt, pgAdmin, and Metabase together.                   |
-| **PostgreSQL 16**         | Relational Database (RDBMS)  | Store`coffee_dw_snowflake` — every seed, dimension, fact, and view. |
+| **PostgreSQL 16**         | Relational Database (RDBMS)  | Store `coffee_dw_snowflake` — every seed, dimension, fact, and view. |
 | **dbt-postgres**          | Transformation Framework     | Load seeds, transform data, run tests, and generate documentation.     |
 | **pgAdmin 4**             | Database GUI Management Tool | Create the database and inspect row counts / results.                  |
 | **Metabase**              | BI & Visualization           | Build questions and a dashboard on top of the reporting view.          |
-| **VS Code / Text Editor** | Editor                       | Create and edit the`.sql` and `.yml` files of the dbt project.     |
+| **VS Code / Text Editor** | Editor                       | Create and edit the `.sql` and `.yml` files of the dbt project.     |
 
 **Datasets / ชุดข้อมูล**
 
@@ -51,13 +49,13 @@
 
 | File / Folder                                                                                                                                                  | Description                                          |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 📂[docs/](./docs/)                                                                                                                                              | Lab instructions                                     |
-| ├── 📄[Lab5 Snowflake Schema with dbt.pdf](<./docs/Lab5%20Snowflake%20Schema%20with%20dbt.pdf>)                                                              | Lab instruction (PDF)                                |
-| ├── 📝[Lab5 Snowflake Schema with dbt.docx](<./docs/Lab5%20Snowflake%20Schema%20with%20dbt.docx>)                                                            | Lab instruction (Word)                               |
-| └── 📂[screenshots/](./docs/screenshots/)                                                                                                                    | Images referenced by this README                     |
-| 📂[lab-week05/](./lab-week05/)                                                                                                                                  | **Lab working directory**                      |
-| ├── 📂[dbt_root/](./lab-week05/dbt_root/)                                                                                                                    | Holds`profiles.yml` — created during the lab      |
-| └── 📂[dbt/coffee_dw_snowflake/](./lab-week05/dbt/coffee_dw_snowflake/)                                                                                      | dbt project — models & tests created during the lab |
+| 📂 [docs/](./docs/)                                                                                                                                            | Lab instructions                                     |
+| ├── 📄 [Lab5 Snowflake Schema with dbt.pdf](<./docs/Lab5%20Snowflake%20Schema%20with%20dbt.pdf>)                                                            | Lab instruction (PDF)                                |
+| ├── 📝 [Lab5 Snowflake Schema with dbt.docx](<./docs/Lab5%20Snowflake%20Schema%20with%20dbt.docx>)                                                          | Lab instruction (Word)                               |
+| └── 📂 [screenshots/](./docs/screenshots/)                                                                                                                  | Images referenced by this README                     |
+| 📂 [lab-week05/](./lab-week05/)                                                                                                                                | **Lab working directory**                      |
+| ├── 📂 [dbt_root/](./lab-week05/dbt_root/)                                                                                                                  | Holds `profiles.yml` — created during the lab      |
+| └── 📂 [dbt/coffee_dw_snowflake/](./lab-week05/dbt/coffee_dw_snowflake/)                                                                                    | dbt project — models & tests created during the lab |
 | &nbsp;&nbsp;&nbsp;&nbsp;└── 📂 [seeds/](./lab-week05/dbt/coffee_dw_snowflake/seeds/)                                                                         | Seed CSVs, already in place                          |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 📊 [coffee_sales.csv](./lab-week05/dbt/coffee_dw_snowflake/seeds/coffee_sales.csv)                       | 3,000 sales rows                                     |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📊 [province_region_mapping.csv](./lab-week05/dbt/coffee_dw_snowflake/seeds/province_region_mapping.csv) | Province → region mapping                           |
@@ -347,7 +345,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt seed"
 Staging layer ทำหน้าที่ cast ชนิดข้อมูล, `trim` ช่องว่าง, ปรับ `category` เป็นตัวพิมพ์เล็ก และเปลี่ยนค่าว่างของ
 promotion ให้เป็น `NULL`
 
-### 4.1 `dbt/models/staging/stg_coffee_sales.sql`
+### 4.1 `dbt/coffee_dw_snowflake/models/staging/stg_coffee_sales.sql`
 
 ```sql
 select
@@ -377,7 +375,7 @@ select
 from {{ ref('coffee_sales') }}
 ```
 
-### 4.2 `dbt/models/staging/stg_province_region_mapping.sql`
+### 4.2 `dbt/coffee_dw_snowflake/models/staging/stg_province_region_mapping.sql`
 
 ```sql
 select
@@ -414,7 +412,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt show --select stg_
 
 ### 5.1 Flat dimensions / มิติที่ไม่แตกแขนง
 
-**`dbt/models/marts/dim_customer.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_customer.sql`**
 
 ```sql
 select distinct
@@ -426,7 +424,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-**`dbt/models/marts/dim_promotion.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_promotion.sql`**
 
 ```sql
 select distinct
@@ -437,7 +435,7 @@ from {{ ref('stg_coffee_sales') }}
 where promo_code is not null
 ```
 
-**`dbt/models/marts/dim_date.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_date.sql`**
 
 ```sql
 select distinct
@@ -453,7 +451,7 @@ from {{ ref('stg_coffee_sales') }}
 
 ### 5.2 Product hierarchy — `dim_category` → `dim_product`
 
-**`dbt/models/marts/dim_category.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_category.sql`**
 
 ```sql
 select distinct
@@ -462,7 +460,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-**`dbt/models/marts/dim_product.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_product.sql`**
 
 ```sql
 select distinct
@@ -479,7 +477,7 @@ join {{ ref('dim_category') }} c
 
 ### 5.3 Geography hierarchy — `dim_region` → `dim_province` → `dim_store`
 
-**`dbt/models/marts/dim_region.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_region.sql`**
 
 ```sql
 select distinct
@@ -488,7 +486,7 @@ select distinct
 from {{ ref('stg_province_region_mapping') }}
 ```
 
-**`dbt/models/marts/dim_province.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_province.sql`**
 
 ```sql
 select distinct
@@ -500,7 +498,7 @@ join {{ ref('dim_region') }} r
   on m.region_name = r.region_name
 ```
 
-**`dbt/models/marts/dim_store.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_store.sql`**
 
 ```sql
 select distinct
@@ -515,7 +513,7 @@ join {{ ref('dim_province') }} p
 
 ### 5.4 Staff hierarchy — `dim_position` → `dim_staff`
 
-**`dbt/models/marts/dim_position.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_position.sql`**
 
 ```sql
 select distinct
@@ -524,7 +522,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-**`dbt/models/marts/dim_staff.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/dim_staff.sql`**
 
 ```sql
 select distinct
@@ -558,7 +556,7 @@ docker exec -it dw_dbt bash -c 'cd coffee_dw_snowflake && dbt run --select "dim_
 
 ## ⭐ Part 6: Create the Fact Table / สร้าง Fact Table
 
-**`dbt/models/marts/fct_sales.sql`**
+**`dbt/coffee_dw_snowflake/models/marts/fct_sales.sql`**
 
 ```sql
 select
@@ -609,7 +607,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt show --select fct_
 
 ## 🪜 Part 7: Build `hierarchy_def` and the Reporting View / สร้าง hierarchy_def และ Reporting View
 
-### 7.1 Metadata model — `dbt/models/metadata/hierarchy_def.sql`
+### 7.1 Metadata model — `dbt/coffee_dw_snowflake/models/metadata/hierarchy_def.sql`
 
 ```sql
 with hierarchy as (
@@ -634,7 +632,7 @@ select * from hierarchy
 > 📝 `level_num` กำหนดลำดับจากระดับบนลงล่าง คือ `region` (1) → `province` (2) ส่วน `table_name`,
 > `key_field` และ `name_field` บอกตำแหน่งของข้อมูลใน schema
 
-### 7.2 Flattened view for Metabase — `dbt/models/reporting/v_sales_geo_flat.sql`
+### 7.2 Flattened view for Metabase — `dbt/coffee_dw_snowflake/models/reporting/v_sales_geo_flat.sql`
 
 ```sql
 select
@@ -678,7 +676,7 @@ docker exec -it dw_dbt bash -c "cd coffee_dw_snowflake && dbt show --select hier
 ไฟล์ `schema.yml` ระบุ `unique`, `not_null` และ `relationships` tests สำหรับคีย์หลักและคีย์อ้างอิง ส่วน
 **singular tests** ตรวจเงื่อนไขทางธุรกิจที่ต้องคืนค่า **0 แถว** จึงจะผ่าน
 
-### 8.1 `dbt/models/schema.yml`
+### 8.1 `dbt/coffee_dw_snowflake/models/schema.yml`
 
 <details>
 <summary><b>📄 Full <code>models/schema.yml</code> (click to expand)</b></summary>
@@ -895,7 +893,7 @@ left join {{ ref('dim_province') }} p
 where p.province_key is null
 ```
 
-**`tests/assert_revenue_nonnegative.sql`**
+**`dbt/coffee_dw_snowflake/tests/assert_revenue_nonnegative.sql`**
 
 ```sql
 select *

@@ -1,7 +1,7 @@
 # 📦 Week 6: Slowly Changing Dimensions (SCD) with dbt
 
-> **Course:** Data Warehousing (การสร้างคลังข้อมูล)
-> **Topic:** การจัดการ Slowly Changing Dimensions — SCD Types 0, 1, 2 และ 3 ด้วย dbt
+> **Course:** Data Warehousing (การสร้างคลังข้อมูล)  
+> **Topic:** การจัดการ Slowly Changing Dimensions — SCD Types 0, 1, 2 และ 3 ด้วย dbt  
 > **Duration:** 2 Hours
 
 > 💡 **Lab concept / แนวคิดหลัก:** ใช้ **dbt model** สำหรับ Types 0, 1 และ 3 และใช้ **dbt snapshot**
@@ -27,11 +27,11 @@
 
 | Tool                            | What is it?                  | What is it used for in this lab?                                           |
 | ------------------------------- | ---------------------------- | -------------------------------------------------------------------------- |
-| **Docker Compose**        | Containerization             | Run the`postgres`, `dbt`, and `pgadmin` services.                    |
-| **PostgreSQL 16**         | Relational Database (RDBMS)  | Store`coffee_dw_scd` — seeds, snapshots, dimensions, fact, reports.     |
+| **Docker Compose**        | Containerization             | Run the `postgres`, `dbt`, and `pgadmin` services.                    |
+| **PostgreSQL 16**         | Relational Database (RDBMS)  | Store `coffee_dw_scd` — seeds, snapshots, dimensions, fact, reports.     |
 | **dbt-postgres**          | Transformation Framework     | `seed`, transformation, **snapshot**, `test`, and documentation. |
 | **pgAdmin 4**             | Database GUI Management Tool | Create the database and inspect Checkpoint query results.                  |
-| **VS Code / Text Editor** | Editor                       | Create the`.sql` and `.yml` files of the dbt project.                  |
+| **VS Code / Text Editor** | Editor                       | Create the `.sql` and `.yml` files of the dbt project.                  |
 
 **Dataset / ชุดข้อมูล**
 
@@ -45,11 +45,11 @@
 
 | File / Folder                                                                                                                              | Description                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| 📂[docs/](./docs/)                                                                                                                          | Lab instructions                                                |
-| ├── 📄[Lab6 SCD with dbt.pdf](<./docs/Lab6%20SCD%20with%20dbt.pdf>)                                                                      | Lab instruction (PDF)                                           |
-| 📂[lab-week06/](./lab-week06/)                                                                                                              | **Lab working directory**                                 |
-| ├── 📂[dbt_root/](./lab-week06/dbt_root/)                                                                                                | Holds`profiles.yml` — created during the lab                 |
-| └── 📂[dbt/coffee_dw_scd/](./lab-week06/dbt/coffee_dw_scd/)                                                                              | dbt project — models, snapshots & tests created during the lab |
+| 📂 [docs/](./docs/)                                                                                                                          | Lab instructions                                                |
+| ├── 📄 [Lab6 SCD with dbt.pdf](<./docs/Lab6%20SCD%20with%20dbt.pdf>)                                                                      | Lab instruction (PDF)                                           |
+| 📂 [lab-week06/](./lab-week06/)                                                                                                              | **Lab working directory**                                 |
+| ├── 📂 [dbt_root/](./lab-week06/dbt_root/)                                                                                                | Holds `profiles.yml` — created during the lab                 |
+| └── 📂 [dbt/coffee_dw_scd/](./lab-week06/dbt/coffee_dw_scd/)                                                                              | dbt project — models, snapshots & tests created during the lab |
 | &nbsp;&nbsp;&nbsp;&nbsp;└── 📂 [seeds/](./lab-week06/dbt/coffee_dw_scd/seeds/)                                                           | Seed CSV, already in place                                      |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📊 [coffee_sales_scd.csv](./lab-week06/dbt/coffee_dw_scd/seeds/coffee_sales_scd.csv) | 7,470 sales rows spanning two load windows                      |
 
@@ -276,7 +276,7 @@ seeds:
 ```
 
 > 📝 **ชื่อ schema:** dbt จะสร้าง `dbt_raw`, `dbt_staging`, `dbt_marts` และ `dbt_reporting`
-> ส่วน snapshot กำหนดเป็น `dbt_snapshots` โดยตรง (ใน `snapshots/dim_customer_snapshot.sql`)
+> ส่วน snapshot กำหนดเป็น `dbt_snapshots` โดยตรง (ใน `dbt/coffee_dw_scd/snapshots/dim_customer_snapshot.sql`)
 
 ### 2.5 Verify the connection / ตรวจสอบการเชื่อมต่อ
 
@@ -298,27 +298,12 @@ dbt debug
 
 </details>
 
-ผลที่ต้องได้: **`Connection test: OK`** และ **`All checks passed!`**
-
-> ⚠️ **Cross-platform / ทุก OS:** ตั้งแต่ Part 4 เป็นต้นไป คำสั่ง dbt ใช้ `--vars` ที่เป็น JSON (มีทั้ง `{}`
-> และ `"`) ซึ่ง **host shell แต่ละตัว escape ไม่เหมือนกัน** — ให้เปิด shell เข้า container ด้วย
-> `docker exec -it dw_dbt bash` แล้วรันคำสั่ง dbt จากข้างใน คำสั่งจะเหมือนกันหมดทั้ง macOS, Linux และ Windows
->
-> ถ้าต้องการเป็นบรรทัดเดียวจาก host ให้ครอบด้วย **single quote ด้านนอก** และ escape เครื่องหมายคำพูดด้านใน —
-> รูปแบบนี้ทำงานได้ทั้ง bash และ PowerShell:
->
-> ```bash
-> docker exec -it dw_dbt bash -c 'cd coffee_dw_scd && dbt run --select stg_coffee_sales --vars "{\"load_as_of\": \"2024-12-31\"}"'
-> ```
-
----
-
 ## 🧱 Part 3: Define the Dimensions & Transformations / สร้างนิยาม Dimensions
 
 > 📝 **แยกการสร้างโมเดลออกจากการโหลดข้อมูล:** ในส่วนนี้ผู้เรียนสร้าง **เฉพาะไฟล์ SQL และ YAML** ยังไม่รัน
 > `dbt seed`, `dbt snapshot` หรือ models — ตารางจริงจะเกิดขึ้นใน **Initial Load (Part 4)**
 
-### 3.1 Staging model — `models/staging/stg_coffee_sales.sql`
+### 3.1 Staging model — `dbt/coffee_dw_scd/models/staging/stg_coffee_sales.sql`
 
 ```sql
 select
@@ -354,7 +339,7 @@ where cast(sale_date as date) <= cast(
 > 💡 **ตัวแปร `load_as_of`:** กำหนดวันที่ล่าสุดที่ระบบต้นทางเปิดให้เห็น — รอบแรกใช้ `2024-12-31` และรอบ
 > Update ใช้ `2031-03-19` ทำให้เห็นข้อมูลเพิ่มขึ้นเป็นสองช่วงเวลา
 
-### 3.2 Snapshot for SCD Type 2 — `snapshots/dim_customer_snapshot.sql`
+### 3.2 Snapshot for SCD Type 2 — `dbt/coffee_dw_scd/snapshots/dim_customer_snapshot.sql`
 
 Snapshot อ่านข้อมูลจาก `stg_coffee_sales` ซึ่งถูกจำกัดตาม `load_as_of` แล้วเลือก **สถานะล่าสุดของลูกค้า
 แต่ละคนในรอบนั้น**
@@ -440,7 +425,7 @@ where state_rank = 1
 > 📝 **`dbt_scd_id`:** dbt สร้างค่านี้ให้แต่ละเวอร์ชันจาก `unique_key` และเวลาที่มีผล จึงนำมาใช้เป็น
 > **surrogate key** ของ `dim_customer` ได้โดยไม่ต้องสร้าง `SERIAL`
 
-### 3.3 `dim_customer` from the snapshot — `models/marts/dim_customer.sql`
+### 3.3 `dim_customer` from the snapshot — `dbt/coffee_dw_scd/models/marts/dim_customer.sql`
 
 ```sql
 select
@@ -462,7 +447,7 @@ from {{ ref('dim_customer_snapshot') }}
 > ⚠️ **การ join ช่วงเวลา:** ใช้เงื่อนไขแบบ **ครึ่งเปิด** `start_date <= sale_date < end_date` เพราะ
 > `dbt_valid_to` เป็นวันที่ **เวอร์ชันถัดไป** เริ่มมีผล
 
-### 3.4 `dim_product` — SCD Types 1 and 3 — `models/marts/dim_product.sql`
+### 3.4 `dim_product` — SCD Types 1 and 3 — `dbt/coffee_dw_scd/models/marts/dim_product.sql`
 
 ```sql
 with latest_product as (
@@ -553,7 +538,7 @@ where p.product_rank = 1
 
 Type 0 เลือก **แถวแรก** ด้วย `row_number()` และไม่รับค่าที่พบภายหลัง เหมาะกับข้อมูลที่ต้องคงเดิม
 
-**`models/marts/dim_store.sql`**
+**`dbt/coffee_dw_scd/models/marts/dim_store.sql`**
 
 ```sql
 with first_known as (
@@ -577,7 +562,7 @@ from first_known
 where row_num = 1
 ```
 
-**`models/marts/dim_staff.sql`**
+**`dbt/coffee_dw_scd/models/marts/dim_staff.sql`**
 
 ```sql
 with first_known as (
@@ -601,7 +586,7 @@ from first_known
 where row_num = 1
 ```
 
-**`models/marts/dim_promotion.sql`**
+**`dbt/coffee_dw_scd/models/marts/dim_promotion.sql`**
 
 ```sql
 with first_known as (
@@ -624,7 +609,7 @@ from first_known
 where row_num = 1
 ```
 
-**`models/marts/dim_date.sql`**
+**`dbt/coffee_dw_scd/models/marts/dim_date.sql`**
 
 ```sql
 select distinct
@@ -638,7 +623,7 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-### 3.6 Fact table — `models/marts/fct_sales.sql`
+### 3.6 Fact table — `dbt/coffee_dw_scd/models/marts/fct_sales.sql`
 
 ```sql
 select
@@ -677,7 +662,7 @@ left join {{ ref('dim_promotion') }} pr
 ### 3.7 Tests & documentation
 
 <details>
-<summary><b>📄 Full <code>models/schema.yml</code> (click to expand)</b></summary>
+<summary><b>📄 Full <code>dbt/coffee_dw_scd/models/schema.yml</code> (click to expand)</b></summary>
 
 ```yaml
 version: 2
@@ -829,7 +814,7 @@ models:
 
 </details>
 
-**`tests/assert_customer_scd2_no_overlap.sql`** — ช่วงเวลาของ Type 2 ต้องไม่ซ้อนทับกัน
+**`dbt/coffee_dw_scd/tests/assert_customer_scd2_no_overlap.sql`** — ช่วงเวลาของ Type 2 ต้องไม่ซ้อนทับกัน
 
 ```sql
 select
@@ -844,7 +829,7 @@ join {{ ref('dim_customer') }} b
 where a.end_date > b.start_date
 ```
 
-**`tests/assert_fact_sales_row_count.sql`** — fact ต้องมีจำนวนแถวเท่า staging
+**`dbt/coffee_dw_scd/tests/assert_fact_sales_row_count.sql`** — fact ต้องมีจำนวนแถวเท่า staging
 
 ```sql
 with row_counts as (
@@ -860,7 +845,7 @@ from row_counts
 where staging_rows <> fact_rows
 ```
 
-**`tests/assert_product_type1.sql`** — ชื่อ P002 ต้องตรงกับรอบโหลด
+**`dbt/coffee_dw_scd/tests/assert_product_type1.sql`** — ชื่อ P002 ต้องตรงกับรอบโหลด
 
 ```sql
 select *
@@ -874,7 +859,7 @@ where product_code = 'P002'
   end
 ```
 
-**`tests/assert_product_type3.sql`** — current/previous category ของ P004 ต้องตรงกับรอบโหลด
+**`dbt/coffee_dw_scd/tests/assert_product_type3.sql`** — current/previous category ของ P004 ต้องตรงกับรอบโหลด
 
 ```sql
 select *
@@ -1156,7 +1141,7 @@ order by model;
 
 ### 6.1 2024 revenue from Bangkok customers (Type 2)
 
-**`models/reporting/rpt_bangkok_revenue_2024.sql`**
+**`dbt/coffee_dw_scd/models/reporting/rpt_bangkok_revenue_2024.sql`**
 
 ```sql
 select
@@ -1177,7 +1162,7 @@ group by d.year, c.province
 
 ### 6.2 Latest-year sales of products that changed category (Type 3)
 
-**`models/reporting/rpt_changed_products_latest_year.sql`**
+**`dbt/coffee_dw_scd/models/reporting/rpt_changed_products_latest_year.sql`**
 
 ```sql
 with latest_year as (
