@@ -180,58 +180,79 @@ docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE lab8;
 
 ### 2.2 สร้างโครงสร้างโครงการ dbt
 
+สร้างไฟล์และโฟลเดอร์ต่อไปนี้ **ในโฟลเดอร์เดียวกับ `docker-compose.yaml`**:
+
 ```text
-dbt_root/
-└── profiles.yml
-dbt/
-└── lab8/
-    ├── dbt_project.yml
-    ├── seeds/
-    │   ├── coffee_sales.csv
-    │   └── province_region_mapping_v2.csv
-    ├── models/
-    │   ├── staging/
-    │   │   ├── stg_coffee_sales.sql
-    │   │   └── stg_province_region_mapping.sql
-    │   ├── intermediate/
-    │   │   ├── int_invoice_store_map.sql
-    │   │   └── int_sales_expanded.sql
-    │   ├── marts/
-    │   │   ├── dim_customer.sql
-    │   │   ├── dim_category.sql
-    │   │   ├── dim_product.sql
-    │   │   ├── dim_position.sql
-    │   │   ├── dim_staff.sql
-    │   │   ├── dim_promotion.sql
-    │   │   ├── dim_region.sql
-    │   │   ├── dim_province.sql
-    │   │   ├── dim_store.sql
-    │   │   ├── dim_date.sql
-    │   │   └── fct_sales.sql
-    │   ├── aggregates/
-    │   │   └── agg_sales_region_month.sql
-    │   ├── reporting/
-    │   │   ├── rpt_sales_store_day.sql
-    │   │   ├── rpt_sales_region_quarter.sql
-    │   │   ├── rpt_sales_province_quarter.sql
-    │   │   └── rpt_sales_staff_year_cube.sql
-    │   └── schema.yml
-    └── tests/
-        ├── assert_all_provinces_have_store.sql
-        ├── assert_fact_expected_row_count.sql
-        ├── assert_summary_grain.sql
-        └── assert_summary_reconciles.sql
+lab-week01/                              ← root: โฟลเดอร์ที่มี docker-compose.yaml
+│                                          (ถ้าเริ่มจาก 0 โดยแตกไฟล์ DWH_Lab.zip → root ชื่อ DWH_Lab/)
+├── docker-compose.yaml                  ← มีอยู่แล้วจาก Week 1
+├── dbt_root/
+│   └── profiles.yml
+└── dbt/
+    └── lab8/
+        ├── dbt_project.yml
+        ├── seeds/
+        │   ├── coffee_sales.csv
+        │   └── province_region_mapping_v2.csv
+        ├── models/
+        │   ├── staging/
+        │   │   ├── stg_coffee_sales.sql
+        │   │   └── stg_province_region_mapping.sql
+        │   ├── intermediate/
+        │   │   ├── int_invoice_store_map.sql
+        │   │   └── int_sales_expanded.sql
+        │   ├── marts/
+        │   │   ├── dim_customer.sql
+        │   │   ├── dim_category.sql
+        │   │   ├── dim_product.sql
+        │   │   ├── dim_position.sql
+        │   │   ├── dim_staff.sql
+        │   │   ├── dim_promotion.sql
+        │   │   ├── dim_region.sql
+        │   │   ├── dim_province.sql
+        │   │   ├── dim_store.sql
+        │   │   ├── dim_date.sql
+        │   │   └── fct_sales.sql
+        │   ├── aggregates/
+        │   │   └── agg_sales_region_month.sql
+        │   ├── reporting/
+        │   │   ├── rpt_sales_store_day.sql
+        │   │   ├── rpt_sales_region_quarter.sql
+        │   │   ├── rpt_sales_province_quarter.sql
+        │   │   └── rpt_sales_staff_year_cube.sql
+        │   └── schema.yml
+        └── tests/
+            ├── assert_all_provinces_have_store.sql
+            ├── assert_fact_expected_row_count.sql
+            ├── assert_summary_grain.sql
+            └── assert_summary_reconciles.sql
 ```
 
 > 📝 **ใบ Lab เขียนผังย่อว่า `marts/dim_*.sql`** — ผังด้านบนแจกแจงครบทั้ง **10 dimension models
 > + 1 fact model** ตามที่ Part 4 สร้างจริง
+
+> ⚠️ **root อยู่ที่ไหน — ใบ Lab เรียกว่า `DWH_Lab` แต่ในรีโปนี้ชื่อ `lab-week01`**
+> `docker-compose.yaml` mount แบบ **relative กับตำแหน่งของตัวมันเอง** (`./dbt:/usr/app` และ
+> `./dbt_root:/root/.dbt`) ดังนั้น `dbt/` และ `dbt_root/` ต้องอยู่ **ข้าง ๆ** `docker-compose.yaml`
+> เสมอ ไม่ว่าโฟลเดอร์นั้นจะชื่ออะไร
+>
+> | สถานะของคุณ | root คือ |
+> |---|---|
+> | ทำต่อจาก Week 1 มาเรื่อย ๆ | `dsba8-data-warehouse/week01-data-warehouse-setup/lab-week01/` |
+> | เริ่มจาก 0 (คอมโดนล้าง / เครื่องใหม่) | `DWH_Lab/` — ได้จากการแตกไฟล์ [`DWH_Lab.zip`](../week01-data-warehouse-setup/lab-week01/DWH_Lab.zip) |
+>
+> ทั้งสองแบบใช้คำสั่งเดียวกันทุกบรรทัดหลังจาก `cd` เข้า root แล้ว
+
+> 💡 **เช็กว่ายืนถูกที่หรือยัง** — สั่งแล้วต้องเห็น `docker-compose.yaml`
+>
+> **Mac / Linux:** `ls docker-compose.yaml` · **Windows (PowerShell):** `Test-Path docker-compose.yaml`
 
 Create the folders (only the shell syntax differs):
 
 **Mac / Linux:**
 
 ```bash
-cd DWH_Lab
+cd week01-data-warehouse-setup/lab-week01     # เริ่มจาก 0: cd DWH_Lab
 mkdir -p dbt_root dbt/lab8/seeds \
   dbt/lab8/models/staging dbt/lab8/models/intermediate dbt/lab8/models/marts \
   dbt/lab8/models/aggregates dbt/lab8/models/reporting \
@@ -241,24 +262,45 @@ mkdir -p dbt_root dbt/lab8/seeds \
 **Windows (PowerShell):**
 
 ```powershell
-cd DWH_Lab
+cd week01-data-warehouse-setup\lab-week01     # เริ่มจาก 0: cd DWH_Lab
 New-Item -ItemType Directory -Force dbt_root, dbt/lab8/seeds, `
   dbt/lab8/models/staging, dbt/lab8/models/intermediate, dbt/lab8/models/marts, `
   dbt/lab8/models/aggregates, dbt/lab8/models/reporting, `
   dbt/lab8/tests
 ```
 
-> 💡 Tip: paste as a single line if the line breaks cause errors.
+> 💡 Tip: paste as a single line if the line breaks cause errors. คำสั่ง `cd` ด้านบนนับจาก
+> root ของรีโป — ถ้าอยู่ที่อื่นให้ใช้ path เต็มแทน
+
+> ⚠️ **`dbt_root/profiles.yml` เป็นไฟล์ที่ใช้ร่วมกันทุก Lab** — ถ้าคุณทำ Lab 3–7 มาแล้ว ไฟล์นี้
+> มี profile ของสัปดาห์ก่อนอยู่ ให้ **เพิ่ม** block `lab8:` ต่อท้าย (Part 2.3) **ห้ามเขียนทับทั้งไฟล์**
+> ไม่งั้น Lab เก่าจะรันไม่ได้
 
 > 📝 **ตำแหน่งไฟล์ dataset:** คัดลอก `coffee_sales.csv` และ `province_region_mapping_v2.csv`
 > ไปไว้ใน `dbt/lab8/seeds/` โดยคงชื่อไฟล์เดิม — ในรีโปนี้อยู่ที่
 > [`lab-week08/dbt/lab8/seeds/`](./lab-week08/dbt/lab8/seeds/) ให้แล้ว
+>
+> **Mac / Linux:**
+>
+> ```bash
+> cp ../../week08-aggregation-summary-table-with-dbt/lab-week08/dbt/lab8/seeds/*.csv dbt/lab8/seeds/
+> ```
+>
+> **Windows (PowerShell):**
+>
+> ```powershell
+> Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\lab-week08\dbt\lab8\seeds\*.csv dbt\lab8\seeds\
+> ```
 
 ---
 
 ### 2.3 กำหนด profile และ project configuration
 
 `dbt_root/profiles.yml`
+
+> 📝 **นี่คือ block ที่ต้อง _เพิ่ม_ ไม่ใช่ทั้งไฟล์** — ถ้าเคยทำ Lab 3–7 ไฟล์นี้จะมี profile
+> ของสัปดาห์ก่อน (`dvd_kpi`, `coffee_dw`, `coffee_dw_snowflake`, `coffee_dw_scd`, `lab7`)
+> อยู่แล้ว ให้วาง `lab8:` ต่อท้ายโดยไม่ลบของเดิม (ถ้าเริ่มจาก 0 ไฟล์ยังว่าง — ใส่เฉพาะ block นี้ได้เลย)
 
 ```yaml
 lab8:

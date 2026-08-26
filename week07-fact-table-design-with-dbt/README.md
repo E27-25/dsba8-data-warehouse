@@ -181,36 +181,55 @@ docker exec -it dw_postgres psql -U dw_user -d airflow -c "CREATE DATABASE lab7;
 
 ### 2.2 จัดเตรียมโฟลเดอร์ / Create the project skeleton
 
-สร้างไฟล์และโฟลเดอร์ต่อไปนี้ภายใน `DWH_Lab`:
+สร้างไฟล์และโฟลเดอร์ต่อไปนี้ **ในโฟลเดอร์เดียวกับ `docker-compose.yaml`**:
 
 ```text
-dbt_root/
-└── profiles.yml
-dbt/
-└── lab7/
-    ├── dbt_project.yml
-    ├── seeds/
-    │   ├── orders_log.csv
-    │   └── properties.yml
-    ├── models/
-    │   ├── staging/
-    │   │   └── stg_orders_log.sql
-    │   ├── dimensions/
-    │   │   ├── dim_date.sql
-    │   │   ├── dim_product.sql
-    │   │   ├── dim_customer.sql
-    │   │   ├── dim_store.sql
-    │   │   ├── dim_staff.sql
-    │   │   ├── dim_payment_method.sql
-    │   │   └── dim_order_status.sql
-    │   ├── facts/
-    │   │   ├── fact_orders_txn.sql
-    │   │   ├── fact_orders_daily_snapshot.sql
-    │   │   └── fact_orders_lifecycle.sql
-    │   └── schema.yml
-    └── tests/
-        └── assert_daily_snapshot_grain.sql
+lab-week01/                          ← root: โฟลเดอร์ที่มี docker-compose.yaml
+│                                      (ถ้าเริ่มจาก 0 โดยแตกไฟล์ DWH_Lab.zip → root ชื่อ DWH_Lab/)
+├── docker-compose.yaml              ← มีอยู่แล้วจาก Week 1
+├── dbt_root/
+│   └── profiles.yml
+└── dbt/
+    └── lab7/
+        ├── dbt_project.yml
+        ├── seeds/
+        │   ├── orders_log.csv
+        │   └── properties.yml
+        ├── models/
+        │   ├── staging/
+        │   │   └── stg_orders_log.sql
+        │   ├── dimensions/
+        │   │   ├── dim_date.sql
+        │   │   ├── dim_product.sql
+        │   │   ├── dim_customer.sql
+        │   │   ├── dim_store.sql
+        │   │   ├── dim_staff.sql
+        │   │   ├── dim_payment_method.sql
+        │   │   └── dim_order_status.sql
+        │   ├── facts/
+        │   │   ├── fact_orders_txn.sql
+        │   │   ├── fact_orders_daily_snapshot.sql
+        │   │   └── fact_orders_lifecycle.sql
+        │   └── schema.yml
+        └── tests/
+            └── assert_daily_snapshot_grain.sql
 ```
+
+> ⚠️ **root อยู่ที่ไหน — ใบ Lab เรียกว่า `DWH_Lab` แต่ในรีโปนี้ชื่อ `lab-week01`**
+> `docker-compose.yaml` mount แบบ **relative กับตำแหน่งของตัวมันเอง** (`./dbt:/usr/app` และ
+> `./dbt_root:/root/.dbt`) ดังนั้น `dbt/` และ `dbt_root/` ต้องอยู่ **ข้าง ๆ** `docker-compose.yaml`
+> เสมอ ไม่ว่าโฟลเดอร์นั้นจะชื่ออะไร
+>
+> | สถานะของคุณ | root คือ |
+> |---|---|
+> | ทำต่อจาก Week 1 มาเรื่อย ๆ | `dsba8-data-warehouse/week01-data-warehouse-setup/lab-week01/` |
+> | เริ่มจาก 0 (คอมโดนล้าง / เครื่องใหม่) | `DWH_Lab/` — ได้จากการแตกไฟล์ [`DWH_Lab.zip`](../week01-data-warehouse-setup/lab-week01/DWH_Lab.zip) |
+>
+> ทั้งสองแบบใช้คำสั่งเดียวกันทุกบรรทัดหลังจาก `cd` เข้า root แล้ว
+
+> 💡 **เช็กว่ายืนถูกที่หรือยัง** — สั่งแล้วต้องเห็น `docker-compose.yaml`
+>
+> **Mac / Linux:** `ls docker-compose.yaml` · **Windows (PowerShell):** `Test-Path docker-compose.yaml`
 
 > ⚠️ **ชื่อไฟล์ fact:** ผังในใบ Lab หัวข้อ 2.2 เขียนชื่อไฟล์ว่า `fct_orders_*.sql` แต่ SQL ทุกไฟล์,
 > `schema.yml` และ `ref()` ทุกจุดในใบ Lab เรียกใช้ชื่อ **`fact_orders_*`** README นี้จึงใช้
@@ -222,7 +241,7 @@ Create the folders (only the shell syntax differs):
 **Mac / Linux:**
 
 ```bash
-cd DWH_Lab
+cd week01-data-warehouse-setup/lab-week01     # เริ่มจาก 0: cd DWH_Lab
 mkdir -p dbt_root dbt/lab7/seeds \
   dbt/lab7/models/staging dbt/lab7/models/dimensions dbt/lab7/models/facts \
   dbt/lab7/tests
@@ -231,20 +250,41 @@ mkdir -p dbt_root dbt/lab7/seeds \
 **Windows (PowerShell):**
 
 ```powershell
-cd DWH_Lab
+cd week01-data-warehouse-setup\lab-week01     # เริ่มจาก 0: cd DWH_Lab
 New-Item -ItemType Directory -Force dbt_root, dbt/lab7/seeds, `
   dbt/lab7/models/staging, dbt/lab7/models/dimensions, dbt/lab7/models/facts, `
   dbt/lab7/tests
 ```
 
-> 💡 Tip: paste as a single line if the line breaks cause errors.
+> 💡 Tip: paste as a single line if the line breaks cause errors. คำสั่ง `cd` ด้านบนนับจาก
+> root ของรีโป — ถ้าอยู่ที่อื่นให้ใช้ path เต็มแทน
+
+> ⚠️ **`dbt_root/profiles.yml` เป็นไฟล์ที่ใช้ร่วมกันทุก Lab** — ถ้าคุณทำ Lab 3–6 มาแล้ว ไฟล์นี้
+> มี profile ของสัปดาห์ก่อนอยู่ ให้ **เพิ่ม** block `lab7:` ต่อท้าย (Part 2.3) **ห้ามเขียนทับทั้งไฟล์**
+> ไม่งั้น Lab เก่าจะรันไม่ได้
 
 > 📝 **ตำแหน่งไฟล์ dataset:** คัดลอก `orders_log.csv` ไปไว้ที่ `dbt/lab7/seeds/orders_log.csv`
 > — ในรีโปนี้ไฟล์อยู่ที่ [`lab-week07/dbt/lab7/seeds/orders_log.csv`](./lab-week07/dbt/lab7/seeds/orders_log.csv) ให้แล้ว
+>
+> **Mac / Linux:**
+>
+> ```bash
+> cp ../../week07-fact-table-design-with-dbt/lab-week07/dbt/lab7/seeds/orders_log.csv dbt/lab7/seeds/
+> ```
+>
+> **Windows (PowerShell):**
+>
+> ```powershell
+> Copy-Item ..\..\week07-fact-table-design-with-dbt\lab-week07\dbt\lab7\seeds\orders_log.csv dbt\lab7\seeds\
+> ```
 
 ---
 
 ### 2.3 กำหนดการเชื่อมต่อ PostgreSQL — `dbt_root/profiles.yml`
+
+> 📝 **นี่คือ block ที่ต้อง _เพิ่ม_ ไม่ใช่ทั้งไฟล์** — ถ้าเคยทำ Lab 3–6 ไฟล์นี้จะมี profile
+> `dvd_kpi`, `coffee_dw`, `coffee_dw_snowflake`, `coffee_dw_scd` อยู่แล้ว ให้วาง `lab7:`
+> ต่อท้ายโดยไม่ลบของเดิม (ถ้าเริ่มจาก 0 ไฟล์ยังว่าง — ใส่เฉพาะ block นี้ได้เลย)
 
 ```yaml
 lab7:
