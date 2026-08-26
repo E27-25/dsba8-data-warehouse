@@ -1,0 +1,102 @@
+version: 2
+
+seeds:
+  - name: coffee_sales
+    description: ข้อมูลขายเดือนกรกฎาคม 2024 จำนวน 3,000 line items
+    columns:
+      - name: sale_id
+        tests: [not_null, unique]
+  - name: province_region_mapping_v2
+    description: Mapping 77 จังหวัดไปยัง 6 regions
+    columns:
+      - name: province_name
+        tests: [not_null, unique]
+      - name: region_name
+        tests: [not_null]
+
+models:
+  - name: stg_coffee_sales
+    description: Cleaned sales; grain คือหนึ่งแถวต่อ sale_id
+    columns:
+      - name: sale_id
+        tests: [not_null, unique]
+      - name: invoice_number
+        tests: [not_null]
+      - name: province
+        tests: [not_null]
+
+  - name: dim_region
+    columns:
+      - name: region_key
+        tests: [not_null, unique]
+      - name: region_name
+        tests: [not_null, unique]
+
+  - name: dim_province
+    columns:
+      - name: province_key
+        tests: [not_null, unique]
+      - name: province_name
+        tests: [not_null, unique]
+      - name: region_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_region')
+              field: region_key
+
+  - name: dim_store
+    columns:
+      - name: store_key
+        tests: [not_null, unique]
+      - name: store_code
+        tests: [not_null, unique]
+      - name: province_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_province')
+              field: province_key
+
+  - name: dim_date
+    columns:
+      - name: date_key
+        tests: [not_null, unique]
+      - name: sale_date
+        tests: [not_null, unique]
+
+  - name: fct_sales
+    description: Fact ที่ขยายข้อมูลเดิมเป็น 9 เดือน
+    columns:
+      - name: sale_key
+        tests: [not_null, unique]
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: store_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_store')
+              field: store_key
+      - name: revenue
+        tests: [not_null]
+
+  - name: agg_sales_region_month
+    description: Summary table; grain คือหนึ่งเดือนต่อหนึ่ง region
+    columns:
+      - name: month_start
+        tests: [not_null]
+      - name: region_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_region')
+              field: region_key
+      - name: total_revenue
+        tests: [not_null]
+      - name: total_quantity
+        tests: [not_null]

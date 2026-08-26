@@ -1,0 +1,28 @@
+{{ config(materialized='view') }}
+
+select
+    trim(order_id) as order_id,
+    nullif(trim(order_date), '')::date as order_date,
+    nullif(trim(shipped_date), '')::date as shipped_date,
+    nullif(trim(delivered_date), '')::date as delivered_date,
+    trim(product_code) as product_code,
+    trim(product_name) as product_name,
+    trim(category) as category,
+    nullif(trim(size), '') as size,
+    nullif(trim(unit_price), '')::numeric(12, 2) as unit_price,
+    nullif(trim(quantity), '')::integer as quantity,
+    nullif(trim(discount_amount), '')::numeric(12, 2)
+        as discount_amount,
+    nullif(trim(net_amount), '')::numeric(12, 2) as net_amount,
+    nullif(trim(cost_amount), '')::numeric(12, 2) as cost_amount,
+    nullif(trim(margin_amount), '')::numeric(12, 2) as margin_amount,
+    trim(customer_code) as customer_code,
+    trim(customer_name) as customer_name,
+    trim(store_code) as store_code,
+    trim(store_name) as store_name,
+    trim(staff_code) as staff_code,
+    trim(staff_name) as staff_name,
+    trim(payment_method) as payment_method,
+    trim(status) as status
+
+from {{ ref('orders_log') }}

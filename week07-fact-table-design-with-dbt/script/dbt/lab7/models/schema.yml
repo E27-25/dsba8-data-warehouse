@@ -1,0 +1,167 @@
+version: 2
+
+models:
+  - name: stg_orders_log
+    description: 'ข้อมูลคำสั่งซื้อที่ cast ชนิดข้อมูลแล้ว'
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: order_date
+        tests: [not_null]
+      - name: product_code
+        tests: [not_null]
+      - name: customer_code
+        tests: [not_null]
+      - name: store_code
+        tests: [not_null]
+      - name: staff_code
+        tests: [not_null]
+
+  - name: dim_date
+    columns:
+      - name: date_key
+        tests: [not_null, unique]
+      - name: full_date
+        tests: [not_null, unique]
+
+  - name: dim_product
+    columns:
+      - name: product_key
+        tests: [not_null, unique]
+      - name: product_code
+        tests: [not_null, unique]
+
+  - name: dim_customer
+    columns:
+      - name: customer_key
+        tests: [not_null, unique]
+      - name: customer_code
+        tests: [not_null, unique]
+
+  - name: dim_store
+    columns:
+      - name: store_key
+        tests: [not_null, unique]
+      - name: store_code
+        tests: [not_null, unique]
+
+  - name: dim_staff
+    columns:
+      - name: staff_key
+        tests: [not_null, unique]
+      - name: staff_code
+        tests: [not_null, unique]
+
+  - name: dim_payment_method
+    columns:
+      - name: payment_method_key
+        tests: [not_null, unique]
+      - name: payment_method
+        tests: [not_null, unique]
+
+  - name: dim_order_status
+    columns:
+      - name: status_key
+        tests: [not_null, unique]
+      - name: status
+        tests: [not_null, unique]
+
+  - name: fact_orders_txn
+    description: 'Transaction Fact ที่ grain ระดับรายการใน orders_log'
+    columns:
+      - name: order_fact_key
+        tests: [not_null, unique]
+      - name: order_id
+        tests: [not_null, unique]
+      - name: order_date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+      - name: store_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_store')
+              field: store_key
+      - name: staff_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_staff')
+              field: staff_key
+      - name: payment_method_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_payment_method')
+              field: payment_method_key
+      - name: status_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_order_status')
+              field: status_key
+
+  - name: fact_orders_daily_snapshot
+    description: 'Periodic Snapshot ระดับวัน-สาขา-สินค้า'
+    columns:
+      - name: snapshot_date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: store_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_store')
+              field: store_key
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+
+  - name: fact_orders_lifecycle
+    description: 'Accumulating Snapshot ระดับคำสั่งซื้อ'
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: order_date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: shipped_date_key
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: delivered_date_key
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: current_status_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_order_status')
+              field: status_key

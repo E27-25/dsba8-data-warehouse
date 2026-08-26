@@ -55,6 +55,7 @@
 | ├── 📝[Lab8 Aggregation _ Summary Table with dbt.docx](<./docs/Lab8%20Aggregation%20_%20Summary%20Table%20with%20dbt.docx>)        | Lab instruction (Word)                                   |
 | ├── 📄[Lab8 Aggregation _ Summary Table with dbt.pdf](<./docs/Lab8%20Aggregation%20_%20Summary%20Table%20with%20dbt.pdf>)          | Lab instruction (PDF)                                    |
 | └── 📂[screenshots/](./docs/screenshots/)                                                                                          | Images referenced by this README                         |
+| 📂[script/](./script/)                                                                                                                | **ไฟล์ `.sql` / `.yml` ทั้งหมดของ Lab เตรียมไว้ให้** — ใช้กับ "คำสั่งลัด" ในแต่ละหัวข้อ |
 | 📂[lab-week08/](./lab-week08/)                                                                                                        | **Lab working directory**                          |
 | ├── 📂[dbt_root/](./lab-week08/dbt_root/)                                                                                          | Holds`profiles.yml` — the dbt connection profile      |
 | │&nbsp;&nbsp;&nbsp;└── ⚙️ [profiles.yml](./lab-week08/dbt_root/profiles.yml)                                                       | Connects dbt to PostgreSQL, database`lab8`             |
@@ -272,6 +273,33 @@ New-Item -ItemType Directory -Force dbt_root, dbt/lab8/seeds, `
 > 💡 Tip: paste as a single line if the line breaks cause errors. คำสั่ง `cd` ด้านบนนับจาก
 > root ของรีโป — ถ้าอยู่ที่อื่นให้ใช้ path เต็มแทน
 
+<details>
+<summary><b>⚡ คำสั่งลัด — วางไฟล์ SQL/YAML ทั้งหมดของ Lab นี้ในครั้งเดียว</b></summary>
+
+ทุกไฟล์ `.sql` และ `.yml` ของ Lab นี้เตรียมไว้แล้วใน [`script/`](./script/) ถ้าไม่อยากสร้างไฟล์
+ทีละไฟล์แล้ว copy-paste จาก README ให้คัดลอกทั้งชุดทีเดียว **หลังจาก `cd` เข้า root แล้ว**:
+
+**Mac / Linux:**
+
+```bash
+cp -r ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/. dbt/lab8/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item -Recurse -Force ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\* dbt\lab8\
+```
+
+> ⚠️ คำสั่งนี้แตะเฉพาะ `dbt/lab8/` เท่านั้น — **ไม่รวม `dbt_root/profiles.yml`** ซึ่งใช้ร่วมกัน
+> ทุก Lab และต้องเพิ่ม block เองตาม Part 2.3 ส่วน `seeds/*.csv` ที่คัดลอกไว้ก่อนหน้า
+> จะไม่ถูกลบ เพราะเป็นการ merge ไม่ใช่ replace
+
+> 📝 ถึงจะใช้คำสั่งลัด ก็ยัง**ควรอ่านคำอธิบายของแต่ละไฟล์ใน Part 3–5** เพราะข้อสอบและ
+> Google Form ถามจากเหตุผลเบื้องหลัง ไม่ใช่แค่ผลลัพธ์ที่รันได้
+
+</details>
+
 > ⚠️ **`dbt_root/profiles.yml` เป็นไฟล์ที่ใช้ร่วมกันทุก Lab** — ถ้าคุณทำ Lab 3–7 มาแล้ว ไฟล์นี้
 > มี profile ของสัปดาห์ก่อนอยู่ ให้ **เพิ่ม** block `lab8:` ต่อท้าย (Part 2.3) **ห้ามเขียนทับทั้งไฟล์**
 > ไม่งั้น Lab เก่าจะรันไม่ได้
@@ -316,6 +344,15 @@ lab8:
       schema: dbt
       threads: 4
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — ไฟล์เตรียมไว้ให้แล้ว</b></summary>
+
+ไฟล์ตัวอย่างอยู่ที่ [`script/dbt_root/profiles.yml`](./script/dbt_root/profiles.yml) — แต่ **ห้ามคัดลอกทับ** เพราะ
+`profiles.yml` ใช้ร่วมกันทุก Lab ให้เปิดไฟล์นั้นแล้ว **คัดลอกเฉพาะ block ไปต่อท้าย**
+ไฟล์จริงที่ `dbt_root/profiles.yml` ของคุณ
+
+</details>
 
 > ⚠️ **ชื่อ host:** dbt ทำงานใน Docker network จึงเชื่อม PostgreSQL ด้วยชื่อ service `postgres`
 > และพอร์ตภายใน `5432` — **ไม่ใช้** `localhost` หรือพอร์ต `25432`
@@ -374,6 +411,25 @@ seeds:
         region_name: varchar(50)
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/dbt_project.yml`](./script/dbt/lab8/dbt_project.yml)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/dbt_project.yml dbt/lab8/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\dbt_project.yml dbt\lab8\
+```
+
+</details>
+
 > 📝 **ชื่อ schema จริงใน PostgreSQL:** dbt ต่อ `+schema` เข้ากับ `schema:` ใน `profiles.yml`
 > เป็น `<profile schema>_<+schema>` ดังนั้นจะได้ **`dbt_raw`**, **`dbt_staging`**,
 > **`dbt_intermediate`**, **`dbt_marts`**, **`dbt_aggregates`** และ **`dbt_reporting`**
@@ -423,7 +479,7 @@ dbt show --select province_region_mapping_v2
 
 ### 3.2 ทำความสะอาดข้อมูลยอดขาย
 
-`models/staging/stg_coffee_sales.sql`
+`dbt/lab8/models/staging/stg_coffee_sales.sql`
 
 ```sql
 select
@@ -453,7 +509,26 @@ select
 from {{ ref('coffee_sales') }}
 ```
 
-`models/staging/stg_province_region_mapping.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/staging/stg_coffee_sales.sql`](./script/dbt/lab8/models/staging/stg_coffee_sales.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/staging/stg_coffee_sales.sql dbt/lab8/models/staging/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\staging\stg_coffee_sales.sql dbt\lab8\models\staging\
+```
+
+</details>
+
+`dbt/lab8/models/staging/stg_province_region_mapping.sql`
 
 ```sql
 select
@@ -461,6 +536,25 @@ select
     trim(region_name) as region_name
 from {{ ref('province_region_mapping_v2') }}
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/staging/stg_province_region_mapping.sql`](./script/dbt/lab8/models/staging/stg_province_region_mapping.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/staging/stg_province_region_mapping.sql dbt/lab8/models/staging/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\staging\stg_province_region_mapping.sql dbt\lab8\models\staging\
+```
+
+</details>
 
 **รันเฉพาะ staging layer**
 
@@ -489,7 +583,7 @@ dbt show --select stg_coffee_sales --limit 5
 
 ### 4.1 Dimensions พื้นฐานจาก `coffee_sales`
 
-`models/marts/dim_customer.sql`
+`dbt/lab8/models/marts/dim_customer.sql`
 
 ```sql
 select distinct
@@ -501,7 +595,26 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-`models/marts/dim_category.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_customer.sql`](./script/dbt/lab8/models/marts/dim_customer.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_customer.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_customer.sql dbt\lab8\models\marts\
+```
+
+</details>
+
+`dbt/lab8/models/marts/dim_category.sql`
 
 ```sql
 select distinct
@@ -510,7 +623,26 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-`models/marts/dim_product.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_category.sql`](./script/dbt/lab8/models/marts/dim_category.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_category.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_category.sql dbt\lab8\models\marts\
+```
+
+</details>
+
+`dbt/lab8/models/marts/dim_product.sql`
 
 ```sql
 select distinct
@@ -525,7 +657,26 @@ join {{ ref('dim_category') }} c
   on s.category = c.category_name
 ```
 
-`models/marts/dim_position.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_product.sql`](./script/dbt/lab8/models/marts/dim_product.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_product.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_product.sql dbt\lab8\models\marts\
+```
+
+</details>
+
+`dbt/lab8/models/marts/dim_position.sql`
 
 ```sql
 select distinct
@@ -534,7 +685,26 @@ select distinct
 from {{ ref('stg_coffee_sales') }}
 ```
 
-`models/marts/dim_staff.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_position.sql`](./script/dbt/lab8/models/marts/dim_position.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_position.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_position.sql dbt\lab8\models\marts\
+```
+
+</details>
+
+`dbt/lab8/models/marts/dim_staff.sql`
 
 ```sql
 select distinct
@@ -547,7 +717,26 @@ join {{ ref('dim_position') }} p
   on s.position = p.position_name
 ```
 
-`models/marts/dim_promotion.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_staff.sql`](./script/dbt/lab8/models/marts/dim_staff.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_staff.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_staff.sql dbt\lab8\models\marts\
+```
+
+</details>
+
+`dbt/lab8/models/marts/dim_promotion.sql`
 
 ```sql
 select distinct
@@ -558,6 +747,25 @@ from {{ ref('stg_coffee_sales') }}
 where promo_code is not null
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_promotion.sql`](./script/dbt/lab8/models/marts/dim_promotion.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_promotion.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_promotion.sql dbt\lab8\models\marts\
+```
+
+</details>
+
 > ⚠️ **`select distinct` จะสร้างคีย์ซ้ำทันทีถ้า attribute ของรหัสเดียวกันไม่ตรงกัน**
 > เช่น `customer_code` เดียวมีสองชื่อ — ชุดข้อมูลนี้สะอาดอยู่แล้ว (`unique` test ใน Part 6
 > จะจับให้ถ้าไม่สะอาด) แต่กับข้อมูลจริงต้องเลือกค่าตัวแทนด้วย `max()` หรือ `row_number()`
@@ -566,7 +774,7 @@ where promo_code is not null
 
 ### 4.2 Geography Dimensions จาก mapping v2
 
-`models/marts/dim_region.sql`
+`dbt/lab8/models/marts/dim_region.sql`
 
 ```sql
 select distinct
@@ -575,7 +783,26 @@ select distinct
 from {{ ref('stg_province_region_mapping') }}
 ```
 
-`models/marts/dim_province.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_region.sql`](./script/dbt/lab8/models/marts/dim_region.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_region.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_region.sql dbt\lab8\models\marts\
+```
+
+</details>
+
+`dbt/lab8/models/marts/dim_province.sql`
 
 ```sql
 select distinct
@@ -587,6 +814,25 @@ join {{ ref('dim_region') }} r
   on m.region_name = r.region_name
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_province.sql`](./script/dbt/lab8/models/marts/dim_province.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_province.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_province.sql dbt\lab8\models\marts\
+```
+
+</details>
+
 ---
 
 ### 4.3 สร้างร้านให้ครบทุกจังหวัดแบบ Declarative
@@ -594,7 +840,7 @@ join {{ ref('dim_region') }} r
 โมเดล `dim_store` **รักษาร้านเดิม 3 แห่ง** และ **สร้างร้านจำลองอีก 1 แห่งเฉพาะจังหวัดที่ยังไม่มีร้าน**
 โดย **ไม่ใช้** `INSERT` หรือ `UPDATE`
 
-`models/marts/dim_store.sql`
+`dbt/lab8/models/marts/dim_store.sql`
 
 ```sql
 with existing_stores as (
@@ -642,6 +888,25 @@ all_stores as (
 select * from all_stores
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_store.sql`](./script/dbt/lab8/models/marts/dim_store.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_store.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_store.sql dbt\lab8\models\marts\
+```
+
+</details>
+
 > 📝 **การแก้ไขจาก SQL เดิม:** ไฟล์ข้อมูลจริงใช้รหัสร้าน `ST01`, `ST02` และ `ST03`
 > **ไม่ใช่** `ST001`–`ST003` โมเดลนี้จึงตรวจร้านเดิมจากข้อมูลด้วย `join` และใช้
 > `is_generated` แทนการ hard-code รายชื่อรหัสร้าน
@@ -653,7 +918,7 @@ select * from all_stores
 
 ### 4.4 สร้าง Date Dimension ครอบคลุม 9 เดือน
 
-`models/marts/dim_date.sql`
+`dbt/lab8/models/marts/dim_date.sql`
 
 ```sql
 select
@@ -671,6 +936,25 @@ from generate_series(
 ) as g(d)
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_date.sql`](./script/dbt/lab8/models/marts/dim_date.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_date.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_date.sql dbt\lab8\models\marts\
+```
+
+</details>
+
 > 💡 `2024-07-01` → `2025-03-31` คือ **274 วัน** (`184` วันในปี 2024 + `90` วันในปี 2025)
 
 ---
@@ -680,7 +964,7 @@ from generate_series(
 Invoice เดียวกันต้องอยู่ **ร้านเดียวกันทุก line item** จึงสร้าง mapping ที่ grain =
 **หนึ่งแถวต่อ `invoice_number`** ก่อนขยายข้อมูลเป็นหลายเดือน
 
-`models/intermediate/int_invoice_store_map.sql`
+`dbt/lab8/models/intermediate/int_invoice_store_map.sql`
 
 ```sql
 with generated_stores as (
@@ -708,6 +992,25 @@ join generated_stores g
   ) + 1
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/intermediate/int_invoice_store_map.sql`](./script/dbt/lab8/models/intermediate/int_invoice_store_map.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/intermediate/int_invoice_store_map.sql dbt/lab8/models/intermediate/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\intermediate\int_invoice_store_map.sql dbt\lab8\models\intermediate\
+```
+
+</details>
+
 > ⚠️ **`where is_generated`** หมายความว่าทุก invoice ถูกย้ายไปอยู่ **ร้านจำลอง 74 แห่ง**
 > ดังนั้นร้านเดิม `ST01`–`ST03` จะ **ไม่มียอดขายใน `fct_sales`** — เป็นเจตนาของ Lab
 > เพื่อกระจายข้อมูลให้ครบทุกภูมิภาค ไม่ใช่ข้อผิดพลาด
@@ -719,7 +1022,7 @@ join generated_stores g
 
 ### 4.6 ขยายข้อมูลเดือน Jul 2024 ถึง Mar 2025
 
-`models/intermediate/int_sales_expanded.sql`
+`dbt/lab8/models/intermediate/int_sales_expanded.sql`
 
 ```sql
 with months as (
@@ -773,6 +1076,25 @@ select
 from expanded
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/intermediate/int_sales_expanded.sql`](./script/dbt/lab8/models/intermediate/int_sales_expanded.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/intermediate/int_sales_expanded.sql dbt/lab8/models/intermediate/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\intermediate\int_sales_expanded.sql dbt\lab8\models\intermediate\
+```
+
+</details>
+
 > ⚠️ **วันที่ 29–31:** เมื่อขยายไปยังเดือนที่มีจำนวนวันน้อยกว่า โมเดลใช้ **วันสุดท้ายของ
 > เดือนเป้าหมาย** เช่น `31 มกราคม` จะกลายเป็น `28 กุมภาพันธ์ 2025`
 
@@ -783,7 +1105,7 @@ from expanded
 
 ### 4.7 สร้าง Fact Table
 
-`models/marts/fct_sales.sql`
+`dbt/lab8/models/marts/fct_sales.sql`
 
 ```sql
 select
@@ -814,6 +1136,25 @@ join {{ ref('dim_staff') }} sf
 left join {{ ref('dim_promotion') }} pr
   on x.promo_code = pr.promo_code
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/fct_sales.sql`](./script/dbt/lab8/models/marts/fct_sales.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/fct_sales.sql dbt/lab8/models/marts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\fct_sales.sql dbt\lab8\models\marts\
+```
+
+</details>
 
 > ✅ **Grain ของ `fct_sales`:** หนึ่งแถวต่อ **รายการขายเดิมต่อเดือนเป้าหมาย** โดย `sale_key`
 > ต้องไม่ซ้ำ และคาดหวัง **3,000 × 9 = 27,000 แถว**
@@ -856,7 +1197,7 @@ order by line_items desc, invoice_number
 
 ### 5.2 Daily sales per store
 
-`models/reporting/rpt_sales_store_day.sql`
+`dbt/lab8/models/reporting/rpt_sales_store_day.sql`
 
 ```sql
 select
@@ -879,6 +1220,25 @@ group by
     s.store_name
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_store_day.sql`](./script/dbt/lab8/models/reporting/rpt_sales_store_day.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_store_day.sql dbt/lab8/models/reporting/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_store_day.sql dbt\lab8\models\reporting\
+```
+
+</details>
+
 ---
 
 ### 5.3 Monthly sales per region: Aggregate Table
@@ -886,7 +1246,7 @@ group by
 โมเดลนี้ materialized เป็น **table** ตาม `dbt_project.yml` เพื่อเก็บผลรวมที่ query บ่อย
 ลดการ join fact กับ geography dimensions ซ้ำทุกครั้ง
 
-`models/aggregates/agg_sales_region_month.sql`
+`dbt/lab8/models/aggregates/agg_sales_region_month.sql`
 
 ```sql
 {{
@@ -921,6 +1281,25 @@ group by
     r.region_name
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/aggregates/agg_sales_region_month.sql`](./script/dbt/lab8/models/aggregates/agg_sales_region_month.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/aggregates/agg_sales_region_month.sql dbt/lab8/models/aggregates/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\aggregates\agg_sales_region_month.sql dbt\lab8\models\aggregates\
+```
+
+</details>
+
 > ✅ **Grain ของ Aggregate:** หนึ่งแถวต่อ `month_start` + `region_key` ส่วน `region_name`
 > เป็น **descriptive attribute** ไม่ใช่ตัวกำหนด grain
 
@@ -943,7 +1322,7 @@ group by
 
 ### 6.1 Generic Tests และ Documentation
 
-`models/schema.yml`
+`dbt/lab8/models/schema.yml`
 
 <details>
 <summary><b>📄 Full <code>schema.yml</code> — คลิกเพื่อดูทั้งไฟล์</b></summary>
@@ -1053,13 +1432,32 @@ models:
         tests: [not_null]
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/schema.yml`](./script/dbt/lab8/models/schema.yml)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/schema.yml dbt/lab8/models/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\schema.yml dbt\lab8\models\
+```
+
+</details>
+
 </details>
 
 ---
 
 ### 6.2 Singular Tests สำหรับกฎทางธุรกิจ
 
-`tests/assert_all_provinces_have_store.sql`
+`dbt/lab8/tests/assert_all_provinces_have_store.sql`
 
 ```sql
 select p.*
@@ -1069,7 +1467,26 @@ left join {{ ref('dim_store') }} s
 where s.store_key is null
 ```
 
-`tests/assert_fact_expected_row_count.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_all_provinces_have_store.sql`](./script/dbt/lab8/tests/assert_all_provinces_have_store.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_all_provinces_have_store.sql dbt/lab8/tests/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_all_provinces_have_store.sql dbt\lab8\tests\
+```
+
+</details>
+
+`dbt/lab8/tests/assert_fact_expected_row_count.sql`
 
 ```sql
 select count(*) as actual_rows
@@ -1077,7 +1494,26 @@ from {{ ref('fct_sales') }}
 having count(*) <> 27000
 ```
 
-`tests/assert_summary_grain.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_fact_expected_row_count.sql`](./script/dbt/lab8/tests/assert_fact_expected_row_count.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_fact_expected_row_count.sql dbt/lab8/tests/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_fact_expected_row_count.sql dbt\lab8\tests\
+```
+
+</details>
+
+`dbt/lab8/tests/assert_summary_grain.sql`
 
 ```sql
 select
@@ -1089,7 +1525,26 @@ group by month_start, region_key
 having count(*) > 1
 ```
 
-`tests/assert_summary_reconciles.sql`
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_summary_grain.sql`](./script/dbt/lab8/tests/assert_summary_grain.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_summary_grain.sql dbt/lab8/tests/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_summary_grain.sql dbt\lab8\tests\
+```
+
+</details>
+
+`dbt/lab8/tests/assert_summary_reconciles.sql`
 
 ```sql
 with fact_total as (
@@ -1121,6 +1576,25 @@ where abs(f.revenue - s.revenue) > 0.01
    or f.quantity <> s.quantity
    or f.points <> s.points
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_summary_reconciles.sql`](./script/dbt/lab8/tests/assert_summary_reconciles.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_summary_reconciles.sql dbt/lab8/tests/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_summary_reconciles.sql dbt\lab8\tests\
+```
+
+</details>
 
 > ✅ **Singular test ต้องคืนค่า 0 แถวจึงจะผ่าน** — หากมีผลลัพธ์ แถวนั้นคือ **หลักฐานของปัญหา**
 > ที่ต้องตรวจสอบ
@@ -1188,7 +1662,7 @@ from {{ ref('agg_sales_region_month') }}
 **Roll-up** ใช้ **aggregate table รายเดือน** เป็นต้นทาง จึง **ไม่ต้องอ่าน fact table**
 และ join dimensions ใหม่
 
-`models/reporting/rpt_sales_region_quarter.sql`
+`dbt/lab8/models/reporting/rpt_sales_region_quarter.sql`
 
 ```sql
 select
@@ -1206,6 +1680,25 @@ group by
     region_name
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql`](./script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql dbt/lab8/models/reporting/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_region_quarter.sql dbt\lab8\models\reporting\
+```
+
+</details>
+
 > ✅ **ข้อสังเกต:** `revenue`, `quantity` และ `points_redeemed` เป็น **additive** จึง `SUM`
 > ต่อได้ ส่วน **ค่าเฉลี่ยหรือเปอร์เซ็นต์** ต้องกลับไปคำนวณจาก **numerator และ denominator**
 > ที่เก็บไว้
@@ -1222,7 +1715,7 @@ group by
 Aggregate รายเดือนต่อ region **ไม่มี `province_key`** จึง drill-down จากตารางนั้นโดยตรงไม่ได้
 ต้อง **อ่าน fact table** แล้ว group ที่ grain ละเอียดกว่า
 
-`models/reporting/rpt_sales_province_quarter.sql`
+`dbt/lab8/models/reporting/rpt_sales_province_quarter.sql`
 
 ```sql
 select
@@ -1251,6 +1744,25 @@ group by
     p.province_name
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql`](./script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql dbt/lab8/models/reporting/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_province_quarter.sql dbt\lab8\models\reporting\
+```
+
+</details>
+
 > 📝 **บทเรียนสำคัญ:** aggregate table เร็วขึ้นได้เพราะ **ตัดมิติทิ้ง** — มิติที่ตัดทิ้งแล้ว
 > จะ drill-down กลับไม่ได้ ต้องออกแบบว่าจะเก็บ grain ระดับไหนตั้งแต่ต้น
 
@@ -1258,7 +1770,7 @@ group by
 
 ### 7.3 CUBE: Year × Staff
 
-`models/reporting/rpt_sales_staff_year_cube.sql`
+`dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql`
 
 ```sql
 select
@@ -1273,6 +1785,25 @@ join {{ ref('dim_date') }} d
   on f.date_key = d.date_key
 group by cube(d.year, f.staff_key)
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql`](./script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql dbt/lab8/models/reporting/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_staff_year_cube.sql dbt\lab8\models\reporting\
+```
+
+</details>
 
 | `is_all_years` | `is_all_staff` | ความหมายของแถว                        |
 | :--------------: | :--------------: | ---------------------------------------------- |

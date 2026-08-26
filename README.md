@@ -169,6 +169,7 @@ dsba8-data-warehouse/
     │   ├── Lab7 Fact Table Design with dbt.docx
     │   ├── Lab7 Fact Table Design with dbt.pdf
     │   └── screenshots/
+    ├── script/                            ← All .sql / .yml files, ready to copy
     ├── lab-week07/                        ← Lab working dir (dbt project)
     │   ├── dbt_root/                      ← profiles.yml (dbt → PostgreSQL, db `lab7`)
     │   └── dbt/lab7/
@@ -182,6 +183,7 @@ dsba8-data-warehouse/
     │   ├── Lab8 Aggregation _ Summary Table with dbt.docx
     │   ├── Lab8 Aggregation _ Summary Table with dbt.pdf
     │   └── screenshots/
+    ├── script/                            ← All .sql / .yml files, ready to copy
     ├── lab-week08/                        ← Lab working dir (dbt project)
     │   ├── dbt_root/                      ← profiles.yml (dbt → PostgreSQL, db `lab8`)
     │   └── dbt/lab8/

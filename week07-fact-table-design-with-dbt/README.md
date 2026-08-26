@@ -64,6 +64,7 @@
 | ├── 📄[Lab7 Fact Table Design with dbt.pdf](<./docs/Lab7%20Fact%20Table%20Design%20with%20dbt.pdf>)                 | Lab instruction (PDF)                                          |
 | └── 📂[screenshots/](./docs/screenshots/)                                                                           | Images referenced by this README                               |
 | &nbsp;&nbsp;&nbsp;&nbsp;└── 📷 [lab7-lineage.png](./docs/screenshots/lab7-lineage.png)                              | Seed → Staging → Dimensions → Facts → KPI/SLA lineage      |
+| 📂[script/](./script/)                                                                                                                   | **ไฟล์ `.sql` / `.yml` ทั้งหมดของ Lab เตรียมไว้ให้** — ใช้กับ "คำสั่งลัด" ในแต่ละหัวข้อ |
 | 📂[lab-week07/](./lab-week07/)                                                                                         | **Lab working directory**                                |
 | ├── 📂[dbt_root/](./lab-week07/dbt_root/)                                                                           | Holds`profiles.yml` — the dbt connection profile            |
 | │&nbsp;&nbsp;&nbsp;└── ⚙️ [profiles.yml](./lab-week07/dbt_root/profiles.yml)                                     | Connects dbt to PostgreSQL, database`lab7`                   |
@@ -220,9 +221,9 @@ lab-week01/                          ← root: โฟลเดอร์ที่
 > `./dbt_root:/root/.dbt`) ดังนั้น `dbt/` และ `dbt_root/` ต้องอยู่ **ข้าง ๆ** `docker-compose.yaml`
 > เสมอ ไม่ว่าโฟลเดอร์นั้นจะชื่ออะไร
 >
-> | สถานะของคุณ | root คือ |
-> |---|---|
-> | ทำต่อจาก Week 1 มาเรื่อย ๆ | `dsba8-data-warehouse/week01-data-warehouse-setup/lab-week01/` |
+> | สถานะของคุณ                                             | root คือ                                                                                                              |
+> | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+> | ทำต่อจาก Week 1 มาเรื่อย ๆ                        | `dsba8-data-warehouse/week01-data-warehouse-setup/lab-week01/`                                                         |
 > | เริ่มจาก 0 (คอมโดนล้าง / เครื่องใหม่) | `DWH_Lab/` — ได้จากการแตกไฟล์ [`DWH_Lab.zip`](../week01-data-warehouse-setup/lab-week01/DWH_Lab.zip) |
 >
 > ทั้งสองแบบใช้คำสั่งเดียวกันทุกบรรทัดหลังจาก `cd` เข้า root แล้ว
@@ -258,6 +259,33 @@ New-Item -ItemType Directory -Force dbt_root, dbt/lab7/seeds, `
 
 > 💡 Tip: paste as a single line if the line breaks cause errors. คำสั่ง `cd` ด้านบนนับจาก
 > root ของรีโป — ถ้าอยู่ที่อื่นให้ใช้ path เต็มแทน
+
+<details>
+<summary><b>⚡ คำสั่งลัด — วางไฟล์ SQL/YAML ทั้งหมดของ Lab นี้ในครั้งเดียว</b></summary>
+
+ทุกไฟล์ `.sql` และ `.yml` ของ Lab นี้เตรียมไว้แล้วใน [`script/`](./script/) ถ้าไม่อยากสร้างไฟล์
+ทีละไฟล์แล้ว copy-paste จาก README ให้คัดลอกทั้งชุดทีเดียว **หลังจาก `cd` เข้า root แล้ว**:
+
+**Mac / Linux:**
+
+```bash
+cp -r ../../week07-fact-table-design-with-dbt/script/dbt/lab7/. dbt/lab7/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item -Recurse -Force ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\* dbt\lab7\
+```
+
+> ⚠️ คำสั่งนี้แตะเฉพาะ `dbt/lab7/` เท่านั้น — **ไม่รวม `dbt_root/profiles.yml`** ซึ่งใช้ร่วมกัน
+> ทุก Lab และต้องเพิ่ม block เองตาม Part 2.3 ส่วน `seeds/*.csv` ที่คัดลอกไว้ก่อนหน้า
+> จะไม่ถูกลบ เพราะเป็นการ merge ไม่ใช่ replace
+
+> 📝 ถึงจะใช้คำสั่งลัด ก็ยัง**ควรอ่านคำอธิบายของแต่ละไฟล์ใน Part 3–5** เพราะข้อสอบและ
+> Google Form ถามจากเหตุผลเบื้องหลัง ไม่ใช่แค่ผลลัพธ์ที่รันได้
+
+</details>
 
 > ⚠️ **`dbt_root/profiles.yml` เป็นไฟล์ที่ใช้ร่วมกันทุก Lab** — ถ้าคุณทำ Lab 3–6 มาแล้ว ไฟล์นี้
 > มี profile ของสัปดาห์ก่อนอยู่ ให้ **เพิ่ม** block `lab7:` ต่อท้าย (Part 2.3) **ห้ามเขียนทับทั้งไฟล์**
@@ -301,6 +329,15 @@ lab7:
       threads: 4
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — ไฟล์เตรียมไว้ให้แล้ว</b></summary>
+
+ไฟล์ตัวอย่างอยู่ที่ [`script/dbt_root/profiles.yml`](./script/dbt_root/profiles.yml) — แต่ **ห้ามคัดลอกทับ** เพราะ
+`profiles.yml` ใช้ร่วมกันทุก Lab ให้เปิดไฟล์นั้นแล้ว **คัดลอกเฉพาะ block ไปต่อท้าย**
+ไฟล์จริงที่ `dbt_root/profiles.yml` ของคุณ
+
+</details>
+
 > ⚠️ **ชื่อ host:** dbt ทำงานใน Docker network จึงเชื่อม PostgreSQL ด้วยชื่อ service `postgres`
 > และพอร์ตภายใน `5432` — **ไม่ใช้** `localhost` หรือพอร์ต `25432`
 
@@ -332,6 +369,25 @@ models:
   facts:
     +materialized: table
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/dbt_project.yml`](./script/dbt/lab7/dbt_project.yml)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/dbt_project.yml dbt/lab7/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\dbt_project.yml dbt\lab7\
+```
+
+</details>
 
 > ⚠️ **ถ้า dbt เตือน `Configuration paths exist in your dbt_project.yml file which do not apply to any resources`:**
 > คีย์ระดับแรกใต้ `models:` คือ **ชื่อ project/package** ไม่ใช่ชื่อโฟลเดอร์ เมื่อ dbt เตือนแบบนี้
@@ -399,6 +455,25 @@ seeds:
           - accepted_values:
               values: ['ORDERED', 'SHIPPED', 'DELIVERED', 'CANCELLED']
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/seeds/properties.yml`](./script/dbt/lab7/seeds/properties.yml)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/seeds/properties.yml dbt/lab7/seeds/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\seeds\properties.yml dbt\lab7\seeds\
+```
+
+</details>
 
 ---
 
@@ -483,6 +558,25 @@ select
 from {{ ref('orders_log') }}
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/staging/stg_orders_log.sql`](./script/dbt/lab7/models/staging/stg_orders_log.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/staging/stg_orders_log.sql dbt/lab7/models/staging/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\staging\stg_orders_log.sql dbt\lab7\models\staging\
+```
+
+</details>
+
 > 📝 **`nullif(trim(x), '')`** สำคัญกับ `shipped_date` / `delivered_date` เพราะออเดอร์ที่ยังไม่ส่ง
 > หรือถูกยกเลิกจะมีค่าว่าง — ต้องเป็น `NULL` ไม่ใช่สตริงว่าง ก่อน `cast` เป็น `date`
 
@@ -532,6 +626,25 @@ select
 from date_spine
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_date.sql`](./script/dbt/lab7/models/dimensions/dim_date.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_date.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_date.sql dbt\lab7\models\dimensions\
+```
+
+</details>
+
 > 💡 **`greatest(...)` + `coalesce(...)`** ทำให้ขอบขวาของ spine ครอบ `delivered_date` ที่ไกลสุด
 > ไม่ใช่แค่ `order_date` — จำเป็นต่อ role-playing date keys ใน Part 4.3
 
@@ -554,6 +667,25 @@ from {{ ref('stg_orders_log') }}
 group by product_code
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_product.sql`](./script/dbt/lab7/models/dimensions/dim_product.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_product.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_product.sql dbt\lab7\models\dimensions\
+```
+
+</details>
+
 > 💡 **`md5(...)` เป็น surrogate key** ของ Lab นี้ — สร้างคีย์คงที่จากรหัสธุรกิจโดยไม่ต้องใช้ `SERIAL`
 
 ---
@@ -572,6 +704,25 @@ from {{ ref('stg_orders_log') }}
 group by customer_code
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_customer.sql`](./script/dbt/lab7/models/dimensions/dim_customer.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_customer.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_customer.sql dbt\lab7\models\dimensions\
+```
+
+</details>
+
 `dbt/lab7/models/dimensions/dim_store.sql`
 
 ```sql
@@ -584,6 +735,25 @@ from {{ ref('stg_orders_log') }}
 group by store_code
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_store.sql`](./script/dbt/lab7/models/dimensions/dim_store.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_store.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_store.sql dbt\lab7\models\dimensions\
+```
+
+</details>
+
 `dbt/lab7/models/dimensions/dim_staff.sql`
 
 ```sql
@@ -595,6 +765,25 @@ select
 from {{ ref('stg_orders_log') }}
 group by staff_code
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_staff.sql`](./script/dbt/lab7/models/dimensions/dim_staff.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_staff.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_staff.sql dbt\lab7\models\dimensions\
+```
+
+</details>
 
 ---
 
@@ -611,6 +800,25 @@ from {{ ref('stg_orders_log') }}
 group by payment_method
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_payment_method.sql`](./script/dbt/lab7/models/dimensions/dim_payment_method.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_payment_method.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_payment_method.sql dbt\lab7\models\dimensions\
+```
+
+</details>
+
 `dbt/lab7/models/dimensions/dim_order_status.sql`
 
 ```sql
@@ -621,6 +829,25 @@ select
 from {{ ref('stg_orders_log') }}
 group by status
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_order_status.sql`](./script/dbt/lab7/models/dimensions/dim_order_status.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_order_status.sql dbt/lab7/models/dimensions/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_order_status.sql dbt\lab7\models\dimensions\
+```
+
+</details>
 
 > 📝 ทั้งสองตารางเป็น **mini-dimension** ที่ถอดออกมาจากคอลัมน์ข้อความ ทำให้ fact เก็บแค่คีย์
 > และเปลี่ยนชื่อ/เพิ่ม attribute ได้ที่เดียว
@@ -678,6 +905,25 @@ join {{ ref('dim_payment_method') }} as pm
 join {{ ref('dim_order_status') }} as os
     on s.status = os.status
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/facts/fact_orders_txn.sql`](./script/dbt/lab7/models/facts/fact_orders_txn.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/facts/fact_orders_txn.sql dbt/lab7/models/facts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\facts\fact_orders_txn.sql dbt\lab7\models\facts\
+```
+
+</details>
 
 > 📝 **Audit Columns:** `run_started_at` และ `invocation_id` เป็นตัวแปรที่ dbt ใส่ให้ทุก run
 > ทำให้สืบย้อนได้ว่าแถวนี้มาจากการรันรอบไหน
@@ -742,6 +988,25 @@ left join daily_activity as a
     and g.product_key = a.product_key
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql`](./script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql dbt/lab7/models/facts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\facts\fact_orders_daily_snapshot.sql dbt\lab7\models\facts\
+```
+
+</details>
+
 > 💡 **เหตุผลที่ไม่ใช้ `GROUP BY` อย่างเดียว:** ถ้า aggregate เฉพาะวันที่มีรายการ ผลลัพธ์จะเป็น
 > **Aggregate Fact** มากกว่า **Periodic Snapshot** แบบเต็ม การสร้าง **grid** ทำให้ทุก period มีแถว
 > แม้ measures เป็น `0` ซึ่งเหมาะกับการวิเคราะห์วันที่ไม่มีการขาย และ Dashboard ที่ต้องการ
@@ -798,6 +1063,25 @@ left join {{ ref('dim_date') }} as dd
 join {{ ref('dim_order_status') }} as os
     on s.status = os.status
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/facts/fact_orders_lifecycle.sql`](./script/dbt/lab7/models/facts/fact_orders_lifecycle.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/facts/fact_orders_lifecycle.sql dbt/lab7/models/facts/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\facts\fact_orders_lifecycle.sql dbt\lab7\models\facts\
+```
+
+</details>
 
 > ⚠️ **`left join` สาม role-playing dates:** ต่างจาก Part 4.1 ที่ใช้ inner join — ที่นี่ต้องเป็น
 > `left join` เพราะออเดอร์ที่ยังไม่ส่ง/ถูกยกเลิกไม่มี `shipped_date` หรือ `delivered_date`
@@ -990,6 +1274,25 @@ models:
               field: status_key
 ```
 
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/schema.yml`](./script/dbt/lab7/models/schema.yml)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/schema.yml dbt/lab7/models/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\schema.yml dbt\lab7\models\
+```
+
+</details>
+
 </details>
 
 > 📝 **`shipped_date_key` / `delivered_date_key` มีเฉพาะ `relationships` ไม่มี `not_null`**
@@ -1012,6 +1315,25 @@ from {{ ref('fact_orders_daily_snapshot') }}
 group by snapshot_date_key, store_key, product_key
 having count(*) > 1
 ```
+
+<details>
+<summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
+
+รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/tests/assert_daily_snapshot_grain.sql`](./script/dbt/lab7/tests/assert_daily_snapshot_grain.sql)
+
+**Mac / Linux:**
+
+```bash
+cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/tests/assert_daily_snapshot_grain.sql dbt/lab7/tests/
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\tests\assert_daily_snapshot_grain.sql dbt\lab7\tests\
+```
+
+</details>
 
 > 💡 **Singular test ผ่านเมื่อ query คืน 0 แถว** — ที่นี่หมายความว่าไม่มีคู่
 > (วัน, สาขา, สินค้า) ใดซ้ำกัน คือ grain ถูกต้อง
