@@ -37,7 +37,9 @@
 | 4 | Star Schema & Metric Layer with dbt (Coffee Club) | [Week 4](./week04-star-schema/) |
 | 5 | Snowflake Schema with dbt (Hierarchies & Metadata) | [Week 5](./week05-snowflake-schema-with-dbt/) |
 | 6 | Slowly Changing Dimensions (SCD Types 0–3) with dbt | [Week 6](./week06-scd-with-dbt/) |
-| 7–15 | Coming soon — syllabus in progress | — |
+| 7 | Fact Table Design with dbt (Transaction / Snapshot / Accumulating) | [Week 7](./week07-fact-table-design-with-dbt/) |
+| 8 | Granularity, Aggregation & Summary Table (Roll-up / Drill-down / CUBE) | [Week 8](./week08-aggregation-summary-table-with-dbt/) |
+| 9–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -160,6 +162,33 @@ dsba8-data-warehouse/
     │   └── dbt/coffee_dw_scd/
     │       └── seeds/                     ← Dataset loaded via `dbt seed`
     │           └── coffee_sales_scd.csv
+    └── README.md
+│
+└── week07-fact-table-design-with-dbt/     ← Week 7 ✅
+    ├── docs/                              ← Lab documentation & lineage diagram
+    │   ├── Lab7 Fact Table Design with dbt.docx
+    │   ├── Lab7 Fact Table Design with dbt.pdf
+    │   └── screenshots/
+    ├── lab-week07/                        ← Lab working dir (dbt project)
+    │   ├── dbt_root/                      ← profiles.yml (dbt → PostgreSQL, db `lab7`)
+    │   └── dbt/lab7/
+    │       ├── dbt_project.yml            ← Materializations per folder
+    │       └── seeds/                     ← Dataset loaded via `dbt seed`
+    │           └── orders_log.csv
+    └── README.md
+│
+└── week08-aggregation-summary-table-with-dbt/  ← Week 8 ✅
+    ├── docs/                              ← Lab documentation & screenshots
+    │   ├── Lab8 Aggregation _ Summary Table with dbt.docx
+    │   ├── Lab8 Aggregation _ Summary Table with dbt.pdf
+    │   └── screenshots/
+    ├── lab-week08/                        ← Lab working dir (dbt project)
+    │   ├── dbt_root/                      ← profiles.yml (dbt → PostgreSQL, db `lab8`)
+    │   └── dbt/lab8/
+    │       ├── dbt_project.yml            ← Materializations + schemas per folder
+    │       └── seeds/                     ← Datasets loaded via `dbt seed`
+    │           ├── coffee_sales.csv
+    │           └── province_region_mapping_v2.csv
     └── README.md
 ```
 
