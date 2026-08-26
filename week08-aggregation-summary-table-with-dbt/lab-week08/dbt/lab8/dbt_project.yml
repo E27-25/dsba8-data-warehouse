@@ -1,0 +1,49 @@
+name: lab8
+version: '1.0.0'
+config-version: 2
+
+profile: lab8
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  lab8:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts
+    aggregates:
+      +materialized: table
+      +schema: aggregates
+    reporting:
+      +materialized: view
+      +schema: reporting
+
+seeds:
+  lab8:
+    +schema: raw
+    coffee_sales:
+      +column_types:
+        sale_id: integer
+        sale_date: date
+        birth_year: integer
+        unit_price: numeric(12,2)
+        quantity: integer
+        revenue: numeric(14,2)
+        points_redeemed: integer
+    province_region_mapping_v2:
+      +column_types:
+        province_name: varchar(100)
+        region_name: varchar(50)
