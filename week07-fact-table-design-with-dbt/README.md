@@ -1231,7 +1231,7 @@ join {{ ref('dim_order_status') }} as os
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
 
-ส่งคำตอบผ่าน **Google Form — Lab 7: Fact Table Design with dbt** *(ลิงก์จากผู้สอน)*
+ส่งคำตอบผ่าน **[Google Form — Lab 7: Fact Table Design with dbt](https://docs.google.com/forms/d/1fa2Mdzy7yZhFbyLcPVNDQrOXl90uL03pM8GsYGdKN3o/viewform)**
 
 | รายการ                                    | รูปแบบ                                 |
 | ----------------------------------------------- | -------------------------------------------- |

@@ -1388,7 +1388,7 @@ dbt docs serve --host 0.0.0.0 --port 8080
 
 ## 📤 Submission / สิ่งที่ต้องส่ง
 
-ส่งคำตอบผ่าน **Google Form — Lab 8: Granularity, Aggregation & Summary Table** *(ลิงก์จากผู้สอน)*
+ส่งคำตอบผ่าน **[Google Form — Lab 8: Granularity, Aggregation & Summary Table](https://docs.google.com/forms/d/1eteh4t-KMlqZiQzsH0rZBNJah8qzZPC-VGHh40daEDY/viewform)**
 
 | รายการ    | รูปแบบ                             |
 | ---------------- | ---------------------------------------- |
