@@ -361,12 +361,39 @@ clean-targets:
   - 'dbt_packages'
 
 models:
-  staging:
-    +materialized: view
-  dimensions:
-    +materialized: table
-  facts:
-    +materialized: table
+  lab7:
+    staging:
+      +materialized: view
+    dimensions:
+      +materialized: table
+    facts:
+      +materialized: table
+
+seeds:
+  lab7:
+    +column_types:
+      order_id: varchar(20)
+      order_date: varchar(10)
+      shipped_date: varchar(10)
+      delivered_date: varchar(10)
+      product_code: varchar(10)
+      product_name: varchar(100)
+      category: varchar(50)
+      size: varchar(10)
+      unit_price: varchar(30)
+      quantity: varchar(30)
+      discount_amount: varchar(30)
+      net_amount: varchar(30)
+      cost_amount: varchar(30)
+      margin_amount: varchar(30)
+      customer_code: varchar(10)
+      customer_name: varchar(100)
+      store_code: varchar(10)
+      store_name: varchar(100)
+      staff_code: varchar(10)
+      staff_name: varchar(100)
+      payment_method: varchar(50)
+      status: varchar(20)
 ```
 
 <details>
