@@ -11,8 +11,7 @@ select
     nullif(trim(size), '') as size,
     nullif(trim(unit_price), '')::numeric(12, 2) as unit_price,
     nullif(trim(quantity), '')::integer as quantity,
-    nullif(trim(discount_amount), '')::numeric(12, 2)
-        as discount_amount,
+    nullif(trim(discount_amount), '')::numeric(12, 2) as discount_amount,
     nullif(trim(net_amount), '')::numeric(12, 2) as net_amount,
     nullif(trim(cost_amount), '')::numeric(12, 2) as cost_amount,
     nullif(trim(margin_amount), '')::numeric(12, 2) as margin_amount,
