@@ -277,17 +277,19 @@ New-Item -ItemType Directory -Force dbt_root, dbt/lab8/seeds, `
 <summary><b>⚡ คำสั่งลัด — วางไฟล์ SQL/YAML ทั้งหมดของ Lab นี้ในครั้งเดียว</b></summary>
 
 ทุกไฟล์ `.sql` และ `.yml` ของ Lab นี้เตรียมไว้แล้วใน [`script/`](./script/) ถ้าไม่อยากสร้างไฟล์
-ทีละไฟล์แล้ว copy-paste จาก README ให้คัดลอกทั้งชุดทีเดียว **หลังจาก `cd` เข้า root แล้ว**:
+ทีละไฟล์แล้ว copy-paste จาก README ให้คัดลอกทั้งชุดทีเดียว — วางทั้งสองบรรทัดได้เลย:
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp -r ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/. dbt/lab8/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item -Recurse -Force ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\* dbt\lab8\
 ```
 
@@ -297,6 +299,12 @@ Copy-Item -Recurse -Force ..\..\week08-aggregation-summary-table-with-dbt\script
 
 > 📝 ถึงจะใช้คำสั่งลัด ก็ยัง**ควรอ่านคำอธิบายของแต่ละไฟล์ใน Part 3–5** เพราะข้อสอบและ
 > Google Form ถามจากเหตุผลเบื้องหลัง ไม่ใช่แค่ผลลัพธ์ที่รันได้
+
+> 💡 **บรรทัด `cd` นับจาก root ของรีโป** ถ้าคุณอยู่ใน `lab-week01/` อยู่แล้ว `cd` จะขึ้น error
+> แต่บรรทัด copy ถัดไป**ยังทำงานถูกต้อง** เพราะยืนอยู่ที่เดิมอยู่แล้ว — ข้าม error นี้ได้เลย
+
+> 📝 **คนที่เริ่มจาก 0 และวาง `DWH_Lab/` ไว้นอกรีโป** ให้ `cd` เข้า `DWH_Lab` ของตัวเองแทน
+> แล้วชี้ต้นทางด้วย path เต็มไปยัง `week08-aggregation-summary-table-with-dbt/script/dbt/lab8/`
 
 </details>
 
@@ -344,15 +352,6 @@ lab8:
       schema: dbt
       threads: 4
 ```
-
-<details>
-<summary><b>⚡ คำสั่งลัด — ไฟล์เตรียมไว้ให้แล้ว</b></summary>
-
-ไฟล์ตัวอย่างอยู่ที่ [`script/dbt_root/profiles.yml`](./script/dbt_root/profiles.yml) — แต่ **ห้ามคัดลอกทับ** เพราะ
-`profiles.yml` ใช้ร่วมกันทุก Lab ให้เปิดไฟล์นั้นแล้ว **คัดลอกเฉพาะ block ไปต่อท้าย**
-ไฟล์จริงที่ `dbt_root/profiles.yml` ของคุณ
-
-</details>
 
 > ⚠️ **ชื่อ host:** dbt ทำงานใน Docker network จึงเชื่อม PostgreSQL ด้วยชื่อ service `postgres`
 > และพอร์ตภายใน `5432` — **ไม่ใช้** `localhost` หรือพอร์ต `25432`
@@ -414,17 +413,19 @@ seeds:
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/dbt_project.yml`](./script/dbt/lab8/dbt_project.yml)
+ต้นทาง: [`script/dbt/lab8/dbt_project.yml`](./script/dbt/lab8/dbt_project.yml) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/dbt_project.yml dbt/lab8/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\dbt_project.yml dbt\lab8\
 ```
 
@@ -512,17 +513,19 @@ from {{ ref('coffee_sales') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/staging/stg_coffee_sales.sql`](./script/dbt/lab8/models/staging/stg_coffee_sales.sql)
+ต้นทาง: [`script/dbt/lab8/models/staging/stg_coffee_sales.sql`](./script/dbt/lab8/models/staging/stg_coffee_sales.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/staging/stg_coffee_sales.sql dbt/lab8/models/staging/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\staging\stg_coffee_sales.sql dbt\lab8\models\staging\
 ```
 
@@ -540,17 +543,19 @@ from {{ ref('province_region_mapping_v2') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/staging/stg_province_region_mapping.sql`](./script/dbt/lab8/models/staging/stg_province_region_mapping.sql)
+ต้นทาง: [`script/dbt/lab8/models/staging/stg_province_region_mapping.sql`](./script/dbt/lab8/models/staging/stg_province_region_mapping.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/staging/stg_province_region_mapping.sql dbt/lab8/models/staging/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\staging\stg_province_region_mapping.sql dbt\lab8\models\staging\
 ```
 
@@ -598,17 +603,19 @@ from {{ ref('stg_coffee_sales') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_customer.sql`](./script/dbt/lab8/models/marts/dim_customer.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_customer.sql`](./script/dbt/lab8/models/marts/dim_customer.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_customer.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_customer.sql dbt\lab8\models\marts\
 ```
 
@@ -626,17 +633,19 @@ from {{ ref('stg_coffee_sales') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_category.sql`](./script/dbt/lab8/models/marts/dim_category.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_category.sql`](./script/dbt/lab8/models/marts/dim_category.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_category.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_category.sql dbt\lab8\models\marts\
 ```
 
@@ -660,17 +669,19 @@ join {{ ref('dim_category') }} c
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_product.sql`](./script/dbt/lab8/models/marts/dim_product.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_product.sql`](./script/dbt/lab8/models/marts/dim_product.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_product.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_product.sql dbt\lab8\models\marts\
 ```
 
@@ -688,17 +699,19 @@ from {{ ref('stg_coffee_sales') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_position.sql`](./script/dbt/lab8/models/marts/dim_position.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_position.sql`](./script/dbt/lab8/models/marts/dim_position.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_position.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_position.sql dbt\lab8\models\marts\
 ```
 
@@ -720,17 +733,19 @@ join {{ ref('dim_position') }} p
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_staff.sql`](./script/dbt/lab8/models/marts/dim_staff.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_staff.sql`](./script/dbt/lab8/models/marts/dim_staff.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_staff.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_staff.sql dbt\lab8\models\marts\
 ```
 
@@ -750,17 +765,19 @@ where promo_code is not null
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_promotion.sql`](./script/dbt/lab8/models/marts/dim_promotion.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_promotion.sql`](./script/dbt/lab8/models/marts/dim_promotion.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_promotion.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_promotion.sql dbt\lab8\models\marts\
 ```
 
@@ -786,17 +803,19 @@ from {{ ref('stg_province_region_mapping') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_region.sql`](./script/dbt/lab8/models/marts/dim_region.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_region.sql`](./script/dbt/lab8/models/marts/dim_region.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_region.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_region.sql dbt\lab8\models\marts\
 ```
 
@@ -817,17 +836,19 @@ join {{ ref('dim_region') }} r
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_province.sql`](./script/dbt/lab8/models/marts/dim_province.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_province.sql`](./script/dbt/lab8/models/marts/dim_province.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_province.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_province.sql dbt\lab8\models\marts\
 ```
 
@@ -891,17 +912,19 @@ select * from all_stores
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_store.sql`](./script/dbt/lab8/models/marts/dim_store.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_store.sql`](./script/dbt/lab8/models/marts/dim_store.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_store.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_store.sql dbt\lab8\models\marts\
 ```
 
@@ -939,17 +962,19 @@ from generate_series(
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/dim_date.sql`](./script/dbt/lab8/models/marts/dim_date.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/dim_date.sql`](./script/dbt/lab8/models/marts/dim_date.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/dim_date.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\dim_date.sql dbt\lab8\models\marts\
 ```
 
@@ -995,17 +1020,19 @@ join generated_stores g
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/intermediate/int_invoice_store_map.sql`](./script/dbt/lab8/models/intermediate/int_invoice_store_map.sql)
+ต้นทาง: [`script/dbt/lab8/models/intermediate/int_invoice_store_map.sql`](./script/dbt/lab8/models/intermediate/int_invoice_store_map.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/intermediate/int_invoice_store_map.sql dbt/lab8/models/intermediate/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\intermediate\int_invoice_store_map.sql dbt\lab8\models\intermediate\
 ```
 
@@ -1079,17 +1106,19 @@ from expanded
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/intermediate/int_sales_expanded.sql`](./script/dbt/lab8/models/intermediate/int_sales_expanded.sql)
+ต้นทาง: [`script/dbt/lab8/models/intermediate/int_sales_expanded.sql`](./script/dbt/lab8/models/intermediate/int_sales_expanded.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/intermediate/int_sales_expanded.sql dbt/lab8/models/intermediate/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\intermediate\int_sales_expanded.sql dbt\lab8\models\intermediate\
 ```
 
@@ -1140,17 +1169,19 @@ left join {{ ref('dim_promotion') }} pr
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/marts/fct_sales.sql`](./script/dbt/lab8/models/marts/fct_sales.sql)
+ต้นทาง: [`script/dbt/lab8/models/marts/fct_sales.sql`](./script/dbt/lab8/models/marts/fct_sales.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/marts/fct_sales.sql dbt/lab8/models/marts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\marts\fct_sales.sql dbt\lab8\models\marts\
 ```
 
@@ -1223,17 +1254,19 @@ group by
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_store_day.sql`](./script/dbt/lab8/models/reporting/rpt_sales_store_day.sql)
+ต้นทาง: [`script/dbt/lab8/models/reporting/rpt_sales_store_day.sql`](./script/dbt/lab8/models/reporting/rpt_sales_store_day.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_store_day.sql dbt/lab8/models/reporting/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_store_day.sql dbt\lab8\models\reporting\
 ```
 
@@ -1284,17 +1317,19 @@ group by
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/aggregates/agg_sales_region_month.sql`](./script/dbt/lab8/models/aggregates/agg_sales_region_month.sql)
+ต้นทาง: [`script/dbt/lab8/models/aggregates/agg_sales_region_month.sql`](./script/dbt/lab8/models/aggregates/agg_sales_region_month.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/aggregates/agg_sales_region_month.sql dbt/lab8/models/aggregates/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\aggregates\agg_sales_region_month.sql dbt\lab8\models\aggregates\
 ```
 
@@ -1435,17 +1470,19 @@ models:
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/schema.yml`](./script/dbt/lab8/models/schema.yml)
+ต้นทาง: [`script/dbt/lab8/models/schema.yml`](./script/dbt/lab8/models/schema.yml) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/schema.yml dbt/lab8/models/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\schema.yml dbt\lab8\models\
 ```
 
@@ -1470,17 +1507,19 @@ where s.store_key is null
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_all_provinces_have_store.sql`](./script/dbt/lab8/tests/assert_all_provinces_have_store.sql)
+ต้นทาง: [`script/dbt/lab8/tests/assert_all_provinces_have_store.sql`](./script/dbt/lab8/tests/assert_all_provinces_have_store.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_all_provinces_have_store.sql dbt/lab8/tests/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_all_provinces_have_store.sql dbt\lab8\tests\
 ```
 
@@ -1497,17 +1536,19 @@ having count(*) <> 27000
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_fact_expected_row_count.sql`](./script/dbt/lab8/tests/assert_fact_expected_row_count.sql)
+ต้นทาง: [`script/dbt/lab8/tests/assert_fact_expected_row_count.sql`](./script/dbt/lab8/tests/assert_fact_expected_row_count.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_fact_expected_row_count.sql dbt/lab8/tests/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_fact_expected_row_count.sql dbt\lab8\tests\
 ```
 
@@ -1528,17 +1569,19 @@ having count(*) > 1
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_summary_grain.sql`](./script/dbt/lab8/tests/assert_summary_grain.sql)
+ต้นทาง: [`script/dbt/lab8/tests/assert_summary_grain.sql`](./script/dbt/lab8/tests/assert_summary_grain.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_summary_grain.sql dbt/lab8/tests/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_summary_grain.sql dbt\lab8\tests\
 ```
 
@@ -1580,17 +1623,19 @@ where abs(f.revenue - s.revenue) > 0.01
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/tests/assert_summary_reconciles.sql`](./script/dbt/lab8/tests/assert_summary_reconciles.sql)
+ต้นทาง: [`script/dbt/lab8/tests/assert_summary_reconciles.sql`](./script/dbt/lab8/tests/assert_summary_reconciles.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/tests/assert_summary_reconciles.sql dbt/lab8/tests/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\tests\assert_summary_reconciles.sql dbt\lab8\tests\
 ```
 
@@ -1683,17 +1728,19 @@ group by
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql`](./script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql)
+ต้นทาง: [`script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql`](./script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_region_quarter.sql dbt/lab8/models/reporting/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_region_quarter.sql dbt\lab8\models\reporting\
 ```
 
@@ -1747,17 +1794,19 @@ group by
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql`](./script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql)
+ต้นทาง: [`script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql`](./script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_province_quarter.sql dbt/lab8/models/reporting/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_province_quarter.sql dbt\lab8\models\reporting\
 ```
 
@@ -1789,17 +1838,19 @@ group by cube(d.year, f.staff_key)
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql`](./script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql)
+ต้นทาง: [`script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql`](./script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week08-aggregation-summary-table-with-dbt/script/dbt/lab8/models/reporting/rpt_sales_staff_year_cube.sql dbt/lab8/models/reporting/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week08-aggregation-summary-table-with-dbt\script\dbt\lab8\models\reporting\rpt_sales_staff_year_cube.sql dbt\lab8\models\reporting\
 ```
 

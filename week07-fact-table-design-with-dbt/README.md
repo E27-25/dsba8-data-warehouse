@@ -264,17 +264,19 @@ New-Item -ItemType Directory -Force dbt_root, dbt/lab7/seeds, `
 <summary><b>⚡ คำสั่งลัด — วางไฟล์ SQL/YAML ทั้งหมดของ Lab นี้ในครั้งเดียว</b></summary>
 
 ทุกไฟล์ `.sql` และ `.yml` ของ Lab นี้เตรียมไว้แล้วใน [`script/`](./script/) ถ้าไม่อยากสร้างไฟล์
-ทีละไฟล์แล้ว copy-paste จาก README ให้คัดลอกทั้งชุดทีเดียว **หลังจาก `cd` เข้า root แล้ว**:
+ทีละไฟล์แล้ว copy-paste จาก README ให้คัดลอกทั้งชุดทีเดียว — วางทั้งสองบรรทัดได้เลย:
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp -r ../../week07-fact-table-design-with-dbt/script/dbt/lab7/. dbt/lab7/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item -Recurse -Force ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\* dbt\lab7\
 ```
 
@@ -284,6 +286,12 @@ Copy-Item -Recurse -Force ..\..\week07-fact-table-design-with-dbt\script\dbt\lab
 
 > 📝 ถึงจะใช้คำสั่งลัด ก็ยัง**ควรอ่านคำอธิบายของแต่ละไฟล์ใน Part 3–5** เพราะข้อสอบและ
 > Google Form ถามจากเหตุผลเบื้องหลัง ไม่ใช่แค่ผลลัพธ์ที่รันได้
+
+> 💡 **บรรทัด `cd` นับจาก root ของรีโป** ถ้าคุณอยู่ใน `lab-week01/` อยู่แล้ว `cd` จะขึ้น error
+> แต่บรรทัด copy ถัดไป**ยังทำงานถูกต้อง** เพราะยืนอยู่ที่เดิมอยู่แล้ว — ข้าม error นี้ได้เลย
+
+> 📝 **คนที่เริ่มจาก 0 และวาง `DWH_Lab/` ไว้นอกรีโป** ให้ `cd` เข้า `DWH_Lab` ของตัวเองแทน
+> แล้วชี้ต้นทางด้วย path เต็มไปยัง `week07-fact-table-design-with-dbt/script/dbt/lab7/`
 
 </details>
 
@@ -329,15 +337,6 @@ lab7:
       threads: 4
 ```
 
-<details>
-<summary><b>⚡ คำสั่งลัด — ไฟล์เตรียมไว้ให้แล้ว</b></summary>
-
-ไฟล์ตัวอย่างอยู่ที่ [`script/dbt_root/profiles.yml`](./script/dbt_root/profiles.yml) — แต่ **ห้ามคัดลอกทับ** เพราะ
-`profiles.yml` ใช้ร่วมกันทุก Lab ให้เปิดไฟล์นั้นแล้ว **คัดลอกเฉพาะ block ไปต่อท้าย**
-ไฟล์จริงที่ `dbt_root/profiles.yml` ของคุณ
-
-</details>
-
 > ⚠️ **ชื่อ host:** dbt ทำงานใน Docker network จึงเชื่อม PostgreSQL ด้วยชื่อ service `postgres`
 > และพอร์ตภายใน `5432` — **ไม่ใช้** `localhost` หรือพอร์ต `25432`
 
@@ -373,17 +372,19 @@ models:
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/dbt_project.yml`](./script/dbt/lab7/dbt_project.yml)
+ต้นทาง: [`script/dbt/lab7/dbt_project.yml`](./script/dbt/lab7/dbt_project.yml) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/dbt_project.yml dbt/lab7/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\dbt_project.yml dbt\lab7\
 ```
 
@@ -459,17 +460,19 @@ seeds:
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/seeds/properties.yml`](./script/dbt/lab7/seeds/properties.yml)
+ต้นทาง: [`script/dbt/lab7/seeds/properties.yml`](./script/dbt/lab7/seeds/properties.yml) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/seeds/properties.yml dbt/lab7/seeds/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\seeds\properties.yml dbt\lab7\seeds\
 ```
 
@@ -561,17 +564,19 @@ from {{ ref('orders_log') }}
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/staging/stg_orders_log.sql`](./script/dbt/lab7/models/staging/stg_orders_log.sql)
+ต้นทาง: [`script/dbt/lab7/models/staging/stg_orders_log.sql`](./script/dbt/lab7/models/staging/stg_orders_log.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/staging/stg_orders_log.sql dbt/lab7/models/staging/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\staging\stg_orders_log.sql dbt\lab7\models\staging\
 ```
 
@@ -629,17 +634,19 @@ from date_spine
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_date.sql`](./script/dbt/lab7/models/dimensions/dim_date.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_date.sql`](./script/dbt/lab7/models/dimensions/dim_date.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_date.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_date.sql dbt\lab7\models\dimensions\
 ```
 
@@ -670,17 +677,19 @@ group by product_code
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_product.sql`](./script/dbt/lab7/models/dimensions/dim_product.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_product.sql`](./script/dbt/lab7/models/dimensions/dim_product.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_product.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_product.sql dbt\lab7\models\dimensions\
 ```
 
@@ -707,17 +716,19 @@ group by customer_code
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_customer.sql`](./script/dbt/lab7/models/dimensions/dim_customer.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_customer.sql`](./script/dbt/lab7/models/dimensions/dim_customer.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_customer.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_customer.sql dbt\lab7\models\dimensions\
 ```
 
@@ -738,17 +749,19 @@ group by store_code
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_store.sql`](./script/dbt/lab7/models/dimensions/dim_store.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_store.sql`](./script/dbt/lab7/models/dimensions/dim_store.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_store.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_store.sql dbt\lab7\models\dimensions\
 ```
 
@@ -769,17 +782,19 @@ group by staff_code
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_staff.sql`](./script/dbt/lab7/models/dimensions/dim_staff.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_staff.sql`](./script/dbt/lab7/models/dimensions/dim_staff.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_staff.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_staff.sql dbt\lab7\models\dimensions\
 ```
 
@@ -803,17 +818,19 @@ group by payment_method
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_payment_method.sql`](./script/dbt/lab7/models/dimensions/dim_payment_method.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_payment_method.sql`](./script/dbt/lab7/models/dimensions/dim_payment_method.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_payment_method.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_payment_method.sql dbt\lab7\models\dimensions\
 ```
 
@@ -833,17 +850,19 @@ group by status
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/dimensions/dim_order_status.sql`](./script/dbt/lab7/models/dimensions/dim_order_status.sql)
+ต้นทาง: [`script/dbt/lab7/models/dimensions/dim_order_status.sql`](./script/dbt/lab7/models/dimensions/dim_order_status.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/dimensions/dim_order_status.sql dbt/lab7/models/dimensions/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\dimensions\dim_order_status.sql dbt\lab7\models\dimensions\
 ```
 
@@ -909,17 +928,19 @@ join {{ ref('dim_order_status') }} as os
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/facts/fact_orders_txn.sql`](./script/dbt/lab7/models/facts/fact_orders_txn.sql)
+ต้นทาง: [`script/dbt/lab7/models/facts/fact_orders_txn.sql`](./script/dbt/lab7/models/facts/fact_orders_txn.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/facts/fact_orders_txn.sql dbt/lab7/models/facts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\facts\fact_orders_txn.sql dbt\lab7\models\facts\
 ```
 
@@ -991,17 +1012,19 @@ left join daily_activity as a
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql`](./script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql)
+ต้นทาง: [`script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql`](./script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/facts/fact_orders_daily_snapshot.sql dbt/lab7/models/facts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\facts\fact_orders_daily_snapshot.sql dbt\lab7\models\facts\
 ```
 
@@ -1067,17 +1090,19 @@ join {{ ref('dim_order_status') }} as os
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/facts/fact_orders_lifecycle.sql`](./script/dbt/lab7/models/facts/fact_orders_lifecycle.sql)
+ต้นทาง: [`script/dbt/lab7/models/facts/fact_orders_lifecycle.sql`](./script/dbt/lab7/models/facts/fact_orders_lifecycle.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/facts/fact_orders_lifecycle.sql dbt/lab7/models/facts/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\facts\fact_orders_lifecycle.sql dbt\lab7\models\facts\
 ```
 
@@ -1277,17 +1302,19 @@ models:
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/models/schema.yml`](./script/dbt/lab7/models/schema.yml)
+ต้นทาง: [`script/dbt/lab7/models/schema.yml`](./script/dbt/lab7/models/schema.yml) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/models/schema.yml dbt/lab7/models/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\models\schema.yml dbt\lab7\models\
 ```
 
@@ -1319,17 +1346,19 @@ having count(*) > 1
 <details>
 <summary><b>⚡ คำสั่งลัด — คัดลอกไฟล์นี้แทนการสร้างเอง</b></summary>
 
-รันจาก root (`lab-week01/` หรือ `DWH_Lab/`) — ต้นทางคือ [`script/dbt/lab7/tests/assert_daily_snapshot_grain.sql`](./script/dbt/lab7/tests/assert_daily_snapshot_grain.sql)
+ต้นทาง: [`script/dbt/lab7/tests/assert_daily_snapshot_grain.sql`](./script/dbt/lab7/tests/assert_daily_snapshot_grain.sql) — วางทั้งสองบรรทัดได้เลย โดย `cd` นับจาก **root ของรีโป**
 
 **Mac / Linux:**
 
 ```bash
+cd week01-data-warehouse-setup/lab-week01
 cp ../../week07-fact-table-design-with-dbt/script/dbt/lab7/tests/assert_daily_snapshot_grain.sql dbt/lab7/tests/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
+cd week01-data-warehouse-setup\lab-week01
 Copy-Item ..\..\week07-fact-table-design-with-dbt\script\dbt\lab7\tests\assert_daily_snapshot_grain.sql dbt\lab7\tests\
 ```
 
