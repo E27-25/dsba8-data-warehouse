@@ -1,0 +1,134 @@
+version: 2
+
+models:
+  - name: stg_coffee_sales
+    description: "ยอดขายที่ cast type แล้ว — 1 แถวต่อ 1 sale_id (80 แถว)"
+    columns:
+      - name: sale_id
+        description: "Business key ของรายการขาย"
+        tests: [unique, not_null]
+      - name: sale_date
+        tests: [not_null]
+
+  - name: stg_province_region
+    description: "Mapping จังหวัด → ภูมิภาค (77 แถว)"
+    columns:
+      - name: province_name
+        tests: [unique, not_null]
+
+  - name: dim_region
+    description: "ระดับบนสุดของ geography hierarchy (6 แถว)"
+    columns:
+      - name: region_key
+        tests: [unique, not_null]
+
+  - name: dim_province
+    description: "ระดับกลางของ geography hierarchy (77 แถว)"
+    columns:
+      - name: province_key
+        tests: [unique, not_null]
+      - name: region_key
+        tests:
+          - relationships:
+              to: ref('dim_region')
+              field: region_key
+
+  - name: dim_store
+    description: "ระดับล่างสุดของ geography hierarchy (6 สาขา)"
+    columns:
+      - name: store_key
+        tests: [unique, not_null]
+      - name: province_key
+        tests:
+          - relationships:
+              to: ref('dim_province')
+              field: province_key
+
+  - name: dim_category
+    columns:
+      - name: category_key
+        tests: [unique, not_null]
+
+  - name: dim_product
+    description: "grain = หนึ่งแถวต่อ (product_code, size)"
+    columns:
+      - name: product_key
+        tests: [unique, not_null]
+      - name: category_key
+        tests:
+          - relationships:
+              to: ref('dim_category')
+              field: category_key
+
+  - name: dim_position
+    columns:
+      - name: position_key
+        tests: [unique, not_null]
+
+  - name: dim_staff
+    columns:
+      - name: staff_key
+        tests: [unique, not_null]
+      - name: position_key
+        tests:
+          - relationships:
+              to: ref('dim_position')
+              field: position_key
+
+  - name: dim_promotion
+    columns:
+      - name: promo_key
+        tests: [unique, not_null]
+
+  - name: dim_date
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+
+  - name: dim_customer
+    description: "SCD Type 2 — หนึ่งแถวต่อหนึ่งเวอร์ชันของลูกค้า"
+    columns:
+      - name: customer_key
+        tests: [unique, not_null]
+      - name: customer_code
+        tests: [not_null]
+      - name: is_current
+        tests: [not_null]
+
+  - name: fct_sales
+    description: "Fact แบบ incremental — grain = หนึ่งแถวต่อ sale_id"
+    columns:
+      - name: sale_id
+        tests: [unique, not_null]
+      - name: revenue
+        tests: [not_null]
+      - name: date_key
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: customer_key
+        tests:
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+      - name: product_key
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: store_key
+        tests:
+          - relationships:
+              to: ref('dim_store')
+              field: store_key
+      - name: staff_key
+        tests:
+          - relationships:
+              to: ref('dim_staff')
+              field: staff_key
+      - name: promo_key
+        tests:
+          - relationships:
+              to: ref('dim_promotion')
+              field: promo_key

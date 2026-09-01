@@ -1,0 +1,81 @@
+sale_id,invoice_number,sale_date,customer_code,customer_name,gender,birth_year,province,product_code,product_name,category,size,unit_price,quantity,revenue,store_code,store_name,staff_code,staff_name,position,promo_code,promo_desc,points_redeemed
+100001,INV-05001,2031-04-24,CUST-1002,Suda,F,1992,Nonthaburi,PRD-001,Espresso,Coffee,S,55,1,44.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM20,20% off,0
+100002,INV-05002,2031-04-03,CUST-1002,Suda,F,1992,Bangkok,PRD-009,Cold Brew,Coffee,M,85,1,85.0,ST001,Bangkok Center,EMP200,Ann,Cashier,,,0
+100003,INV-05003,2031-04-23,CUST-1004,Malee,F,1984,Phuket,PRD-004,Latte,Coffee,M,75,2,135.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM10,10% off,0
+100004,INV-05004,2031-04-23,CUST-1009,Wichai,M,1985,Chiang Mai,PRD-007,Green Tea Latte,Tea,M,70,1,70.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,0
+100005,INV-05005,2031-04-03,CUST-1007,Arthit,M,1988,Khon Kaen,PRD-006,Mocha,Coffee,M,80,1,64.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,0
+100006,INV-05006,2031-04-15,CUST-1007,Arthit,M,1988,Khon Kaen,PRD-002,Espresso,Coffee,M,65,1,65.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,,,30
+100007,INV-05007,2031-04-29,CUST-1009,Wichai,M,1985,Chonburi,PRD-002,Espresso,Coffee,M,65,3,195.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,20
+100008,INV-05008,2031-04-08,CUST-1006,Nok,F,1990,Chiang Mai,PRD-010,Caramel Macchiato,Coffee,M,90,1,81.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM10,10% off,30
+100009,INV-05009,2031-04-21,CUST-1005,Preecha,M,1995,Chiang Mai,PRD-002,Espresso,Coffee,M,65,1,65.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,10
+100010,INV-05010,2031-04-23,CUST-1006,Nok,F,1990,Khon Kaen,PRD-003,Americano,Coffee,M,60,3,144.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,0
+100011,INV-05011,2031-04-13,CUST-1002,Suda,F,1992,Nonthaburi,PRD-010,Caramel Macchiato,Coffee,M,90,1,72.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM20,20% off,10
+100012,INV-05012,2031-04-27,CUST-1005,Preecha,M,1995,Chiang Mai,PRD-009,Cold Brew,Coffee,M,85,1,85.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,0
+100013,INV-05013,2031-04-29,CUST-1001,Somchai,M,1986,Chonburi,PRD-006,Mocha,Coffee,M,80,1,72.0,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM10,10% off,20
+100014,INV-05014,2031-04-05,CUST-1006,Nok,F,1990,Nonthaburi,PRD-004,Latte,Coffee,M,75,3,225.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,,,10
+100015,INV-05015,2031-04-14,CUST-1005,Preecha,M,1995,Chiang Mai,PRD-003,Americano,Coffee,M,60,3,180.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,20
+100016,INV-05016,2031-04-03,CUST-1010,Chanika,F,1991,Khon Kaen,PRD-007,Green Tea Latte,Tea,M,70,2,112.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,10
+100017,INV-05017,2031-04-20,CUST-1001,Somchai,M,1986,Chiang Mai,PRD-002,Espresso,Coffee,M,65,3,156.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM20,20% off,10
+100018,INV-05018,2031-04-18,CUST-1002,Suda,F,1992,Chonburi,PRD-007,Green Tea Latte,Tea,M,70,2,140.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100019,INV-05019,2031-04-04,CUST-1001,Somchai,M,1986,Nonthaburi,PRD-002,Espresso,Coffee,M,65,3,195.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,,,0
+100020,INV-05020,2031-04-09,CUST-1005,Preecha,M,1995,Chiang Mai,PRD-007,Green Tea Latte,Tea,M,70,3,189.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM10,10% off,30
+100021,INV-05021,2031-04-20,CUST-1009,Wichai,M,1985,Phuket,PRD-003,Americano,Coffee,M,60,3,180.0,ST005,Phuket Center,EMP204,Eve,Barista,,,20
+100022,INV-05022,2031-04-16,CUST-1004,Malee,F,1984,Khon Kaen,PRD-003,Americano,Coffee,M,60,2,108.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM10,10% off,0
+100023,INV-05023,2031-04-29,CUST-1001,Somchai,M,1986,Khon Kaen,PRD-002,Espresso,Coffee,M,65,1,52.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,0
+100024,INV-05024,2031-04-25,CUST-1010,Chanika,F,1991,Bangkok,PRD-002,Espresso,Coffee,M,65,1,65.0,ST001,Bangkok Center,EMP200,Ann,Cashier,,,20
+100025,INV-05025,2031-04-28,CUST-1003,Anan,M,1989,Nonthaburi,PRD-003,Americano,Coffee,M,60,1,48.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM20,20% off,20
+100026,INV-05026,2031-04-13,CUST-1010,Chanika,F,1991,Chiang Mai,PRD-007,Green Tea Latte,Tea,M,70,3,168.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM20,20% off,0
+100027,INV-05027,2031-04-03,CUST-1006,Nok,F,1990,Phuket,PRD-008,Chocolate,Chocolate,M,70,1,63.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM10,10% off,0
+100028,INV-05028,2031-04-01,CUST-1006,Nok,F,1990,Phuket,PRD-001,Espresso,Coffee,S,55,2,88.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM20,20% off,0
+100029,INV-05029,2031-04-17,CUST-1002,Suda,F,1992,Chiang Mai,PRD-001,Espresso,Coffee,S,55,1,49.5,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM10,10% off,0
+100030,INV-05030,2031-04-24,CUST-1004,Malee,F,1984,Nonthaburi,PRD-005,Cappuccino,Coffee,M,75,2,120.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM20,20% off,0
+100031,INV-05031,2031-04-04,CUST-1010,Chanika,F,1991,Chonburi,PRD-010,Caramel Macchiato,Coffee,M,90,2,180.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100032,INV-05032,2031-04-02,CUST-1002,Suda,F,1992,Khon Kaen,PRD-007,Green Tea Latte,Tea,M,70,2,140.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,,,30
+100033,INV-05033,2031-04-07,CUST-1002,Suda,F,1992,Chonburi,PRD-001,Espresso,Coffee,S,55,1,55.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100034,INV-05034,2031-04-15,CUST-1004,Malee,F,1984,Chonburi,PRD-009,Cold Brew,Coffee,M,85,1,85.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100035,INV-05035,2031-04-18,CUST-1004,Malee,F,1984,Chonburi,PRD-002,Espresso,Coffee,M,65,1,58.5,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM10,10% off,30
+100036,INV-05036,2031-04-07,CUST-1001,Somchai,M,1986,Chiang Mai,PRD-002,Espresso,Coffee,M,65,2,130.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,10
+100037,INV-05037,2031-04-30,CUST-1007,Tawon,M,1988,Chiang Mai,PRD-001,Espresso,Coffee,S,55,2,99.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM10,10% off,0
+100038,INV-05038,2031-04-10,CUST-1008,Kannika,F,1993,Chonburi,PRD-005,Cappuccino,Coffee,M,75,1,75.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100039,INV-05039,2031-04-02,CUST-1004,Malee,F,1984,Phuket,PRD-001,Espresso,Coffee,S,55,3,148.5,ST005,Phuket Center,EMP204,Eve,Barista,PRM10,10% off,0
+100040,INV-05040,2031-04-03,CUST-1001,Somchai,M,1986,Chonburi,PRD-010,Caramel Macchiato,Coffee,M,90,1,72.0,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM20,20% off,20
+100041,INV-05041,2031-04-30,CUST-1003,Anan,M,1989,Phuket,PRD-002,Espresso,Coffee,M,65,2,104.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM20,20% off,0
+100042,INV-05042,2031-04-14,CUST-1010,Chanika,F,1991,Phuket,PRD-004,Latte,Coffee,M,75,2,135.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM10,10% off,0
+100043,INV-05043,2031-04-23,CUST-1010,Chanika,F,1991,Phuket,PRD-010,Caramel Macchiato,Coffee,M,90,1,90.0,ST005,Phuket Center,EMP204,Eve,Barista,,,30
+100044,INV-05044,2031-04-10,CUST-1006,Nok,F,1990,Khon Kaen,PRD-004,Latte,Coffee,M,75,3,180.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,30
+100045,INV-05045,2031-04-04,CUST-1008,Kannika,F,1993,Bangkok,PRD-006,Mocha,Coffee,M,80,2,160.0,ST001,Bangkok Center,EMP200,Ann,Cashier,,,20
+100046,INV-05046,2031-04-29,CUST-1002,Suda,F,1992,Chiang Mai,PRD-009,Cold Brew,Coffee,M,85,1,85.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,0
+100047,INV-05047,2031-04-23,CUST-1002,Suda,F,1992,Khon Kaen,PRD-004,Latte,Coffee,M,75,2,120.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,20
+100048,INV-05048,2031-04-10,CUST-1005,Preecha,M,1995,Nonthaburi,PRD-010,Caramel Macchiato,Coffee,M,90,3,243.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM10,10% off,20
+100049,INV-05049,2031-04-05,CUST-1002,Suda,F,1992,Khon Kaen,PRD-003,Americano,Coffee,M,60,3,162.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM10,10% off,20
+100050,INV-05050,2031-04-21,CUST-1005,Preecha,M,1995,Phuket,PRD-005,Cappuccino,Coffee,M,75,1,75.0,ST005,Phuket Center,EMP204,Eve,Barista,,,30
+100051,INV-05051,2031-04-14,CUST-1005,Preecha,M,1995,Chonburi,PRD-009,Cold Brew,Coffee,M,85,1,76.5,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM10,10% off,30
+100052,INV-05052,2031-04-06,CUST-1005,Preecha,M,1995,Bangkok,PRD-001,Espresso,Coffee,S,55,3,132.0,ST001,Bangkok Center,EMP200,Ann,Cashier,PRM20,20% off,0
+100053,INV-05053,2031-04-30,CUST-1008,Kannika,F,1993,Nonthaburi,PRD-009,Cold Brew,Coffee,M,85,1,76.5,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM10,10% off,0
+100054,INV-05054,2031-04-02,CUST-1003,Anan,M,1989,Bangkok,PRD-009,Cold Brew,Coffee,M,85,2,136.0,ST001,Bangkok Center,EMP200,Ann,Cashier,PRM20,20% off,0
+100055,INV-05055,2031-04-22,CUST-1005,Preecha,M,1995,Bangkok,PRD-006,Mocha,Coffee,M,80,3,192.0,ST001,Bangkok Center,EMP200,Ann,Cashier,PRM20,20% off,0
+100056,INV-05056,2031-04-26,CUST-1002,Suda,F,1992,Phuket,PRD-006,Mocha,Coffee,M,80,1,64.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM20,20% off,0
+100057,INV-05057,2031-04-28,CUST-1003,Anan,M,1989,Bangkok,PRD-007,Green Tea Latte,Tea,M,70,2,140.0,ST001,Bangkok Center,EMP200,Ann,Cashier,,,30
+100058,INV-05058,2031-04-28,CUST-1004,Malee,F,1984,Chiang Mai,PRD-005,Cappuccino,Coffee,M,75,2,135.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM10,10% off,0
+100059,INV-05059,2031-04-08,CUST-1008,Kannika,F,1993,Chiang Mai,PRD-004,Latte,Coffee,M,75,1,75.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,0
+100060,INV-05060,2031-04-12,CUST-1001,Somchai,M,1986,Chonburi,PRD-004,Latte,Coffee,M,75,1,75.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100061,INV-05061,2031-04-29,CUST-1009,Wichai,M,1985,Nonthaburi,PRD-007,Green Tea Latte,Tea,M,70,1,70.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,,,0
+100062,INV-05062,2031-04-14,CUST-1005,Preecha,M,1995,Phuket,PRD-003,Americano,Coffee,M,60,1,54.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM10,10% off,20
+100063,INV-05063,2031-04-07,CUST-1006,Nok,F,1990,Chonburi,PRD-006,Mocha,Coffee,M,80,2,144.0,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM10,10% off,20
+100064,INV-05064,2031-04-22,CUST-1005,Preecha,M,1995,Nonthaburi,PRD-001,Espresso,Coffee,S,55,2,99.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM10,10% off,20
+100065,INV-05065,2031-04-22,CUST-1004,Malee,F,1984,Chonburi,PRD-006,Mocha,Coffee,M,80,2,160.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,0
+100066,INV-05066,2031-04-23,CUST-1002,Suda,F,1992,Phuket,PRD-005,Cappuccino,Coffee,M,75,1,75.0,ST005,Phuket Center,EMP204,Eve,Barista,,,10
+100067,INV-05067,2031-04-22,CUST-1005,Preecha,M,1995,Chiang Mai,PRD-009,Cold Brew,Coffee,M,85,3,255.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,,,10
+100068,INV-05068,2031-04-10,CUST-1003,Anan,M,1989,Phuket,PRD-010,Caramel Macchiato,Coffee,M,90,2,180.0,ST005,Phuket Center,EMP204,Eve,Barista,,,0
+100069,INV-05069,2031-04-15,CUST-1005,Preecha,M,1995,Chonburi,PRD-004,Latte,Coffee,M,75,2,150.0,ST004,Chonburi Center,EMP203,Dan,Cashier,,,10
+100070,INV-05070,2031-04-10,CUST-1004,Malee,F,1984,Chonburi,PRD-009,Cold Brew,Coffee,M,85,3,204.0,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM20,20% off,0
+100071,INV-05071,2031-04-08,CUST-1009,Wichai,M,1985,Khon Kaen,PRD-010,Caramel Macchiato,Coffee,M,90,3,216.0,ST003,Khon Kaen Center,EMP202,Cara,Barista,PRM20,20% off,0
+100072,INV-05072,2031-04-28,CUST-1004,Malee,F,1984,Bangkok,PRD-003,Americano,Coffee,M,60,2,96.0,ST001,Bangkok Center,EMP200,Ann,Cashier,PRM20,20% off,20
+100073,INV-05073,2031-04-13,CUST-1002,Suda,F,1992,Chonburi,PRD-008,Chocolate,Chocolate,M,70,3,168.0,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM20,20% off,30
+100074,INV-05074,2031-04-08,CUST-1008,Kannika,F,1993,Chiang Mai,PRD-007,Green Tea Latte,Tea,M,70,1,63.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM10,10% off,10
+100075,INV-05075,2031-04-05,CUST-1003,Anan,M,1989,Chonburi,PRD-009,Cold Brew,Coffee,M,85,1,68.0,ST004,Chonburi Center,EMP203,Dan,Cashier,PRM20,20% off,10
+100076,INV-05076,2031-04-27,CUST-1008,Kannika,F,1993,Phuket,PRD-009,Cold Brew,Coffee,M,85,2,170.0,ST005,Phuket Center,EMP204,Eve,Barista,,,20
+100077,INV-05077,2031-04-15,CUST-1009,Wichai,M,1985,Phuket,PRD-007,Green Tea Latte,Tea,M,70,3,168.0,ST005,Phuket Center,EMP204,Eve,Barista,PRM20,20% off,10
+100078,INV-05078,2031-04-09,CUST-1005,Preecha,M,1995,Nonthaburi,PRD-004,Latte,Coffee,M,75,3,225.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,,,0
+100079,INV-05079,2031-04-11,CUST-1008,Kannika,F,1993,Nonthaburi,PRD-002,Espresso,Coffee,M,65,1,52.0,ST006,Nonthaburi Center,EMP205,Ford,Barista,PRM20,20% off,0
+100080,INV-05080,2031-04-05,CUST-1009,Wichai,M,1985,Chiang Mai,PRD-002,Espresso,Coffee,M,65,2,104.0,ST002,Chiang Mai Center,EMP201,Ben,Barista,PRM20,20% off,30

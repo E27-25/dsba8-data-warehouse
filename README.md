@@ -39,7 +39,8 @@
 | 6 | Slowly Changing Dimensions (SCD Types 0–3) with dbt | [Week 6](./week06-scd-with-dbt/) |
 | 7 | Fact Table Design with dbt (Transaction / Snapshot / Accumulating) | [Week 7](./week07-fact-table-design-with-dbt/) |
 | 8 | Granularity, Aggregation & Summary Table (Roll-up / Drill-down / CUBE) | [Week 8](./week08-aggregation-summary-table-with-dbt/) |
-| 9–15 | Coming soon — syllabus in progress | — |
+| 9 | ETL — Incremental Load & SCD Type 2 with dbt | [Week 9](./week09-etl-incremental-scd-with-dbt/) |
+| 10–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -190,6 +191,21 @@ dsba8-data-warehouse/
     │       ├── dbt_project.yml            ← Materializations + schemas per folder
     │       └── seeds/                     ← Datasets loaded via `dbt seed`
     │           ├── coffee_sales.csv
+    │           └── province_region_mapping_v2.csv
+    └── README.md
+│
+└── week09-etl-incremental-scd-with-dbt/    ← Week 9 ✅
+    ├── docs/                              ← Lab documentation & screenshots
+    │   ├── Lab9 ETL-Incremental + SCD with dbt.docx
+    │   ├── Lab9 ETL-Incremental + SCD with dbt.pdf
+    │   └── screenshots/
+    ├── script/                            ← All .sql / .yml files, ready to copy
+    ├── lab-week09/                        ← Lab working dir (dbt project)
+    │   ├── dbt_root/                      ← profiles.yml (dbt → PostgreSQL, db `lab9`)
+    │   └── dbt/lab9/
+    │       ├── dbt_project.yml            ← Materializations + schemas per folder
+    │       └── seeds/                     ← Datasets loaded via `dbt seed`
+    │           ├── coffee_sales_scd_new.csv
     │           └── province_region_mapping_v2.csv
     └── README.md
 ```
