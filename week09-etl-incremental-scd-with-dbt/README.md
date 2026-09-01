@@ -27,27 +27,27 @@
 
 ## 🧰 Tools & Stack Overview / เครื่องมือที่ใช้
 
-| Tool                      | What is it?              | หน้าที่ใน Lab                                                          |
-| ------------------------- | ------------------------ | ---------------------------------------------------------------------- |
-| **PostgreSQL 16**         | Relational Database      | เก็บ seed, staging, snapshot, dimensions และ fact table                |
-| **dbt-postgres**          | Transformation Framework | `seed`, `run`, `snapshot`, `test`, `docs` และ lineage                  |
-| **Docker Compose**        | Containerization         | เปิด services `postgres`, `pgadmin` และ `dbt`                          |
-| **pgAdmin 4**             | DB management UI         | สร้างฐานข้อมูล `lab9` และตรวจผลด้วย Query Tool                        |
-| **VS Code / Text Editor** | Editor                   | สร้างไฟล์ SQL และ YAML ในโครงการ dbt                                   |
+| Tool                            | What is it?              | หน้าที่ใน Lab                                                     |
+| ------------------------------- | ------------------------ | -------------------------------------------------------------------------- |
+| **PostgreSQL 16**         | Relational Database      | เก็บ seed, staging, snapshot, dimensions และ fact table             |
+| **dbt-postgres**          | Transformation Framework | `seed`, `run`, `snapshot`, `test`, `docs` และ lineage         |
+| **Docker Compose**        | Containerization         | เปิด services`postgres`, `pgadmin` และ `dbt`                  |
+| **pgAdmin 4**             | DB management UI         | สร้างฐานข้อมูล`lab9` และตรวจผลด้วย Query Tool |
+| **VS Code / Text Editor** | Editor                   | สร้างไฟล์ SQL และ YAML ในโครงการ dbt                  |
 
 **Dataset / ชุดข้อมูล**
 
-| Dataset                            | Rows | รายละเอียด                                                              |
-| ---------------------------------- | ---: | ----------------------------------------------------------------------- |
-| `coffee_sales_scd_new.csv`         |   80 | รายการขาย `2031-04-01` → `2031-04-30` (ลูกค้า 10 คน, ร้าน 6 สาขา)      |
-| `province_region_mapping_v2.csv`   |   77 | 77 จังหวัด แบ่งเป็น **6 regions** (ไฟล์เดียวกับ Lab 8)                 |
+| Dataset                            | Rows | รายละเอียด                                                                           |
+| ---------------------------------- | ---: | ---------------------------------------------------------------------------------------------- |
+| `coffee_sales_scd_new.csv`       |   80 | รายการขาย`2031-04-01` → `2031-04-30` (ลูกค้า 10 คน, ร้าน 6 สาขา) |
+| `province_region_mapping_v2.csv` |   77 | 77 จังหวัด แบ่งเป็น**6 regions** (ไฟล์เดียวกับ Lab 8)         |
 
 **สถานการณ์ข้อมูล / Data scenario**
 
-| Batch       | เงื่อนไข                    | แถว | ช่วงวันที่                 |
-| ----------- | --------------------------- | --: | -------------------------- |
-| **Batch 1** | `sale_date <  2031-04-15`   |  40 | `2031-04-01` → `2031-04-14` |
-| **Batch 2** | `sale_date >= 2031-04-15`   |  40 | `2031-04-15` → `2031-04-30` |
+| Batch             | เงื่อนไข            | แถว | ช่วงวันที่             |
+| ----------------- | --------------------------- | -----: | -------------------------------- |
+| **Batch 1** | `sale_date <  2031-04-15` |     40 | `2031-04-01` → `2031-04-14` |
+| **Batch 2** | `sale_date >= 2031-04-15` |     40 | `2031-04-15` → `2031-04-30` |
 
 > 📝 **ไม่ต้องสร้างข้อมูลจำลองเพิ่ม** — ข้อมูลจริงมี `CUST-1007` เปลี่ยนชื่อจาก **`Arthit`**
 > เป็น **`Tawon`** ใน Batch 2 (ขายวันที่ `2031-04-30`) จึงใช้สาธิต SCD Type 2 ได้ทันที
@@ -56,21 +56,21 @@
 
 ## 📁 Files in This Week / ไฟล์ในสัปดาห์นี้
 
-| File / Folder                                                                                                                                  | Description                                                                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| 📂[docs/](./docs/)                                                                                                                              | Lab instructions                                                                        |
-| ├── 📝[Lab9 ETL-Incremental + SCD with dbt.docx](<./docs/Lab9%20ETL-Incremental%20%2B%20SCD%20with%20dbt.docx>)                              | Lab instruction (Word)                                                                  |
-| ├── 📄[Lab9 ETL-Incremental + SCD with dbt.pdf](<./docs/Lab9%20ETL-Incremental%20%2B%20SCD%20with%20dbt.pdf>)                                | Lab instruction (PDF)                                                                   |
-| └── 📂[screenshots/](./docs/screenshots/)                                                                                                    | Images referenced by this README                                                        |
-| 📂[script/](./script/)                                                                                                                          | **ไฟล์ `.sql` / `.yml` ทั้งหมดของ Lab เตรียมไว้ให้** — ใช้กับ "คำสั่งลัด" ในแต่ละหัวข้อ |
-| 📂[lab-week09/](./lab-week09/)                                                                                                                  | **Lab working directory**                                                               |
-| ├── 📂[dbt_root/](./lab-week09/dbt_root/)                                                                                                    | Holds `profiles.yml` — the dbt connection profile                                       |
-| │&nbsp;&nbsp;&nbsp;└── ⚙️ [profiles.yml](./lab-week09/dbt_root/profiles.yml)                                                                 | Connects dbt to PostgreSQL, database `lab9`                                             |
-| └── 📂[dbt/lab9/](./lab-week09/dbt/lab9/)                                                                                                    | dbt project — models, snapshot & tests are created during the lab                       |
-| &nbsp;&nbsp;&nbsp;&nbsp;├── ⚙️ [dbt_project.yml](./lab-week09/dbt/lab9/dbt_project.yml)                                                      | Materializations + schemas per folder                                                   |
-| &nbsp;&nbsp;&nbsp;&nbsp;└── 📂 [seeds/](./lab-week09/dbt/lab9/seeds/)                                                                        | Seed CSVs, already in place                                                             |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 📊 [coffee_sales_scd_new.csv](./lab-week09/dbt/lab9/seeds/coffee_sales_scd_new.csv)      | 80 sales rows, April 2031                                                               |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📊 [province_region_mapping_v2.csv](./lab-week09/dbt/lab9/seeds/province_region_mapping_v2.csv) | 77 provinces → 6 regions                                                                |
+| File / Folder                                                                                                                                         | Description                                                                                                                                              |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 📂[docs/](./docs/)                                                                                                                                     | Lab instructions                                                                                                                                         |
+| ├── 📝[Lab9 ETL-Incremental + SCD with dbt.docx](<./docs/Lab9%20ETL-Incremental%20%2B%20SCD%20with%20dbt.docx>)                                     | Lab instruction (Word)                                                                                                                                   |
+| ├── 📄[Lab9 ETL-Incremental + SCD with dbt.pdf](<./docs/Lab9%20ETL-Incremental%20%2B%20SCD%20with%20dbt.pdf>)                                       | Lab instruction (PDF)                                                                                                                                    |
+| └── 📂[screenshots/](./docs/screenshots/)                                                                                                           | Images referenced by this README                                                                                                                         |
+| 📂[script/](./script/)                                                                                                                                 | **ไฟล์ `.sql` / `.yml` ทั้งหมดของ Lab เตรียมไว้ให้** — ใช้กับ "คำสั่งลัด" ในแต่ละหัวข้อ |
+| 📂[lab-week09/](./lab-week09/)                                                                                                                         | **Lab working directory**                                                                                                                          |
+| ├── 📂[dbt_root/](./lab-week09/dbt_root/)                                                                                                           | Holds`profiles.yml` — the dbt connection profile                                                                                                      |
+| │&nbsp;&nbsp;&nbsp;└── ⚙️ [profiles.yml](./lab-week09/dbt_root/profiles.yml)                                                                     | Connects dbt to PostgreSQL, database`lab9`                                                                                                             |
+| └── 📂[dbt/lab9/](./lab-week09/dbt/lab9/)                                                                                                           | dbt project — models, snapshot & tests are created during the lab                                                                                       |
+| &nbsp;&nbsp;&nbsp;&nbsp;├── ⚙️ [dbt_project.yml](./lab-week09/dbt/lab9/dbt_project.yml)                                                           | Materializations + schemas per folder                                                                                                                    |
+| &nbsp;&nbsp;&nbsp;&nbsp;└── 📂 [seeds/](./lab-week09/dbt/lab9/seeds/)                                                                               | Seed CSVs, already in place                                                                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 📊 [coffee_sales_scd_new.csv](./lab-week09/dbt/lab9/seeds/coffee_sales_scd_new.csv)             | 80 sales rows, April 2031                                                                                                                                |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📊 [province_region_mapping_v2.csv](./lab-week09/dbt/lab9/seeds/province_region_mapping_v2.csv) | 77 provinces → 6 regions                                                                                                                                |
 
 ---
 
@@ -131,10 +131,10 @@ docker compose ps
 ข้อมูลใน CSV เป็นเดือนเดียวกันทั้งก้อน — Lab นี้จำลองว่า **ระบบต้นทางส่งมา 2 รอบ** โดยใช้
 `sale_date` เป็นเส้นแบ่ง แล้วควบคุมด้วย Jinja variable ชื่อ `load_batch`
 
-| รอบโหลด     | `--vars`                          | เงื่อนไขใน model            | แถวที่เข้ามา | fct_sales สะสม |
-| ----------- | --------------------------------- | --------------------------- | -----------: | -------------: |
-| **Batch 1** | `{"load_batch": "initial"}`       | `sale_date <  2031-04-15`   |           40 |         **40** |
-| **Batch 2** | `{"load_batch": "incremental"}`   | `sale_date >= 2031-04-15`   |           40 |         **80** |
+| รอบโหลด    | `--vars`                        | เงื่อนไขใน model  | แถวที่เข้ามา | fct_sales สะสม |
+| ----------------- | --------------------------------- | --------------------------- | -----------------------: | -----------------: |
+| **Batch 1** | `{"load_batch": "initial"}`     | `sale_date <  2031-04-15` |                       40 |       **40** |
+| **Batch 2** | `{"load_batch": "incremental"}` | `sale_date >= 2031-04-15` |                       40 |       **80** |
 
 > 💡 **หัวใจของ Incremental Load:** โหลดรอบที่ 2 **ต้องไม่ลบของเก่าและไม่เพิ่มของซ้ำ** —
 > ในโมเดลนี้ป้องกันสองชั้น คือ `unique_key='sale_id'` + `incremental_strategy='merge'`
@@ -144,24 +144,24 @@ docker compose ps
 
 ก่อนเขียน SQL ให้เติมช่องขวาสุดเองว่าแต่ละตารางควรโหลดแบบใด แล้วเทียบกับสิ่งที่ Lab สร้างจริงใน Part 3–6
 
-| ตาราง                                    | เปลี่ยนแปลงบ่อยแค่ไหน                     | ต้องเก็บประวัติไหม | กลยุทธ์ที่เลือก |
-| ---------------------------------------- | ----------------------------------------- | ------------------ | --------------- |
-| `stg_coffee_sales`, `stg_province_region` | สร้างใหม่จาก seed ทุกครั้ง                | ไม่                |                 |
-| `dim_region`, `dim_province`, `dim_store` | แทบไม่เปลี่ยน                             | ไม่                |                 |
-| `dim_product`, `dim_category`             | เปลี่ยนบ้าง (ราคา/ชื่อ)                   | ไม่ (Lab นี้)      |                 |
-| `dim_customer`                            | **ชื่อลูกค้าเปลี่ยนได้**                  | **ใช่**            |                 |
-| `fct_sales`                               | เพิ่มขึ้นทุก batch                        | ไม่ (append)       |                 |
+| ตาราง                                      | เปลี่ยนแปลงบ่อยแค่ไหน         | ต้องเก็บประวัติไหม | กลยุทธ์ที่เลือก |
+| ----------------------------------------------- | -------------------------------------------------- | ------------------------------------ | ------------------------------ |
+| `stg_coffee_sales`, `stg_province_region`   | สร้างใหม่จาก seed ทุกครั้ง     | ไม่                               |                                |
+| `dim_region`, `dim_province`, `dim_store` | แทบไม่เปลี่ยน                         | ไม่                               |                                |
+| `dim_product`, `dim_category`               | เปลี่ยนบ้าง (ราคา/ชื่อ)         | ไม่ (Lab นี้)                  |                                |
+| `dim_customer`                                | **ชื่อลูกค้าเปลี่ยนได้** | **ใช่**                     |                                |
+| `fct_sales`                                   | เพิ่มขึ้นทุก batch                     | ไม่ (append)                      |                                |
 
 <details>
 <summary><b>เฉลย — กลยุทธ์ที่ Lab นี้ใช้จริง</b></summary>
 
-| ตาราง                     | Materialization / กลไก                              | เหตุผล                                                    |
-| ------------------------- | --------------------------------------------------- | --------------------------------------------------------- |
-| staging models            | `view`                                              | อ่านจาก seed ตรง ๆ ไม่ต้องเก็บผลลัพธ์                     |
-| dimensions ทั่วไป         | `table` (full refresh ทุก run)                      | ข้อมูลน้อยและ surrogate key เป็น `md5()` จึงไม่เปลี่ยนค่า |
-| `dim_customer`            | `table` ที่อ่านจาก **snapshot**                     | ต้องมีหลาย version ต่อหนึ่ง `customer_code` (SCD Type 2)  |
-| `snap_customer_scd`       | `dbt snapshot` (`strategy='check'`)                 | dbt เป็นคนเปิด/ปิดช่วงเวลาให้เอง                          |
-| `fct_sales`               | `incremental` + `merge` + `unique_key='sale_id'`    | ต่อท้ายทีละ batch โดยไม่ซ้ำและไม่ลบของเก่า                |
+| ตาราง              | Materialization / กลไก                             | เหตุผล                                                                                |
+| ----------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| staging models          | `view`                                               | อ่านจาก seed ตรง ๆ ไม่ต้องเก็บผลลัพธ์                          |
+| dimensions ทั่วไป | `table` (full refresh ทุก run)                    | ข้อมูลน้อยและ surrogate key เป็น`md5()` จึงไม่เปลี่ยนค่า |
+| `dim_customer`        | `table` ที่อ่านจาก **snapshot**      | ต้องมีหลาย version ต่อหนึ่ง`customer_code` (SCD Type 2)                 |
+| `snap_customer_scd`   | `dbt snapshot` (`strategy='check'`)                | dbt เป็นคนเปิด/ปิดช่วงเวลาให้เอง                                 |
+| `fct_sales`           | `incremental` + `merge` + `unique_key='sale_id'` | ต่อท้ายทีละ batch โดยไม่ซ้ำและไม่ลบของเก่า               |
 
 </details>
 
@@ -238,9 +238,9 @@ lab-week01/                              ← root: โฟลเดอร์ท�
 > `./dbt_root:/root/.dbt`) ดังนั้น `dbt/` และ `dbt_root/` ต้องอยู่ **ข้าง ๆ** `docker-compose.yaml`
 > เสมอ ไม่ว่าโฟลเดอร์นั้นจะชื่ออะไร
 >
-> | สถานะของคุณ | root คือ |
-> |---|---|
-> | ทำต่อจาก Week 1 มาเรื่อย ๆ | `dsba8-data-warehouse/week01-data-warehouse-setup/lab-week01/` |
+> | สถานะของคุณ                                             | root คือ                                                                                                              |
+> | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+> | ทำต่อจาก Week 1 มาเรื่อย ๆ                        | `dsba8-data-warehouse/week01-data-warehouse-setup/lab-week01/`                                                         |
 > | เริ่มจาก 0 (คอมโดนล้าง / เครื่องใหม่) | `DWH_Lab/` — ได้จากการแตกไฟล์ [`DWH_Lab.zip`](../week01-data-warehouse-setup/lab-week01/DWH_Lab.zip) |
 >
 > ทั้งสองแบบใช้คำสั่งเดียวกันทุกบรรทัดหลังจาก `cd` เข้า root แล้ว
@@ -885,17 +885,17 @@ dbt run --select dim_region dim_province dim_store dim_category dim_product dim_
 
 > ✅ **ผลที่คาดหวัง** — จำนวนแถวของแต่ละ dimension:
 >
-> | Model            | Rows | หมายเหตุ                                          |
-> | ---------------- | ---: | ------------------------------------------------- |
-> | `dim_region`     |    6 | Central, Northern, Northeastern, Southern, Eastern, Western |
-> | `dim_province`   |   77 | ครบทั้ง mapping ไม่ใช่เฉพาะจังหวัดที่มียอดขาย     |
-> | `dim_store`      |    6 | `ST001`–`ST006`                                   |
-> | `dim_category`   |    3 | Coffee, Tea, Chocolate                            |
-> | `dim_product`    |   10 | หนึ่งแถวต่อ (product_code, size)                  |
-> | `dim_position`   |    2 | Barista, Cashier                                  |
-> | `dim_staff`      |    6 | `EMP200`–`EMP205`                                 |
-> | `dim_promotion`  |    2 | `PRM10` 10% off, `PRM20` 20% off                  |
-> | `dim_date`       |   29 | วันที่ที่มีการขายจริงในเดือน เม.ย. 2031           |
+> | Model             | Rows | หมายเหตุ                                                                  |
+> | ----------------- | ---: | --------------------------------------------------------------------------------- |
+> | `dim_region`    |    6 | Central, Northern, Northeastern, Southern, Eastern, Western                       |
+> | `dim_province`  |   77 | ครบทั้ง mapping ไม่ใช่เฉพาะจังหวัดที่มียอดขาย |
+> | `dim_store`     |    6 | `ST001`–`ST006`                                                              |
+> | `dim_category`  |    3 | Coffee, Tea, Chocolate                                                            |
+> | `dim_product`   |   10 | หนึ่งแถวต่อ (product_code, size)                                       |
+> | `dim_position`  |    2 | Barista, Cashier                                                                  |
+> | `dim_staff`     |    6 | `EMP200`–`EMP205`                                                            |
+> | `dim_promotion` |    2 | `PRM10` 10% off, `PRM20` 20% off                                              |
+> | `dim_date`      |   29 | วันที่ที่มีการขายจริงในเดือน เม.ย. 2031            |
 
 > 📝 **ทำไม `md5()` ถึงสำคัญกับ Lab นี้** — surrogate key ที่มาจาก `md5()` เป็น **deterministic**
 > คือ business key เดิมจะได้ค่า key เดิมทุกครั้งที่ rerun ดังนั้นถึง `dim_*` จะถูกสร้างใหม่ทั้งตาราง
@@ -1008,10 +1008,10 @@ Copy-Item ..\..\week09-etl-incremental-scd-with-dbt\script\dbt\lab9\snapshots\sn
 
 dbt จะเติมคอลัมน์ระบบให้เอง:
 
-| คอลัมน์          | ความหมาย                                          |
-| ---------------- | ------------------------------------------------- |
-| `dbt_scd_id`     | key ของแต่ละ version                              |
-| `dbt_valid_from` | เวลาที่ dbt เห็นเวอร์ชันนี้ครั้งแรก               |
+| คอลัมน์     | ความหมาย                                                                               |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| `dbt_scd_id`     | key ของแต่ละ version                                                                   |
+| `dbt_valid_from` | เวลาที่ dbt เห็นเวอร์ชันนี้ครั้งแรก                              |
 | `dbt_valid_to`   | เวลาที่เวอร์ชันนี้ถูกปิด (`NULL` = เวอร์ชันปัจจุบัน) |
 
 ### 5.3 แปลง snapshot เป็น `dim_customer` ที่ join กับ fact ได้
@@ -1160,11 +1160,11 @@ Copy-Item ..\..\week09-etl-incremental-scd-with-dbt\script\dbt\lab9\models\marts
 
 **สามบรรทัดที่ทำให้ Lab นี้เป็น Incremental + SCD 2:**
 
-| บรรทัด                                                | ทำอะไร                                                                   |
-| ----------------------------------------------------- | ------------------------------------------------------------------------ |
-| `materialized='incremental'`                          | รอบแรกสร้างตารางใหม่ รอบถัดไป **ต่อท้าย** ไม่ drop ของเดิม               |
-| `s.sale_date between c.start_date and c.end_date`      | ผูกยอดขายกับ **เวอร์ชันลูกค้าที่มีผลในวันขาย** ไม่ใช่ชื่อล่าสุดเสมอไป     |
-| `where not exists (... from {{ this }} ...)`           | กันแถวซ้ำอีกชั้น นอกเหนือจาก `unique_key` + `merge`                      |
+| บรรทัด                                        | ทำอะไร                                                                                                                              |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `materialized='incremental'`                      | รอบแรกสร้างตารางใหม่ รอบถัดไป**ต่อท้าย** ไม่ drop ของเดิม                              |
+| `s.sale_date between c.start_date and c.end_date` | ผูกยอดขายกับ**เวอร์ชันลูกค้าที่มีผลในวันขาย** ไม่ใช่ชื่อล่าสุดเสมอไป |
+| `where not exists (... from {{ this }} ...)`      | กันแถวซ้ำอีกชั้น นอกเหนือจาก`unique_key` + `merge`                                                         |
 
 > 💡 **`{{ this }}` คือตัวตารางเองที่มีอยู่แล้วใน database** — บล็อกนี้ทำงานเฉพาะรอบที่
 > `is_incremental()` เป็นจริง คือ **รอบที่ 2 เป็นต้นไป** (ตารางมีอยู่แล้วและไม่ได้สั่ง `--full-refresh`)
@@ -1214,14 +1214,14 @@ select * from snapshots.snap_customer_scd where customer_code = 'CUST-1007';
 
 > ✅ **ผลที่คาดหวังหลัง Batch 1**
 >
-> | รายการ                       | ค่า                                 |
-> | ---------------------------- | ----------------------------------- |
-> | `fct_sales`                  | **40 แถว**                          |
-> | `int_sales_batch`            | 40 แถว (`2031-04-01` → `2031-04-14`) |
-> | `snap_customer_scd`          | 10 แถว — ทุกคนมีเวอร์ชันเดียว       |
-> | `dim_customer`               | 10 แถว — `is_current = true` ทั้งหมด |
-> | `CUST-1007`                  | ชื่อ `Arthit` เท่านั้น              |
-> | `sum(revenue)` ของ fact      | 5,175.00                            |
+> | รายการ                 | ค่า                                                |
+> | ---------------------------- | ----------------------------------------------------- |
+> | `fct_sales`                | **40 แถว**                                   |
+> | `int_sales_batch`          | 40 แถว (`2031-04-01` → `2031-04-14`)          |
+> | `snap_customer_scd`        | 10 แถว — ทุกคนมีเวอร์ชันเดียว |
+> | `dim_customer`             | 10 แถว —`is_current = true` ทั้งหมด      |
+> | `CUST-1007`                | ชื่อ`Arthit` เท่านั้น                   |
+> | `sum(revenue)` ของ fact | 5,175.00                                              |
 
 ### 7.3 Batch 2 — Incremental Load
 
@@ -1270,19 +1270,19 @@ order by start_date;
 
 > ✅ **ผลที่คาดหวังหลัง Batch 2**
 >
-> | รายการ                            | ค่า                                        |
-> | --------------------------------- | ------------------------------------------ |
-> | `fct_sales`                       | **80 แถว** และ `sale_id` **ไม่ซ้ำ**        |
-> | `snap_customer_scd`               | 11 แถว                                     |
-> | `dim_customer`                    | 11 แถว                                     |
-> | `sum(revenue)` ของ fact           | 9,535.50 (Batch 1 5,175.00 + Batch 2 4,360.50) |
+> | รายการ                 | ค่า                                                        |
+> | ---------------------------- | ------------------------------------------------------------- |
+> | `fct_sales`                | **80 แถว** และ `sale_id` **ไม่ซ้ำ** |
+> | `snap_customer_scd`        | 11 แถว                                                     |
+> | `dim_customer`             | 11 แถว                                                     |
+> | `sum(revenue)` ของ fact | 9,535.50 (Batch 1 5,175.00 + Batch 2 4,360.50)                |
 >
 > **ประวัติของ `CUST-1007` ต้องได้ 2 เวอร์ชัน:**
 >
-> | customer_name | start_date   | end_date     | is_current |
-> | ------------- | ------------ | ------------ | ---------- |
-> | `Arthit`      | `2031-04-03` | `2031-04-29` | `false`    |
-> | `Tawon`       | `2031-04-30` | `9999-12-31` | `true`     |
+> | customer_name | start_date     | end_date       | is_current |
+> | ------------- | -------------- | -------------- | ---------- |
+> | `Arthit`    | `2031-04-03` | `2031-04-29` | `false`  |
+> | `Tawon`     | `2031-04-30` | `9999-12-31` | `true`   |
 
 > 💡 **ยอดขายเก่ายังเป็นของ `Arthit`** — `CUST-1007` มีรายการขายวันที่ `2031-04-15` ซึ่งอยู่ใน
 > Batch 2 แต่ **ยังตกในช่วงของเวอร์ชัน `Arthit`** (ชื่อเพิ่งเปลี่ยนวันที่ `2031-04-30`)
@@ -1618,10 +1618,10 @@ dbt docs serve --host 0.0.0.0 --port 8080
 
 ส่งคำตอบผ่าน **Google Form — Lab 9: ETL Incremental Load & SCD Type 2** *(ลิงก์จากผู้สอน)*
 
-| รายการ            | รูปแบบ                                                                        |
-| ----------------- | ----------------------------------------------------------------------------- |
-| **Checkpoint 1**  | Screenshot จำนวนแถวของ `fct_sales` **หลัง Batch 1 = 40** และ **หลัง Batch 2 = 80** |
-| **Checkpoint 2**  | Screenshot **SCD history ของ `CUST-1007`** ที่เห็นทั้ง `Arthit` และ `Tawon`   |
+| รายการ           | รูปแบบ                                                                                                          |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Checkpoint 1** | Screenshot จำนวนแถวของ`fct_sales` **หลัง Batch 1 = 40** และ **หลัง Batch 2 = 80** |
+| **Checkpoint 2** | Screenshot**SCD history ของ `CUST-1007`** ที่เห็นทั้ง `Arthit` และ `Tawon`               |
 
 > 📝 Screenshot ของ Checkpoint 2 ควรเห็นครบทั้ง `customer_name`, `start_date`, `end_date`
 > และ `is_current` ทั้งสองแถว เพื่อพิสูจน์ว่าเวอร์ชันเก่า **ถูกปิด** ไม่ใช่ **ถูกทับ**
@@ -1633,45 +1633,45 @@ dbt docs serve --host 0.0.0.0 --port 8080
 > ⚠️ เปิด shell ใน container ก่อน — `docker exec -it dw_dbt bash` แล้ว `cd lab9`
 > เพื่อไม่ให้เครื่องหมายคำพูดใน `--vars` และ Jinja ใน `--inline` ถูก host shell แปลงค่า
 
-| Command                                                                | Description                                          |
-| ---------------------------------------------------------------------- | ---------------------------------------------------- |
-| `docker exec -it dw_dbt bash`                                          | Open a shell inside the dbt container                |
-| `dbt debug`                                                            | Test the database connection                         |
-| `dbt seed --full-refresh`                                              | Rebuild both seed tables from the CSVs               |
-| `dbt run --select staging`                                             | Build the two staging views                          |
-| `dbt run --select dim_region dim_province dim_store ...`               | Build the Snowflake dimensions                       |
-| `dbt run --select <model> --vars "{'load_batch': 'initial'}"`          | Run a model scoped to **Batch 1**                    |
-| `dbt run --select <model> --vars "{'load_batch': 'incremental'}"`      | Run a model scoped to **Batch 2**                    |
-| `dbt snapshot --select snap_customer_scd --vars "{...}"`               | Advance the SCD Type 2 history                       |
-| `dbt run --select fct_sales --full-refresh --vars "{...}"`             | **Rebuild** the fact from scratch (drops loaded rows) |
-| `dbt test`                                                             | Run generic + singular tests                         |
-| `dbt test --select fct_sales`                                          | Run only the fact table's tests                      |
-| `dbt show --select <model> --limit 10`                                 | Preview a model's rows                               |
-| `dbt show --inline "select ... from {{ ref('<model>') }}"`             | Preview an ad-hoc query                              |
-| `dbt ls --resource-type model`                                         | List every model in the project                      |
-| `dbt docs generate`                                                    | Build the documentation site                         |
-| `dbt docs serve --host 0.0.0.0 --port 8080`                            | Serve the docs (browser: `localhost:28088`)          |
+| Command                                                             | Description                                                 |
+| ------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `docker exec -it dw_dbt bash`                                     | Open a shell inside the dbt container                       |
+| `dbt debug`                                                       | Test the database connection                                |
+| `dbt seed --full-refresh`                                         | Rebuild both seed tables from the CSVs                      |
+| `dbt run --select staging`                                        | Build the two staging views                                 |
+| `dbt run --select dim_region dim_province dim_store ...`          | Build the Snowflake dimensions                              |
+| `dbt run --select <model> --vars "{'load_batch': 'initial'}"`     | Run a model scoped to**Batch 1**                      |
+| `dbt run --select <model> --vars "{'load_batch': 'incremental'}"` | Run a model scoped to**Batch 2**                      |
+| `dbt snapshot --select snap_customer_scd --vars "{...}"`          | Advance the SCD Type 2 history                              |
+| `dbt run --select fct_sales --full-refresh --vars "{...}"`        | **Rebuild** the fact from scratch (drops loaded rows) |
+| `dbt test`                                                        | Run generic + singular tests                                |
+| `dbt test --select fct_sales`                                     | Run only the fact table's tests                             |
+| `dbt show --select <model> --limit 10`                            | Preview a model's rows                                      |
+| `dbt show --inline "select ... from {{ ref('<model>') }}"`        | Preview an ad-hoc query                                     |
+| `dbt ls --resource-type model`                                    | List every model in the project                             |
+| `dbt docs generate`                                               | Build the documentation site                                |
+| `dbt docs serve --host 0.0.0.0 --port 8080`                       | Serve the docs (browser:`localhost:28088`)                |
 
 ---
 
 ## 🧾 Incremental & SCD Quick Reference
 
-| แนวคิด                    | ทำอะไร                                             | ในโปรเจกต์นี้                                      |
-| ------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| **Full refresh**          | สร้างใหม่ทั้งตารางทุกครั้ง                         | seeds, staging, dimensions ทั่วไป                  |
-| **Incremental**           | ต่อท้ายเฉพาะแถวใหม่ ไม่แตะของเก่า                  | `fct_sales`                                        |
-| **`unique_key` + `merge`** | ถ้าเจอ key เดิม → update แทน insert ซ้ำ            | `unique_key='sale_id'`                             |
-| **`is_incremental()`**    | จริงเมื่อ "ตารางมีอยู่แล้ว + ไม่ได้ `--full-refresh`" | บล็อก `where not exists` ใน `fct_sales`            |
-| **Snapshot (`check`)**    | dbt เทียบ `check_cols` แล้วเปิด/ปิดเวอร์ชันให้เอง  | `snap_customer_scd`                                |
-| **SCD Type 2**            | เก็บทุกเวอร์ชันพร้อมช่วงเวลาที่มีผล                | `dim_customer` (`start_date`, `end_date`, `is_current`) |
-| **`--vars`**              | ส่งค่าจาก CLI เข้า Jinja เพื่อสลับขอบเขตข้อมูล      | `load_batch` = `initial` / `incremental`           |
+| แนวคิด                         | ทำอะไร                                                                         | ในโปรเจกต์นี้                                      |
+| ------------------------------------ | ------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| **Full refresh**               | สร้างใหม่ทั้งตารางทุกครั้ง                                 | seeds, staging, dimensions ทั่วไป                         |
+| **Incremental**                | ต่อท้ายเฉพาะแถวใหม่ ไม่แตะของเก่า                    | `fct_sales`                                                   |
+| **`unique_key` + `merge`** | ถ้าเจอ key เดิม → update แทน insert ซ้ำ                             | `unique_key='sale_id'`                                        |
+| **`is_incremental()`**       | จริงเมื่อ "ตารางมีอยู่แล้ว + ไม่ได้`--full-refresh`" | บล็อก`where not exists` ใน `fct_sales`               |
+| **Snapshot (`check`)**       | dbt เทียบ`check_cols` แล้วเปิด/ปิดเวอร์ชันให้เอง     | `snap_customer_scd`                                           |
+| **SCD Type 2**                 | เก็บทุกเวอร์ชันพร้อมช่วงเวลาที่มีผล               | `dim_customer` (`start_date`, `end_date`, `is_current`) |
+| **`--vars`**                 | ส่งค่าจาก CLI เข้า Jinja เพื่อสลับขอบเขตข้อมูล     | `load_batch` = `initial` / `incremental`                  |
 
-| SCD Type | เกิดอะไรเมื่อค่าเปลี่ยน       | ตอบคำถาม "ตอนนั้นชื่ออะไร" ได้ไหม |
-| :------: | ----------------------------- | :-------------------------------: |
-|  Type 0  | ไม่ให้เปลี่ยน                 |                 —                 |
-|  Type 1  | เขียนทับค่าเดิม               |               ไม่ได้              |
-|  Type 2  | **เพิ่มแถวใหม่ ปิดแถวเก่า**   |             **ได้**               |
-|  Type 3  | เก็บค่าก่อนหน้าไว้ 1 คอลัมน์  |          ได้แค่ค่าก่อนหน้า        |
+| SCD Type | เกิดอะไรเมื่อค่าเปลี่ยน          | ตอบคำถาม "ตอนนั้นชื่ออะไร" ได้ไหม |
+| :------: | ------------------------------------------------------- | :------------------------------------------------------------: |
+|  Type 0  | ไม่ให้เปลี่ยน                              |                               —                               |
+|  Type 1  | เขียนทับค่าเดิม                          |                          ไม่ได้                          |
+|  Type 2  | **เพิ่มแถวใหม่ ปิดแถวเก่า** |                        **ได้**                        |
+|  Type 3  | เก็บค่าก่อนหน้าไว้ 1 คอลัมน์   |               ได้แค่ค่าก่อนหน้า               |
 
 ---
 
