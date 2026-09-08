@@ -8,3 +8,6 @@
 **/Lab4.zip
 **/CLAUDE.md
 __pycache__/
+**/target/
+**/dbt_packages/
+**/.user.yml
