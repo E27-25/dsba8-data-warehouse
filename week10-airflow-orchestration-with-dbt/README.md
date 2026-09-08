@@ -152,9 +152,37 @@ docker compose ps
 
 ### 0.3 Open the Airflow UI / เปิดหน้าจอ Airflow
 
-1. เปิด [http://localhost:28080](http://localhost:28080)
-2. Login ด้วย `airflow` / `airflow`
+1. Open your browser and go to **Airflow**: [http://localhost:28080](http://localhost:28080)
+2. Log in with the default credentials:
+   - **Username:** `airflow`
+   - **Password:** `airflow`
 3. ตอนนี้ยังไม่เห็น DAG ของ Lab — จะมาปรากฏหลังสร้างไฟล์ใน Part 5
+
+> 📝 **บัญชีนี้คนละชุดกับ pgAdmin** — Airflow ใช้ `airflow` / `airflow` ส่วน pgAdmin ใช้
+> `dw_user@mail.com` / `dw_pass` (Part 0.2) และฐานข้อมูลใช้ `dw_user` / `dw_pass` อีกชุดหนึ่ง
+> อย่าเอาไปสลับกัน
+
+<details>
+<summary><b>🔑 บัญชีทั้งหมดที่ใช้ใน Lab นี้</b></summary>
+
+| ใช้ที่ไหน | URL / Host | Username | Password |
+|---|---|---|---|
+| **Airflow UI** | [localhost:28080](http://localhost:28080) | `airflow` | `airflow` |
+| **pgAdmin** | [localhost:28880](http://localhost:28880) | `dw_user@mail.com` | `dw_pass` |
+| **Metabase** | [localhost:23000](http://localhost:23000) | บัญชีที่ตั้งเองตอน setup ครั้งแรก | — |
+| **PostgreSQL** (จาก pgAdmin / Metabase / host) | `dw_postgres` : `5432` · host: `localhost:25432` | `dw_user` | `dw_pass` |
+| **PostgreSQL** (จาก container อื่น เช่น dbt / DAG) | `postgres` : `5432` | `dw_user` | `dw_pass` |
+
+</details>
+
+> 💡 **ค่ามาจากไหน** — `docker-compose.yaml` ตั้ง
+> `_AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}` และ
+> `_AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}` ดังนั้น `airflow` / `airflow`
+> คือค่า **default** ถ้าใครเคยไปตั้งสองตัวแปรนี้ไว้ใน `.env` ให้ใช้ค่าที่ตั้งไว้แทน
+
+> ⚠️ **Login ไม่ผ่าน / ขึ้น 404** — บัญชีถูกสร้างโดย container `airflow-init` ตอนสตาร์ทครั้งแรก
+> ถ้าเพิ่งรัน `docker compose up -d` ให้รอจน `airflow-init` ขึ้นสถานะ `exited (0)` ก่อน
+> เช็กด้วย `docker compose ps -a` แล้วดู log ด้วย `docker compose logs airflow-init`
 
 ---
 
@@ -1217,7 +1245,8 @@ Copy-Item ..\..\week10-airflow-orchestration-with-dbt\script\dags\coffee_sales_e
 
 ### 6.1 Trigger DAG
 
-1. เปิด [http://localhost:28080](http://localhost:28080) แล้ว Login ด้วย `airflow` / `airflow`
+1. เปิด [http://localhost:28080](http://localhost:28080) แล้ว Login ด้วย
+   **Username** `airflow` / **Password** `airflow` (ดู Part 0.3)
 2. ค้นหา DAG ชื่อ **`coffee_sales_etl`**
 3. เปิดสวิตช์ **Unpause** เนื่องจาก Environment กำหนด `DAGS_ARE_PAUSED_AT_CREATION` เป็น `true`
 4. กด **Trigger DAG** และรอให้ Task ทั้งหมดเป็นสีเขียว
