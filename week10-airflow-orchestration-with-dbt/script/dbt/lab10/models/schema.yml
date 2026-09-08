@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: dim_date
+    columns:
+      - {name: date_key, tests: [not_null, unique]}
+
+  - name: dim_product
+    columns:
+      - {name: product_key, tests: [not_null, unique]}
+      - {name: product_code, tests: [not_null, unique]}
+
+  - name: dim_store
+    columns:
+      - {name: store_key, tests: [not_null, unique]}
+      - {name: store_code, tests: [not_null, unique]}
+
+  - name: dim_customer
+    columns:
+      - {name: customer_key, tests: [not_null, unique]}
+      - {name: customer_code, tests: [not_null, unique]}
+
+  - name: dim_promotion
+    columns:
+      - {name: promotion_key, tests: [not_null, unique]}
+      - {name: promo_code, tests: [not_null, unique]}
+
+  - name: fct_sales
+    columns:
+      - {name: sales_key, tests: [not_null, unique]}
+      - {name: date_key, tests: [not_null]}
+      - {name: product_key, tests: [not_null]}
+      - {name: store_key, tests: [not_null]}
+      - {name: customer_key, tests: [not_null]}
+      - {name: quantity, tests: [not_null]}
+      - {name: revenue, tests: [not_null]}

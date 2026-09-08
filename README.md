@@ -40,7 +40,8 @@
 | 7 | Fact Table Design with dbt (Transaction / Snapshot / Accumulating) | [Week 7](./week07-fact-table-design-with-dbt/) |
 | 8 | Granularity, Aggregation & Summary Table (Roll-up / Drill-down / CUBE) | [Week 8](./week08-aggregation-summary-table-with-dbt/) |
 | 9 | ETL — Incremental Load & SCD Type 2 with dbt | [Week 9](./week09-etl-incremental-scd-with-dbt/) |
-| 10–15 | Coming soon — syllabus in progress | — |
+| 10 | Workflow Orchestration with Airflow & dbt (ETL + OLAP Slice/Dice) | [Week 10](./week10-airflow-orchestration-with-dbt/) |
+| 11–15 | Coming soon — syllabus in progress | — |
 
 ---
 
@@ -207,6 +208,21 @@ dsba8-data-warehouse/
     │       └── seeds/                     ← Datasets loaded via `dbt seed`
     │           ├── coffee_sales_scd_new.csv
     │           └── province_region_mapping_v2.csv
+    └── README.md
+│
+└── week10-airflow-orchestration-with-dbt/  ← Week 10 ✅
+    ├── docs/                              ← Lab documentation & diagrams
+    │   ├── Lab10 Airflow with dbt ETL and OLAP.docx
+    │   ├── Lab10 Airflow with dbt ETL and OLAP.pdf
+    │   └── screenshots/
+    ├── data/                              ← Dataset copied into `raw_data/`
+    │   └── coffee_sales.csv
+    ├── script/                            ← All .py / .sql / .yml files, ready to copy
+    │   ├── dags/coffee_sales_etl_dag.py   ← Airflow DAG
+    │   ├── dbt/lab10/                     ← dbt project (models + tests)
+    │   └── dbt_root/                      ← profiles.yml (reference only)
+    ├── lab-week10/                        ← Lab working dir
+    │   └── dbt_root/                      ← profiles.yml (dbt → PostgreSQL, db `lab10`)
     └── README.md
 ```
 
